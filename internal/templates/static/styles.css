@@ -20,7 +20,7 @@ footer {
     text-align: center;
 }
 
-h1, h2, a, p, li label {
+h1, h2, a, p, li, label {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
 }
