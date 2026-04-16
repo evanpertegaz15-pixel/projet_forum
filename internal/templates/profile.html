@@ -8,6 +8,16 @@
 </head>
 <body>
 
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil - Dark Jurassic</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
 <header>
     <h1>Dark Jurassic</h1>
     <p>Bienvenue sur le forum !</p>
@@ -21,3 +31,54 @@
     <a href="register.html">S'inscrire</a>
     <a href="profile.html">Mon profil</a>
 </nav>
+
+<main>
+    <section>
+        <h2>Informations utilisateur</h2>
+        <p><strong>Nom :</strong> Utilisateur123</p>
+        <p><strong>Email :</strong> utilisateur@email.com</p>
+        <p><strong>Date d'inscription :</strong> 01/01/2026</p>
+    </section>
+
+    <section>
+        <h2>Mes posts</h2>
+        <ul>
+            <li>
+                <a href="post_view.html">Titre du post 1</a>
+                <p>Petit aperçu du contenu...</p>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Mes commentaires</h2>
+        <ul>
+            <li>
+                <p>Commentaire sur <a href="post_view.html">Post 1</a></p>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Modifier le profil</h2>
+        <form action="#" method="post">
+            <label>Nom :</label><br>
+            <input type="text" name="name"><br><br>
+
+            <label>Email :</label><br>
+            <input type="email" name="email"><br><br>
+
+            <label>Mot de passe :</label><br>
+            <input type="password" name="password"><br><br>
+
+            <button type="submit">Mettre à jour</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 Dark Jurassic</p>
+</footer>
+
+</body>
+</html>
