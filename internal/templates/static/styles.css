@@ -1,10 +1,9 @@
 body {
     background-color: black;
-    margin: 0;
+    margin: 0 auto; /* 🔥 CENTRE toute la page */
     padding: 0;
-    max-width: 1500px;
-    align-items: center;
-}
+    max-width: none;
+}   
 
 /* a {
     color :#1a68ad;
@@ -82,4 +81,168 @@ button {
 footer {
     text-align: center;
     padding: 10px;
+}
+
+/* NAVBAR FLEX */
+nav {
+    background-color: #111;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+
+    max-width: 900px;   /* 🔥 largeur réduite */
+    margin: 0 auto;     /* 🔥 centre la navbar */
+    border-radius: 10px; /* optionnel : style */
+}
+
+.nav-left a {
+    font-size: 18px;
+    padding: 10px 15px;
+}
+
+.nav-right {
+    display: flex;
+    gap: 10px;
+}
+
+/* Icônes profil / inscription */
+.icon-btn {
+    font-size: 22px;
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* 🔥 important : aligne en haut */
+    width: 100%;
+    display: flex;
+    align-items: flex-start; /* 🔥 évite décalage vertical */
+}
+
+.container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.left {
+height: 80vh;
+    overflow-y: auto;
+
+    scrollbar-width: thin; /* Firefox */
+    min-width: 200px;
+}
+
+.center {
+    flex: 1;              /* 🔥 prend l’espace disponible */
+    border: 1px solid white;
+    padding: 15px;
+
+    height: 80vh;
+    overflow-y: auto;
+
+    scrollbar-width: thin; /* Firefox */
+    min-width: 200px;
+    max-height: none;
+}
+
+
+.right {
+    height: 80vh;
+    overflow-y: auto;
+
+    scrollbar-width: thin; /* Firefox */
+    min-width: 200  px;
+}
+
+
+.banner img {
+    position: relative;
+    left: 0px; /* décale vers la gauche */
+}
+
+.left,
+.right {
+    max-height: 400px;
+    overflow-y: auto;
+
+    /* 🔥 cache scrollbar Firefox */
+    scrollbar-width: none;
+
+    /* 🔥 cache scrollbar IE/Edge ancien */
+    -ms-overflow-style: none;
+}
+
+/* 🔥 cache scrollbar Chrome / Safari / Edge Chromium */
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar {
+    display: none;
+} 
+
+.post img {
+    width: 100%;
+    max-height: 800px;   /* 🔥 limite la hauteur */
+    object-fit: cover;   /* 🔥 coupe proprement l’image */
+    display: block;
+    border-radius: 8px;
+    overflow: hidden;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 0px solid white;
+}
+
+.left,
+.center,
+.right {
+    min-width: 0;
+}
+
+.fun-fact {
+    font-size: 20px;   /* 🔥 taille globale du texte */
+    line-height: 1.5;  /* 🔥 espace entre les lignes */
+}
+
+.section-title {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid white;
+}
+
+.top-right-icons {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.top-right-icons .icon-btn {
+    font-size: 22px;
+    text-decoration: none;
+    background-color: #111;
+    padding: 8px;
+    border-radius: 8px;
+    color: white;
+}
+
+.left,
+.right {
+    width: 200px;
+    flex-shrink: 0;
+    height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.center {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid white;
+    padding: 15px;
+    height: 80vh;
+    overflow-y: auto;
 }
