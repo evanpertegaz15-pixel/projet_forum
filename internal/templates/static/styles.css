@@ -281,7 +281,7 @@ nav {
     overflow-y: auto;
 }
 
-// register centré
+/*register centré*/
 
 main {
     display: flex;
@@ -312,7 +312,7 @@ button {
     cursor: pointer;
 }
 
-//créer un poste 
+/*créer poste*/
 
 body {
     margin: 0;
@@ -397,7 +397,7 @@ footer {
     background-color: #1f1f1f;
 }
 
-//mon profile 
+/*profile*/
 
 .profile-card {
     background-color: #1e1e1e;
