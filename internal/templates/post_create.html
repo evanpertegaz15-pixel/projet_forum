@@ -20,3 +20,36 @@
     <a href="register.html">S'inscrire</a>
     <a href="profile.html">Mon profil</a>
 </nav>
+
+<main class="center">
+    <section class="form-container">
+        <h2>Nouveau post</h2>
+
+        <form action="#" method="post">
+
+            <label>Titre :</label>
+            <input type="text" name="title" required>
+
+            <label>Catégorie :</label>
+            <select name="category" required>
+                <option value="">-- Choisir --</option>
+                <option value="general">Général</option>
+                <option value="dino">Dinosaures</option>
+                <option value="theories">Théories</option>
+                <option value="news">News</option>
+            </select>
+
+            <label>Contenu :</label>
+            <textarea name="content" rows="6" required></textarea>
+
+            <button type="submit">Publier</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 Dark Jurassic</p>
+</footer>
+
+</body>
+</html>

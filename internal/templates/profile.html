@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Accueil - Dark Jurassic</title>
+    <title>Mon profil - Dark Jurassic</title>
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
@@ -10,6 +10,10 @@
 <header>
     <header class="banner">
   <img src="static/banner.png" alt="Website Banner">
+</header>
+
+<header>
+    <h1>Mon profil utilisateur</h1>
 </header>
 
 <nav>
@@ -21,47 +25,24 @@
     <a href="profile.html">Mon profil</a>
 </nav>
 
-<main>
-    <section>
-        <h2>Informations utilisateur</h2>
-        <p><strong>Nom :</strong> Utilisateur123</p>
-        <p><strong>Email :</strong> utilisateur@email.com</p>
-        <p><strong>Date d'inscription :</strong> 01/01/2026</p>
-    </section>
+<main class="center">
+    <section class="form-container profile-card">
 
-    <section>
-        <h2>Mes posts</h2>
-        <ul>
-            <li>
-                <a href="post_view.html">Titre du post 1</a>
-                <p>Petit aperçu du contenu...</p>
-            </li>
-        </ul>
-    </section>
+        <h2>Profil</h2>
 
-    <section>
-        <h2>Mes commentaires</h2>
-        <ul>
-            <li>
-                <p>Commentaire sur <a href="post_view.html">Post 1</a></p>
-            </li>
-        </ul>
-    </section>
+        <div class="profile-info">
+            <p><strong>Nom d'utilisateur :</strong> JohnDoe</p>
+            <p><strong>Email :</strong> johndoe@email.com</p>
+            <p><strong>Membre depuis :</strong> 2026</p>
+        </div>
 
-    <section>
-        <h2>Modifier le profil</h2>
-        <form action="#" method="post">
-            <label>Nom :</label><br>
-            <input type="text" name="name"><br><br>
+        <hr>
 
-            <label>Email :</label><br>
-            <input type="email" name="email"><br><br>
+        <h3>Actions</h3>
 
-            <label>Mot de passe :</label><br>
-            <input type="password" name="password"><br><br>
+        <button>Modifier le profil</button>
+        <button class="danger">Supprimer le compte</button>
 
-            <button type="submit">Mettre à jour</button>
-        </form>
     </section>
 </main>
 
