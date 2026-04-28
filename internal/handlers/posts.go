@@ -1,0 +1,1 @@
+// posts -> lister, voir, créer, modifier, supprimer un post
