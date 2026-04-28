@@ -71,13 +71,14 @@ func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
     cookie, err := r.Cookie("session_id")
     if err != nil {
-        http.Error(w, "Vous n'êtes pas connecté.", http.StatusUnauthorized)
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
     user, err := handler.Auth.GetUserFromSession(cookie.Value)
     if err != nil || user == nil {
-        http.Error(w, "Session incorrecte.", http.StatusUnauthorized)
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
-    w.Write([]byte("Connecté en tant que : " + user.Username)) // pour l'instant, juste un affichage en texte
+    tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
+    tmpl.Execute(w, user)
 }
