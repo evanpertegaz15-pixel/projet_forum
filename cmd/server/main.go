@@ -14,5 +14,5 @@ func main() {
     log.Println("Base de données initialisée.")
     database.Seed(db)
     log.Println("Base de données remplie avec données par défaut.")
-	//startServer(db) // envoyer la db aux handlers
+	startServer(db)
 }
