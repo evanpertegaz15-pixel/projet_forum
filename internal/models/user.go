@@ -20,6 +20,7 @@ type UserModel struct {
 	DB *sql.DB
 }
 
+// constructeur pour avoir un UserModel qui contient la base de données
 func NewUserModel(db *sql.DB) *UserModel {
 	return &UserModel{DB: db}
 }
