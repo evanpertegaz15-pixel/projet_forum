@@ -20,23 +20,29 @@
         <a href="login.html">Connexion</a>
     </div>
 
+    <form class="search-bar">
+    <input type="text" placeholder="Rechercher..." name="q">
+    <button type="submit">🔍</button>
+</form>
+
 <div class="top-right-icons">
     <a href="register.html" class="icon-btn">👤+</a>
-    <a href="profile.html" class="icon-btn">👤</a>
+<a href="profile.html" class="icon-btn">
+    <img src="static/profile.png" alt="Profil">
+</a>
 </div>
 
 </nav>
 
 <main>
     <h1>Bienvenue sur le forum !</h1>
-
     <div class="container">
         <section class="left">
     <h2>Utilisateurs</h2>
 
-    <p>👤 Alex</p>
-    <p>👤 Emma</p>
-    <p>👤 Lucas</p>
+    <p><a href="profile.html?user=Alex">👤 Alex</a></p> 
+    <p><a href="profile.html?user=Emma">👤 Emma</a></p>
+    <p><a href="profile.html?user=Lucas">👤 Lucas</a></p>
     <p>👤 Sarah</p>
     <p>👤 Noah</p>
     <p>👤 Jade</p>
@@ -76,7 +82,15 @@
                 <h3>Titre du post</h3>
                 <p> <strong>🦖 Le savais-tu ?</strong><br>
                     <strong>Tyrannosaurus rex avait une morsure extrêmement puissante, capable de broyer les os.</strong><br>
-                    <strong>’était l’un des prédateurs les plus redoutables de son époque.</strong> </p>
+                    <strong>’était l’un des prédateurs les plus redoutables de son époque.</strong> 
+                </p>
+                
+                        <!-- 🔥 LIKE / DISLIKE -->
+        <div class="post-actions">
+            <button class="like" id="likeBtn">👍 <span id="likeCount">0</span></button>
+            <button class="dislike" id="dislikeBtn">👎 <span id="dislikeCount">0</span></button>
+        </div>
+                    
             </div>
         </div>
     </section>
@@ -91,3 +105,55 @@
     </section>
     </div>
 </main>
+
+<script>
+let likeCount = 0;
+let dislikeCount = 0;
+
+let userLikeState = "none"; // none | like | dislike
+
+const likeBtn = document.getElementById("likeBtn");
+const dislikeBtn = document.getElementById("dislikeBtn");
+
+const likeDisplay = document.getElementById("likeCount");
+const dislikeDisplay = document.getElementById("dislikeCount");
+
+likeBtn.addEventListener("click", () => {
+
+    if (userLikeState === "like") {
+        likeCount--;
+        userLikeState = "none";
+    } 
+    else {
+        if (userLikeState === "dislike") {
+            dislikeCount--;
+        }
+        likeCount++;
+        userLikeState = "like";
+    }
+
+    updateUI();
+});
+
+dislikeBtn.addEventListener("click", () => {
+
+    if (userLikeState === "dislike") {
+        dislikeCount--;
+        userLikeState = "none";
+    } 
+    else {
+        if (userLikeState === "like") {
+            likeCount--;
+        }
+        dislikeCount++;
+        userLikeState = "dislike";
+    }
+
+    updateUI();
+});
+
+function updateUI() {
+    likeDisplay.textContent = likeCount;
+    dislikeDisplay.textContent = dislikeCount;
+}
+</script>
