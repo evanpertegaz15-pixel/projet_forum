@@ -2,11 +2,13 @@ package main
 
 import (
     "log"
+    "forum-dark-jurassic/internal/config"
     "forum-dark-jurassic/internal/database"
 )
 
 func main() {
-    db := database.ConnectDB("forum.db")
+    cfg := config.Load()
+    db := database.ConnectDB(cfg.Database)
 	defer db.Close()
     database.RunMigrations(db)
     log.Println("Base de données initialisée.")
