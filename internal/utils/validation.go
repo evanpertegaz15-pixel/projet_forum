@@ -1,3 +1,4 @@
+package utils
 // valider des inputs utilisateurs
 // ValidateEmail(email string) bool
 // ValidateUsername(username string) bool

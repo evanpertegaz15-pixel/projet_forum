@@ -7,8 +7,7 @@
 </head>
 <body>
 
-<header>
-    <header class="banner">
+<header class="banner">
   <img src="static/banner.png" alt="Website Banner">
 </header>
 
@@ -31,9 +30,33 @@
         <h2>Profil</h2>
 
         <div class="profile-info">
-            <p><strong>Nom d'utilisateur :</strong> JohnDoe</p>
-            <p><strong>Email :</strong> johndoe@email.com</p>
-            <p><strong>Membre depuis :</strong> 2026</p>
+            <p><strong>Nom d'utilisateur :</strong> <span id="username"></span></p>
+            <p><strong>Email :</strong> <span id="email"></span></p>
+            <p><strong>Membre depuis :</strong> <span id="memberSince"></span></p>
+        </div>
+
+        <hr>
+
+        <!-- FOLLOWERS / FOLLOWING -->
+        <div class="follow-section">
+
+            <div class="followers">
+                <h3>Followers (3)</h3>
+                <ul>
+                    <li>@Alice</li>
+                    <li>@RaptorKing</li>
+                    <li>@DinoFan42</li>
+                </ul>
+            </div>
+
+            <div class="following">
+                <h3>Following (2)</h3>
+                <ul>
+                    <li>@TyrannoX</li>
+                    <li>@VelociPro</li>
+                </ul>
+            </div>
+
         </div>
 
         <hr>
@@ -43,12 +66,66 @@
         <button>Modifier le profil</button>
         <button class="danger">Supprimer le compte</button>
 
-    </section>
+    </section>  
 </main>
 
 <footer>
     <p>© 2026 Dark Jurassic</p>
 </footer>
+<script>
+const users = {
+    Alex: {
+        username: "Alex",
+        email: "alex@email.com",
+        memberSince: "2024",
+        followers: ["Emma", "Lucas", "Sarah"],
+        following: ["Noah", "Jade"]
+    },
+    Emma: {
+        username: "Emma",
+        email: "emma@email.com",
+        memberSince: "2023",
+        followers: ["Alex", "Lucas"],
+        following: ["Sarah"]
+    },
+    Lucas: {
+        username: "Lucas",
+        email: "lucas@email.com",
+        memberSince: "2025",
+        followers: ["Alex"],
+        following: ["Emma", "Noah"]
+    }
+};
 
+// récupérer ?user=Alex
+const params = new URLSearchParams(window.location.search);
+const user = params.get("user");
+
+// si user existe
+if (users[user]) {
+    const data = users[user];
+
+    document.getElementById("username").textContent = data.username;
+    document.getElementById("email").textContent = data.email;
+    document.getElementById("memberSince").textContent = data.memberSince;
+
+    // followers
+    document.querySelector(".followers ul").innerHTML =
+        data.followers.map(f => `<li>@${f}</li>`).join("");
+
+    // following
+    document.querySelector(".following ul").innerHTML =
+        data.following.map(f => `<li>@${f}</li>`).join("");
+const currentUser = "JohnDoe";
+
+const params = new URLSearchParams(window.location.search);
+const user = params.get("user") || currentUser;
+
+const isOwner = (user === currentUser);
+
+if (!isOwner) {
+    document.getElementById("owner-actions").style.display = "none";
+}
+</script>
 </body>
 </html>

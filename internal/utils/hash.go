@@ -1,3 +1,12 @@
-// HashPassword(password string) (string, error)
-// CheckPasswordHash(password, hash string) bool
-// utiliser bcrypt
+package utils
+
+import "golang.org/x/crypto/bcrypt"
+
+func HashPassword(password string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(hashed), err
+}
+
+func CheckPasswordHash(hash, password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) == nil
+}

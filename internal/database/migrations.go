@@ -20,7 +20,7 @@ func RunMigrations(db *sql.DB) {
             email TEXT NOT NULL UNIQUE,
             username TEXT NOT NULL,
             password_hash TEXT NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME
         );`,
 
@@ -40,7 +40,7 @@ func RunMigrations(db *sql.DB) {
             action TEXT NOT NULL,
             target_id INTEGER,
             target_type TEXT,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
 
@@ -48,6 +48,7 @@ func RunMigrations(db *sql.DB) {
         `CREATE TABLE IF NOT EXISTS sessions (
             id TEXT PRIMARY KEY,
             user_id INTEGER NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             expires_at DATETIME NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
@@ -64,7 +65,7 @@ func RunMigrations(db *sql.DB) {
             user_id INTEGER NOT NULL,
             title TEXT NOT NULL,
             content TEXT NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME,
             FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
@@ -98,7 +99,7 @@ func RunMigrations(db *sql.DB) {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             post_id INTEGER,
             path TEXT NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
         );`,
 
@@ -108,7 +109,7 @@ func RunMigrations(db *sql.DB) {
             post_id INTEGER NOT NULL,
             user_id INTEGER NOT NULL,
             content TEXT NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME,
             FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
             FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -134,7 +135,7 @@ func RunMigrations(db *sql.DB) {
             post_id INTEGER,
             comment_id INTEGER,
             is_read INTEGER NOT NULL DEFAULT 0,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
             FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
             FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE
@@ -147,7 +148,7 @@ func RunMigrations(db *sql.DB) {
             post_id INTEGER,
             comment_id INTEGER,
             reason TEXT NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(reporter_id) REFERENCES users(id) ON DELETE CASCADE,
             FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
             FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE
@@ -165,7 +166,7 @@ func RunMigrations(db *sql.DB) {
             user_id INTEGER NOT NULL,
             reason TEXT NOT NULL,
             expires_at DATETIME,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
 
@@ -182,7 +183,7 @@ func RunMigrations(db *sql.DB) {
         `CREATE TABLE IF NOT EXISTS post_views (
             post_id INTEGER NOT NULL,
             user_id INTEGER,
-            viewed_at DATETIME NOT NULL,
+            viewed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
         );`,
 
@@ -201,7 +202,7 @@ func RunMigrations(db *sql.DB) {
             post_id INTEGER NOT NULL,
             editor_id INTEGER NOT NULL,
             old_content TEXT NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
             FOREIGN KEY(editor_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
@@ -212,7 +213,7 @@ func RunMigrations(db *sql.DB) {
             comment_id INTEGER NOT NULL,
             editor_id INTEGER NOT NULL,
             old_content TEXT NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(comment_id) REFERENCES comment(id) ON DELETE CASCADE,
             FOREIGN KEY(editor_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
@@ -224,7 +225,7 @@ func RunMigrations(db *sql.DB) {
             action TEXT NOT NULL,
             target_type TEXT NOT NULL,
             target_id INTEGER NOT NULL,
-            created_at DATETIME NOT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(moderator_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
     }

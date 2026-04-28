@@ -131,22 +131,18 @@ nav {
     width: 200px;
     flex-shrink: 0;
     height: 80vh;
-    overflow-y: auto;
+    overflow-y: scroll; /* important */
 
     /* Firefox */
-    scrollbar-width: none;
-
-    /* IE / Edge */
+    scrollbar-width: none !important;
     -ms-overflow-style: none;
 }
 
-/* Chrome / Safari */
+/* Chrome / Safari / Edge */
 .left::-webkit-scrollbar {
-    display: none;
-}
-
-.left::-webkit-scrollbar {
-    display: none;              /* Chrome/Safari */
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
 }
 
 /* ===== CENTER ===== */
@@ -218,7 +214,7 @@ nav {
 
     display: block;
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 15   px;
 }
 .left,
 .center,
@@ -269,7 +265,6 @@ nav {
     flex-shrink: 0;
     height: 80vh;
     overflow-y: auto;
-    scrollbar-width: thin;
 }
 
 .center {
@@ -424,4 +419,106 @@ footer {
 
 .danger:hover {
     background-color: #cc0000;
+}
+
+/* Followers / Following */
+
+.follow-section {
+    margin-top: 20px;
+}
+
+.follow-section h3 {
+    margin-bottom: 10px;
+}
+
+.follow-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.follow-section li {
+    background-color: #2a2a2a;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    padding-top: 5px; /* réduit l'espace en haut */
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.search-bar input {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px 0 0 6px;
+    outline: none;
+    background-color: #2a2a2a;
+    color: white;
+    width: 180px;
+}
+
+.search-bar button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    background-color: #00ff88;
+    color: black;
+}
+
+.search-bar button:hover {
+    background-color: #00cc6a;
+}
+
+nav {
+    display: flex;
+    align-items: center; /* 🔥 IMPORTANT : aligne tout verticalement */
+}
+
+.search-bar {
+    display: flex;
+    align-items: center; /* 🔥 aligne input + bouton */
+    margin-left: 15px;
+}
+
+.search-bar button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    background-color: #00ff88;
+    color: black;
+
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: flex-end; /* 🔥 droite */
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.dislike {
+    background-color: #cc0000;
+    color: white;
+}
+
+.dislike:hover {
+    background-color: #ff4444;
+    color: black;
 }
