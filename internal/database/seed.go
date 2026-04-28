@@ -3,7 +3,7 @@ package database
 import (
     "database/sql"
     "log"
-    "golang.org/x/crypto/bcrypt"
+    "forum-dark-jurassic/internal/utils"
 )
 
 func Seed(db *sql.DB) {
@@ -12,10 +12,10 @@ func Seed(db *sql.DB) {
         log.Println("Erreur seed rôles :", err)
     }
 
-    hash, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
+    hash, _ := utils.HashPassword("admin")
     _, err = db.Exec(`
-        INSERT OR IGNORE INTO users (email, username, password_hash, created_at)
-        VALUES ('admin@dj.com', 'admin', ?, datetime('now'))`, string(hash))
+        INSERT OR IGNORE INTO users (email, username, password_hash)
+        VALUES ('admin@dj.com', 'admin', ?)`, hash)
     if err != nil {
         log.Println("Erreur seed admin :", err)
     }

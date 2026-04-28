@@ -1,0 +1,1 @@
+// création de post, édition, suppression, permissions, tags, images, catégories
