@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Mon profil - Dark Jurassic</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="../../static/styles.css">
 </head>
 <body>
 
 <header>
     <header class="banner">
-  <img src="/static/banner.png" alt="Website Banner">
+  <img src="../../static/banner.png" alt="Website Banner">
 </header>
 
 <header>
@@ -17,12 +17,12 @@
 </header>
 
 <nav>
-    <a href="home.html">Accueil</a> 
-    <a href="category.html">Catégories</a> 
-    <a href="post_create.html">Créer un post</a> 
-    <a href="login.html">Connexion</a>
-    <a href="register.html">S'inscrire</a>
-    <a href="profile.html">Mon profil</a>
+    <a href="/home">Accueil</a> 
+    <a href="/category">Catégories</a> 
+    <a href="/post_create">Créer un post</a> 
+    <a href="/login">Connexion</a>
+    <a href="/register">S'inscrire</a>
+    <a href="/profile">Mon profil</a>
 </nav>
 
 <main class="center">
@@ -50,37 +50,37 @@
     <p>© 2026 Dark Jurassic</p>
 </footer>
 <script>
-const users = {
-    Alex: {
-        username: "Alex",
-        email: "alex@email.com",
-        memberSince: "2024",
-        followers: ["Emma", "Lucas", "Sarah"],
-        following: ["Noah", "Jade"]
-    },
-    Emma: {
-        username: "Emma",
-        email: "emma@email.com",
-        memberSince: "2023",
-        followers: ["Alex", "Lucas"],
-        following: ["Sarah"]
-    },
-    Lucas: {
-        username: "Lucas",
-        email: "lucas@email.com",
-        memberSince: "2025",
-        followers: ["Alex"],
-        following: ["Emma", "Noah"]
-    }
-};
+    const users = {
+        Alex: {
+            username: "Alex",
+            email: "alex@email.com",
+            memberSince: "2024",
+            followers: ["Emma", "Lucas", "Sarah"],
+            following: ["Noah", "Jade"]
+        },
+        Emma: {
+            username: "Emma",
+            email: "emma@email.com",
+            memberSince: "2023",
+            followers: ["Alex", "Lucas"],
+            following: ["Sarah"]
+        },
+        Lucas: {
+            username: "Lucas",
+            email: "lucas@email.com",
+            memberSince: "2025",
+            followers: ["Alex"],
+            following: ["Emma", "Noah"]
+        }
+    };
 
-// récupérer ?user=Alex
-const params = new URLSearchParams(window.location.search);
-const user = params.get("user");
+    // récupérer ?user=Alex
+    const params = new URLSearchParams(window.location.search);
+    const user = params.get("user");
 
-// si user existe
-if (users[user]) {
-    const data = users[user];
+    // si user existe
+    if (users[user]) {
+        const data = users[user];
 
     document.getElementById("username").textContent = data.username;
     document.getElementById("email").textContent = data.email;
@@ -93,16 +93,17 @@ if (users[user]) {
     // following
     document.querySelector(".following ul").innerHTML =
         data.following.map(f => `<li>@${f}</li>`).join("");
-const currentUser = "JohnDoe";
+    const currentUser = "JohnDoe";
 
-const params = new URLSearchParams(window.location.search);
-const user = params.get("user") || currentUser;
+    const params = new URLSearchParams(window.location.search);
+    const user = params.get("user") || currentUser;
 
-const isOwner = (user === currentUser);
+    const isOwner = (user === currentUser);
 
-if (!isOwner) {
-    document.getElementById("owner-actions").style.display = "none";
-}
+    if (!isOwner) {
+        document.getElementById("owner-actions").style.display = "none";
+    }
+    }
 </script>
 </body>
 </html>

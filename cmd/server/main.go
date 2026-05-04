@@ -18,6 +18,7 @@ func main() {
     log.Println("Base de données initialisée.")
     database.Seed(db)
     log.Println("Base de données remplie avec données par défaut.")
+<<<<<<< HEAD
     
     userModel := models.NewUserModel(db)
     sessionModel := models.NewSessionModel(db)
@@ -46,4 +47,7 @@ func main() {
 
     log.Println("Serveur lancé sur http://localhost:8080")
     http.ListenAndServe(":8080", nil)
+=======
+	startServer(db)
+>>>>>>> docker
 }
