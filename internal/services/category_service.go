@@ -1,7 +1,4 @@
 package services
-// un admin peut créer, supprimer, renommer une catégorie, validation d'unicité, association post <-> catégorie
-
-package services
 
 import (
 	"errors"
@@ -21,7 +18,7 @@ func NewCategoryService(categories *models.CategoryModel, posts *models.PostMode
 }
 
 // Vérification admin (simple)
-func isAdmin(user *models.User) bool {
+func isAdminSimple(user *models.User) bool {
 	return user != nil && user.Role == "admin"
 }
 
@@ -85,11 +82,11 @@ func (s *CategoryService) RemovePostFromCategory(postID, categoryID int) error {
 }
 
 // Lister les catégories
-func (s *CategoryService) GetAllCategories() ([]*models.Category, error) {
+func (s *CategoryService) GetAllCategories() ([]*models.CategoryModel, error) {
 	return s.Categories.GetAll()
 }
 
 // Obtenir les posts d’une catégorie
-func (s *CategoryService) GetPostsByCategory(categoryID int) ([]*models.Post, error) {
+func (s *CategoryService) GetPostsByCategory(categoryID int) ([]*models.PostModel, error) {
 	return s.Posts.GetByCategory(categoryID)
 }

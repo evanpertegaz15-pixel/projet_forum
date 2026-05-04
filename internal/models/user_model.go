@@ -110,3 +110,5 @@ func (model *UserModel) FindByID(id int) (*User, error) {
 func (user *User) CheckPassword(password string) bool {
 	return utils.CheckPasswordHash(user.Password, password)
 }
+
+func (user *User) GetRole() {}
