@@ -1,22 +1,27 @@
 package services
 
 import (
-	"errors"
+	//"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
 type CategoryService struct {
 	Categories *models.CategoryModel
-	Posts      *models.PostModel
 }
 
-func NewCategoryService(categories *models.CategoryModel, posts *models.PostModel) *CategoryService {
-	return &CategoryService{
-		Categories: categories,
-		Posts:      posts,
-	}
+func NewCategoryService(categories *models.CategoryModel) *CategoryService {
+	return &CategoryService{Categories: categories}
 }
 
+func (service *CategoryService) GetAllCategories() ([]models.Category, error) {
+    return service.Categories.GetAllCategories()
+}
+
+func (service *CategoryService) GetCategory(id int) (*models.Category, error) {
+    return service.Categories.GetCategoryByID(id)
+}
+
+/*
 // Vérification admin (simple)
 func isAdminSimple(user *models.User) bool {
 	return user != nil && user.Role == "admin"
@@ -81,12 +86,7 @@ func (s *CategoryService) RemovePostFromCategory(postID, categoryID int) error {
 	return s.Posts.RemoveCategory(postID, categoryID)
 }
 
-// Lister les catégories
-func (s *CategoryService) GetAllCategories() ([]*models.CategoryModel, error) {
-	return s.Categories.GetAll()
-}
-
 // Obtenir les posts d’une catégorie
 func (s *CategoryService) GetPostsByCategory(categoryID int) ([]*models.PostModel, error) {
 	return s.Posts.GetByCategory(categoryID)
-}
+}*/

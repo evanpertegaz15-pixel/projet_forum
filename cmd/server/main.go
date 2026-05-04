@@ -23,6 +23,13 @@ func main() {
     sessionModel := models.NewSessionModel(db)
     authService := services.NewAuthService(userModel, sessionModel)
     authHandler := handlers.NewAuthHandler(authService)
+    
+    categoryModel := models.NewCategoryModel(db)
+    topicModel := models.NewTopicModel(db)
+    postModel := models.NewPostModel(db)
+    categoryService := services.NewCategoryService(categoryModel)
+    topicService := services.NewTopicService(topicModel)
+    postService := services.NewPostService(postModel)
 
     http.HandleFunc("/", handlers.Home)
     http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {

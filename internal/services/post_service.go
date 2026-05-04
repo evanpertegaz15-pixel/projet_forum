@@ -1,33 +1,30 @@
-// création de post, édition, suppression, permissions, tags, images, catégories
-
 package services
 
 import (
-	"errors"
+	//"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
 type PostService struct {
 	Posts       *models.PostModel
-	Categories  *models.CategoryModel
-	Tags        *models.TagModel
-	Images      *ImageService
 }
 
-func NewPostService(
-	posts *models.PostModel,
-	categories *models.CategoryModel,
-	tags *models.TagModel,
-	images *ImageService,
-) *PostService {
-	return &PostService{
-		Posts:      posts,
-		Categories: categories,
-		Tags:       tags,
-		Images:     images,
-	}
+func NewPostService(posts *models.PostModel) *PostService {
+	return &PostService{Posts: posts}
 }
 
+func (service *PostService) GetPostsByTopic(topicID int) ([]models.Post, error) {
+    return service.Posts.GetPostByTopic(topicID)
+}
+
+func (service *PostService) CreatePost(topicID, userID int, content string) (int, error) {
+    if content == "" {
+        return 0, errors.New("Le contenu ne peut pas être vide.")
+    }
+    return service.Posts.Create(topicID, userID, content)
+}
+
+/*
 // admin check
 func isAdminCheck(user *models.User) bool {
 	return user != nil && user.Role == "admin"
@@ -177,3 +174,4 @@ func (s *PostService) GetPostsByCategory(categoryID int) ([]*models.PostModel, e
 func (s *PostService) GetPostsByTag(tagID int) ([]*models.PostModel, error) {
 	return s.Posts.GetByTag(tagID)
 }
+*//
