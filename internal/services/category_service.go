@@ -1,3 +1,4 @@
+package services
 // un admin peut créer, supprimer, renommer une catégorie, validation d'unicité, association post <-> catégorie
 
 package services

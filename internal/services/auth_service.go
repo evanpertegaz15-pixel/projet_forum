@@ -1,6 +1,7 @@
 package services
 
 import (
+	"time"
 	"errors"
 	"forum-dark-jurassic/internal/models"
 )
@@ -28,13 +29,19 @@ func (auth *AuthService) Register(email, username, password string) (int, error)
 	return auth.Users.CreateUser(email, username, password)
 }
 
-func (auth *AuthService) Login(email, password string) (string, error) {
-	user, err := auth.Users.FindByEmail(email)
+func (auth *AuthService) Login(identifier, password string) (string, error) {
+	user, err := auth.Users.FindByEmail(identifier)
 	if err != nil {
 		return "", err
 	}
 	if user == nil {
-		return "", errors.New("Identifiant incorrect.")
+		user, err = auth.Users.FindByUsername(identifier)
+		if err != nil {
+			return "", err
+		}
+	}
+	if user == nil {
+		return "", errors.New("Utilisateur non trouvé.")
 	}
 	if !user.CheckPassword(password) {
 		return "", errors.New("Mot de passe incorrect.")

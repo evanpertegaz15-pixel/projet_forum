@@ -522,3 +522,27 @@ nav {
     background-color: #ff4444;
     color: black;
 }
+
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+button img {
+    width: 24px;
+    height: 24px;
+}
+
+.top-right-icons {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.top-right-icons img {
+    width: 32px;
+    height: 32px;
+}
