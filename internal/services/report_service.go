@@ -26,7 +26,7 @@ func NewReportService(
 }
 
 // admin check
-func isAdmin(user *models.User) bool {
+func isAdminCheck(user *models.User) bool {
 	return user != nil && user.Role == "admin"
 }
 
@@ -82,16 +82,16 @@ func (s *ReportService) ReportComment(user *models.User, commentID int, reason s
 }
 
 // Lister tous les reports (admin)
-func (s *ReportService) GetAllReports(user *models.User) ([]*models.Report, error) {
-	if !isAdmin(user) {
+func (s *ReportService) GetAllReports(user *models.User) ([]*models.ReportModel, error) {
+	if !isAdminCheck(user) {
 		return nil, errors.New("permission refusée")
 	}
 	return s.Reports.GetAll()
 }
 
 // Reports en attente
-func (s *ReportService) GetPendingReports(user *models.User) ([]*models.Report, error) {
-	if !isAdmin(user) {
+func (s *ReportService) GetPendingReports(user *models.User) ([]*models.ReportModel, error) {
+	if !isAdminCheck(user) {
 		return nil, errors.New("permission refusée")
 	}
 	return s.Reports.GetByStatus("pending")
@@ -99,7 +99,7 @@ func (s *ReportService) GetPendingReports(user *models.User) ([]*models.Report, 
 
 // Marquer comme traité
 func (s *ReportService) ResolveReport(user *models.User, reportID int) error {
-	if !isAdmin(user) {
+	if !isAdminCheck(user) {
 		return errors.New("permission refusée")
 	}
 	return s.Reports.UpdateStatus(reportID, "resolved")
@@ -107,7 +107,7 @@ func (s *ReportService) ResolveReport(user *models.User, reportID int) error {
 
 // Rejeter un report
 func (s *ReportService) RejectReport(user *models.User, reportID int) error {
-	if !isAdmin(user) {
+	if !isAdminCheck(user) {
 		return errors.New("permission refusée")
 	}
 	return s.Reports.UpdateStatus(reportID, "rejected")
@@ -115,7 +115,7 @@ func (s *ReportService) RejectReport(user *models.User, reportID int) error {
 
 // Action modération : supprimer contenu signalé
 func (s *ReportService) DeleteReportedContent(user *models.User, reportID int) error {
-	if !isAdmin(user) {
+	if !isAdminCheck(user) {
 		return errors.New("permission refusée")
 	}
 

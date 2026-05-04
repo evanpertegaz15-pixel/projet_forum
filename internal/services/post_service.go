@@ -29,7 +29,7 @@ func NewPostService(
 }
 
 // admin check
-func isAdmin(user *models.User) bool {
+func isAdminCheck(user *models.User) bool {
 	return user != nil && user.Role == "admin"
 }
 
@@ -96,7 +96,7 @@ func (s *PostService) UpdatePost(
 	}
 
 	// permission
-	if post.UserID != user.ID && !isAdmin(user) {
+	if post.UserID != user.ID && !isAdminCheck(user) {
 		return errors.New("permission refusée")
 	}
 
@@ -142,7 +142,7 @@ func (s *PostService) DeletePost(user *models.User, postID int) error {
 	}
 
 	// permission
-	if post.UserID != user.ID && !isAdmin(user) {
+	if post.UserID != user.ID && !isAdminCheck(user) {
 		return errors.New("permission refusée")
 	}
 
@@ -159,21 +159,21 @@ func (s *PostService) DeletePost(user *models.User, postID int) error {
 }
 
 // Obtenir un post
-func (s *PostService) GetPostByID(postID int) (*models.Post, error) {
+func (s *PostService) GetPostByID(postID int) (*models.PostModel, error) {
 	return s.Posts.FindByID(postID)
 }
 
 // Lister posts
-func (s *PostService) GetAllPosts() ([]*models.Post, error) {
+func (s *PostService) GetAllPosts() ([]*models.PostModel, error) {
 	return s.Posts.GetAll()
 }
 
 // Par catégorie
-func (s *PostService) GetPostsByCategory(categoryID int) ([]*models.Post, error) {
+func (s *PostService) GetPostsByCategory(categoryID int) ([]*models.PostModel, error) {
 	return s.Posts.GetByCategory(categoryID)
 }
 
 // Par tag
-func (s *PostService) GetPostsByTag(tagID int) ([]*models.Post, error) {
+func (s *PostService) GetPostsByTag(tagID int) ([]*models.PostModel, error) {
 	return s.Posts.GetByTag(tagID)
 }

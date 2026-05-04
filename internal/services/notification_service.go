@@ -79,7 +79,7 @@ func (s *NotificationService) NotifyFollow(fromUserID, toUserID int) error {
 }
 
 // Lister les notifications d’un utilisateur
-func (s *NotificationService) GetUserNotifications(userID int) ([]*models.Notification, error) {
+func (s *NotificationService) GetUserNotifications(userID int) ([]*models.NotificationModel, error) {
 	return s.Notifications.GetByUser(userID)
 }
 

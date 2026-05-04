@@ -95,6 +95,6 @@ func (s *CommentService) DeleteComment(user *models.User, commentID int) error {
 }
 
 // Obtenir les commentaires d’un post
-func (s *CommentService) GetCommentsByPost(postID int) ([]*models.Comment, error) {
+func (s *CommentService) GetCommentsByPost(postID int) ([]*models.CommentModel, error) {
 	return s.Comments.GetByPostID(postID)
 }
