@@ -1,7 +1,6 @@
 package main
 
 import (
-    "database/sql"
     "log"
     "net/http"
     "forum-dark-jurassic/internal/config"
@@ -25,12 +24,25 @@ func main() {
     authService := services.NewAuthService(userModel, sessionModel)
     authHandler := handlers.NewAuthHandler(authService)
 
-    http.HandleFunc("/register", authHandler.Register)
-    http.HandleFunc("/login", authHandler.Login)
+    http.HandleFunc("/", handlers.Home)
+    http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+        if r.Method == http.MethodGet {
+            authHandler.ShowRegister(w, r)
+        } else if r.Method == http.MethodPost {
+            authHandler.Register(w, r)
+        }
+    })
+    http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+        if r.Method == http.MethodGet {
+            authHandler.ShowLogin(w, r)
+        } else if r.Method == http.MethodPost {
+            authHandler.Login(w, r)
+        }
+    })
     http.HandleFunc("/logout", authHandler.Logout)
     http.HandleFunc("/profile", authHandler.Profile)
 
-    http.Handle("/", http.FileServer(http.Dir("./internal/templates")))
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
     log.Println("Serveur lancé sur http://localhost:8080")
     http.ListenAndServe(":8080", nil)

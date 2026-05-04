@@ -1,7 +1,7 @@
 package handlers
 // users -> register, login, logout
 import (
-	"encoding/json"
+	"html/template"
 	"net/http"
 	"forum-dark-jurassic/internal/services"
 )
@@ -14,6 +14,11 @@ func NewAuthHandler(auth *services.AuthService) *AuthHandler {
 	return &AuthHandler{Auth: auth}
 }
 
+func Home(w http.ResponseWriter, r *http.Request) {
+    tmpl := template.Must(template.ParseFiles("./internal/templates/home.html"))
+    tmpl.Execute(w, nil)
+}
+
 func (handler *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
     if err := r.ParseForm(); err != nil {
         http.Error(w, "Formulaire incorrect.", http.StatusBadRequest)
@@ -22,7 +27,7 @@ func (handler *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
     email := r.FormValue("email")
     username := r.FormValue("username")
     password := r.FormValue("password")
-    id, err := handler.Auth.Register(email, username, password)
+    _, err := handler.Auth.Register(email, username, password)
     if err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
@@ -30,14 +35,19 @@ func (handler *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
+func (h *AuthHandler) ShowRegister(w http.ResponseWriter, r *http.Request) {
+    tmpl := template.Must(template.ParseFiles("./internal/templates/register.html"))
+    tmpl.Execute(w, nil)
+}
+
 func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
     if err := r.ParseForm(); err != nil {
         http.Error(w, "Formulaire incorrect.", http.StatusBadRequest)
         return
     }
-    email := r.FormValue("email")
+    identifier := r.FormValue("identifier")
     password := r.FormValue("password")
-    sessionID, err := handler.Auth.Login(email, password)
+    sessionID, err := handler.Auth.Login(identifier, password)
     if err != nil {
         http.Error(w, "Identifiants incorrects.", http.StatusUnauthorized)
         return
@@ -50,6 +60,11 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
         SameSite: http.SameSiteLaxMode,
     })
     http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (h *AuthHandler) ShowLogin(w http.ResponseWriter, r *http.Request) {
+    tmpl := template.Must(template.ParseFiles("./internal/templates/login.html"))
+    tmpl.Execute(w, nil)
 }
 
 func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {

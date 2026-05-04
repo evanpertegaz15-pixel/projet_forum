@@ -1,1 +1,2 @@
+package services
 // like post, commentaire, unlike, règles (pas 2 likes du même type)
