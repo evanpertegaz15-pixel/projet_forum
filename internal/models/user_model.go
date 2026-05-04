@@ -65,6 +65,27 @@ func (model *UserModel) FindByEmail(email string) (*User, error) {
 	return &user, nil
 }
 
+func (model *UserModel) FindByUsername(username string) (*User, error) {
+    row := model.DB.QueryRow(`
+        SELECT id, email, username, password_hash, created_at, updated_at
+        FROM users
+        WHERE username = ?
+    `, username)
+    var user User
+    var updatedAt sql.NullTime
+    err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password, &user.CreatedAt, &updatedAt)
+    if err != nil {
+        if errors.Is(err, sql.ErrNoRows) {
+            return nil, nil
+        }
+        return nil, err
+    }
+    if updatedAt.Valid {
+        user.UpdatedAt = &updatedAt.Time
+    }
+    return &user, nil
+}
+
 func (model *UserModel) FindByID(id int) (*User, error) {
     row := model.DB.QueryRow(`
         SELECT id, email, username, password_hash, created_at, updated_at

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Mon profil - Dark Jurassic</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
 
-<header class="banner">
-  <img src="static/banner.png" alt="Website Banner">
+<header>
+    <header class="banner">
+  <img src="/static/banner.png" alt="Website Banner">
 </header>
 
 <header>
@@ -30,33 +31,9 @@
         <h2>Profil</h2>
 
         <div class="profile-info">
-            <p><strong>Nom d'utilisateur :</strong> <span id="username"></span></p>
-            <p><strong>Email :</strong> <span id="email"></span></p>
-            <p><strong>Membre depuis :</strong> <span id="memberSince"></span></p>
-        </div>
-
-        <hr>
-
-        <!-- FOLLOWERS / FOLLOWING -->
-        <div class="follow-section">
-
-            <div class="followers">
-                <h3>Followers (3)</h3>
-                <ul>
-                    <li>@Alice</li>
-                    <li>@RaptorKing</li>
-                    <li>@DinoFan42</li>
-                </ul>
-            </div>
-
-            <div class="following">
-                <h3>Following (2)</h3>
-                <ul>
-                    <li>@TyrannoX</li>
-                    <li>@VelociPro</li>
-                </ul>
-            </div>
-
+            <p><strong>Nom d'utilisateur :</strong> {{ .Username }}</p>
+            <p><strong>Email :</strong> johndoe@email.com</p>
+            <p><strong>Membre depuis :</strong> 2026</p>
         </div>
 
         <hr>

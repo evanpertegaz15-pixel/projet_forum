@@ -30,7 +30,7 @@ func Seed(db *sql.DB) {
         INSERT OR IGNORE INTO settings (key, value) VALUES
             ('forum_name', 'Dark Jurassic'),
             ('forum_description', 'Le forum des théories les plus folles en rapport avec les dinosaures.'),
-            ('banner_url', '/internal/templates/static/banner.png'),
+            ('banner_url', '/static/banner.png'),
             ('admin_email', 'admin@dj.com'),
             ('maintenance_mode', 'false'),
             ('allow_registration', 'true'),
