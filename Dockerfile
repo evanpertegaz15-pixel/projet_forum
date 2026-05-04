@@ -1,19 +1,19 @@
-FROM golang:1.25.0-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
-WORKDIR /app
+WORKDIR /usr/src/app
+
 COPY go.mod go.sum ./
 RUN go mod download
-COPY . .
-RUN go build -o forum ./cmd/server/main.go
 
-# --- Run stage ---
+COPY . .
+
+RUN go build -o app ./cmd/server
+
 FROM alpine:latest
 
-WORKDIR /app
-COPY --from=builder /app/forum .
-COPY internal/templates/ ./internal/templates/
+WORKDIR /root/
 
-RUN mkdir -p /app/data
+COPY --from=builder /usr/src/app/app /usr/local/bin/app
+COPY --from=builder /usr/src/app/internal/templates ./internal/templates
 
-EXPOSE 8080
-CMD ["./forum"]
+CMD ["/usr/local/bin/app"]
