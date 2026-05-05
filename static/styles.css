@@ -459,3 +459,8 @@ header.banner img {
     height: auto;
     display: block;
 }
+
+.login-link, .register-link, .login-link a {
+    margin-top: 30px;
+    color: rgb(255, 255, 255);
+}
