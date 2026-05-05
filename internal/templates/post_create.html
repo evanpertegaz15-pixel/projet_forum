@@ -1,70 +1,57 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Accueil - Dark Jurassic</title>
-    <link rel="stylesheet" href="../../static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
+
+<header>
     <header class="banner">
         <img src="../../static/banner.png" alt="Website Banner">
     </header>
 
-    <nav>
-        <div class="nav-left">
-            <a href="/">Accueil</a>
-            <a href="/categories">Catégories</a>
-            <a href="/post_create">Créer un post</a>
-            <a href="/login">Connexion</a>
-        </div>
+<nav>
+    <a href="/home">Accueil</a> 
+    <a href="/category">Catégories</a> 
+    <a href="/post_create">Créer un post</a> 
+    <a href="/login">Connexion</a>
+    <a href="/register">S'inscrire</a>
+    <a href="/profile">Mon profil</a>
+</nav>
 
-        <form class="search-bar">
-            <input type="text" placeholder="Rechercher..." name="q">
-            <button type="submit">
-                <img src="../../static/search.png" alt="search">
-            </button>
-        </form>
+    <main>
+        <section class="form-card">
+            <h2>Nouveau post</h2>
 
-        <div class="top-right-icons">
-            <a href="/register" class="icon-btn">
-                <img src="../../static/profile.png" alt="Register">
-            </a>
-            <a href="/profile" class="icon-btn">
-                <img src="../../static/profile.png" alt="Profil">
-            </a>
-        </div>
-    </nav>
+            <form action="#" method="post">
+                <label>Titre :</label>
+                <input type="text" name="title" required>
 
-<main class="center">
-    <section class="form-container">
-        <h2>Nouveau post</h2>
+                <label>Catégorie :</label>
+                <select name="category" required>
+                    <option value="">-- Choisir --</option>
+                    <option value="general">Général</option>
+                    <option value="dino">Dinosaures</option>
+                    <option value="theories">Théories</option>
+                    <option value="news">News</option>
+                </select>
 
-        <form action="#" method="post">
+                <label>Contenu :</label>
+                <textarea name="content" rows="6" required></textarea>
 
-            <label>Titre :</label>
-            <input type="text" name="title" required>
+                <button type="submit">Publier</button>
+            </form>
+        </section>
+    </main>
 
-            <label>Catégorie :</label>
-            <select name="category" required>
-                <option value="">-- Choisir --</option>
-                <option value="general">Général</option>
-                <option value="dino">Dinosaures</option>
-                <option value="theories">Théories</option>
-                <option value="news">News</option>
-            </select>
-
-            <label>Contenu :</label>
-            <textarea name="content" rows="6" required></textarea>
-
-            <button type="submit">Publier</button>
-        </form>
-    </section>
-</main>
-
-<footer>
-    <p>© 2026 Dark Jurassic</p>
-</footer>
+    <footer>
+        <p>© 2026 Dark Jurassic</p>
+    </footer>
 
 </body>
+
 </html>
