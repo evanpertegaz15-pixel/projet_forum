@@ -42,7 +42,7 @@ func main() {
     postModel := models.NewPostModel(db)
     categoryService := services.NewCategoryService(categoryModel)
     topicService := services.NewTopicService(topicModel)
-    postService := services.NewPostService(postModel)
+    postService := services.NewPostService(postModel)*/
 
     http.HandleFunc("/", handlers.Home)
     http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +51,7 @@ func main() {
         } else if r.Method == http.MethodPost {
             authHandler.Register(w, r)
         }
-    })*/
+    })
     http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
         if r.Method == http.MethodGet {
             authHandler.ShowLogin(w, r)
@@ -59,10 +59,10 @@ func main() {
             authHandler.Login(w, r)
         }
     })
-    //http.HandleFunc("/logout", authHandler.Logout)*/
+    http.HandleFunc("/logout", authHandler.Logout)
     http.HandleFunc("/profile", authHandler.Profile)
 
-    //http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
     
     log.Println("Serveur lancé sur http://localhost:8080")
     http.ListenAndServe(":8080", nil)
