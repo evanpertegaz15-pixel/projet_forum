@@ -21,15 +21,20 @@ func main() {
     
     userModel := models.NewUserModel(db)
     sessionModel := models.NewSessionModel(db)
+
     authService := services.NewAuthService(userModel, sessionModel)
     authHandler := handlers.NewAuthHandler(authService)
+
+    postModel := models.NewPostModel(db)
+    postService := services.NewPostService(postModel)
+    postHandler := handlers.NewPostHandler(postService, authService)
     
     /*categoryModel := models.NewCategoryModel(db)
     topicModel := models.NewTopicModel(db)
-    postModel := models.NewPostModel(db)
+    
     categoryService := services.NewCategoryService(categoryModel)
     topicService := services.NewTopicService(topicModel)
-    postService := services.NewPostService(postModel)*/
+    */
 
     http.HandleFunc("/", handlers.Home)
     http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
@@ -48,6 +53,8 @@ func main() {
     })
     http.HandleFunc("/logout", authHandler.Logout)
     http.HandleFunc("/profile", authHandler.Profile)
+    http.HandleFunc("/post_create", postHandler.ShowCreatePostForm)
+    http.HandleFunc("/post_create_submit", postHandler.CreatePost)
 
     http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
     
