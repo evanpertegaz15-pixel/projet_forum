@@ -3,7 +3,7 @@ package handlers
 import (
     "html/template"
     "net/http"
-    "strconv"
+    //"strconv"
     "forum-dark-jurassic/internal/services"
 )
 
@@ -12,7 +12,7 @@ type CategoryHandler struct {
 }
 
 func NewCategoryHandler(categories *services.CategoryService) *CategoryHandler {
-    return &CategoryHandler{Categories: c}
+    return &CategoryHandler{Categories: categories}
 }
 
 func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +25,7 @@ func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Re
     tmpl.Execute(w, categories)
 }
 
-func (handler *CategoryHandler) ShowTopics(w http.ResponseWriter, r *http.Request) {
+/*func (handler *CategoryHandler) ShowTopics(w http.ResponseWriter, r *http.Request) {
     idStr := r.URL.Query().Get("id")
     categoryID, err := strconv.Atoi(idStr)
     if err != nil {
@@ -39,4 +39,4 @@ func (handler *CategoryHandler) ShowTopics(w http.ResponseWriter, r *http.Reques
     }
     tmpl := template.Must(template.ParseFiles("./internal/templates/topics.html"))
     tmpl.Execute(w, topics)
-}
+}*/

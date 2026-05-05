@@ -20,6 +20,7 @@ func RunMigrations(db *sql.DB) {
             email TEXT NOT NULL UNIQUE,
             username TEXT NOT NULL,
             password_hash TEXT NOT NULL,
+            profile_picture TEXT,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME
         );`,

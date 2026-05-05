@@ -3,7 +3,7 @@
 package services
 
 import (
-	"errors"
+	//"errors"
 	"sync"
 
 	"forum-dark-jurassic/internal/models"
@@ -23,6 +23,7 @@ func NewSettingService(settings *models.SettingModel) *SettingService {
 	}
 }
 
+/*
 // Charger tous les settings en mémoire
 func (s *SettingService) Load() error {
 	settings, err := s.Settings.GetAll()
@@ -118,3 +119,4 @@ func (s *SettingService) GetAll() map[string]string {
 	}
 	return copyMap
 }
+*/

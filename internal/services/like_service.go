@@ -3,7 +3,7 @@
 package services
 
 import (
-	"errors"
+	//"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
@@ -20,7 +20,7 @@ func NewLikeService(likes *models.LikeModel, posts *models.PostModel, comments *
 		Comments: comments,
 	}
 }
-
+/*
 // Like un post
 func (s *LikeService) LikePost(user *models.User, postID int) error {
 	if user == nil {
@@ -102,3 +102,4 @@ func (s *LikeService) CountPostLikes(postID int) (int, error) {
 func (s *LikeService) CountCommentLikes(commentID int) (int, error) {
 	return s.Likes.Count(0, commentID)
 }
+*/

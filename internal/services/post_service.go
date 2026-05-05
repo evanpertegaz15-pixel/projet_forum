@@ -1,7 +1,7 @@
 package services
 
 import (
-	//"errors"
+	"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
@@ -14,14 +14,14 @@ func NewPostService(posts *models.PostModel) *PostService {
 }
 
 func (service *PostService) GetPostsByTopic(topicID int) ([]models.Post, error) {
-    return service.Posts.GetPostByTopic(topicID)
+    return service.Posts.GetPostsByTopic(topicID)
 }
 
 func (service *PostService) CreatePost(topicID, userID int, content string) (int, error) {
     if content == "" {
         return 0, errors.New("Le contenu ne peut pas être vide.")
     }
-    return service.Posts.Create(topicID, userID, content)
+    return service.Posts.CreateTopic(topicID, userID, content)
 }
 
 /*
@@ -174,4 +174,4 @@ func (s *PostService) GetPostsByCategory(categoryID int) ([]*models.PostModel, e
 func (s *PostService) GetPostsByTag(tagID int) ([]*models.PostModel, error) {
 	return s.Posts.GetByTag(tagID)
 }
-*//
+*/

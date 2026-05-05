@@ -12,6 +12,7 @@ type User struct {
 	Username	string
 	Email	string
 	Password	string // hash
+	ProfilePicture	string
 	CreatedAt time.Time
 	UpdatedAt *time.Time // nullable
 }
@@ -88,13 +89,13 @@ func (model *UserModel) FindByUsername(username string) (*User, error) {
 
 func (model *UserModel) FindByID(id int) (*User, error) {
     row := model.DB.QueryRow(`
-        SELECT id, email, username, password_hash, created_at, updated_at
+        SELECT id, email, username, password_hash, profile_picture, created_at, updated_at
         FROM users
         WHERE id = ?
     `, id)
     var user User
     var updatedAt sql.NullTime
-    err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password, &user.CreatedAt, &updatedAt)
+    err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password, &user.ProfilePicture, &user.CreatedAt, &updatedAt)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             return nil, nil
