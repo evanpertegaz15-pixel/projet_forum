@@ -76,7 +76,12 @@ section {
     align-items: flex-start;
     width: 100%;
     border: 3px solid grey;
+    border-radius: 10px;
     align-self: stretch;
+}
+
+.right {
+    margin-top: 30px;
 }
 
 .left,
