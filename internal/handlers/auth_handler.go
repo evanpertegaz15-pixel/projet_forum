@@ -59,7 +59,7 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
         HttpOnly: true,
         SameSite: http.SameSiteLaxMode,
     })
-    http.Redirect(w, r, "/", http.StatusSeeOther)
+    http.Redirect(w, r, "/profile", http.StatusSeeOther)
 }
 
 func (h *AuthHandler) ShowLogin(w http.ResponseWriter, r *http.Request) {

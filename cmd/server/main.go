@@ -6,9 +6,9 @@ import (
     "net/http"
     "forum-dark-jurassic/internal/config"
     "forum-dark-jurassic/internal/database"
-    //"forum-dark-jurassic/internal/handlers"
+    "forum-dark-jurassic/internal/handlers"
     "forum-dark-jurassic/internal/models"
-    //"forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/services"
 )
 
 func main() {
@@ -22,7 +22,6 @@ func main() {
     
     userModel := models.NewUserModel(db)
 
-
     http.HandleFunc("/test-user", func(w http.ResponseWriter, r *http.Request) {
         user, err := userModel.FindByID(1) // on teste avec l'utilisateur ID=1
         if err != nil || user == nil {
@@ -34,11 +33,11 @@ func main() {
         tmpl.Execute(w, user)
     })
 
-    /*sessionModel := models.NewSessionModel(db)
+    sessionModel := models.NewSessionModel(db)
     authService := services.NewAuthService(userModel, sessionModel)
     authHandler := handlers.NewAuthHandler(authService)
     
-    categoryModel := models.NewCategoryModel(db)
+    /*categoryModel := models.NewCategoryModel(db)
     topicModel := models.NewTopicModel(db)
     postModel := models.NewPostModel(db)
     categoryService := services.NewCategoryService(categoryModel)
@@ -52,7 +51,7 @@ func main() {
         } else if r.Method == http.MethodPost {
             authHandler.Register(w, r)
         }
-    })
+    })*/
     http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
         if r.Method == http.MethodGet {
             authHandler.ShowLogin(w, r)
@@ -60,11 +59,11 @@ func main() {
             authHandler.Login(w, r)
         }
     })
-    http.HandleFunc("/logout", authHandler.Logout)
+    //http.HandleFunc("/logout", authHandler.Logout)*/
     http.HandleFunc("/profile", authHandler.Profile)
 
-    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
-*/
+    //http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
+    
     log.Println("Serveur lancé sur http://localhost:8080")
     http.ListenAndServe(":8080", nil)
 }
