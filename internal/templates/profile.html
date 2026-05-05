@@ -1,109 +1,68 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <title>Mon profil - Dark Jurassic</title>
+    <title>Profil - Dark Jurassic</title>
     <link rel="stylesheet" href="../../static/styles.css">
 </head>
+
 <body>
 
-<header>
     <header class="banner">
-  <img src="../../static/banner.png" alt="Website Banner">
-</header>
+        <img src="../../static/banner.png" alt="Website Banner">
+    </header>
 
-<header>
-    <h1>Mon profil utilisateur</h1>
-</header>
-
-<nav>
-    <a href="/home">Accueil</a> 
-    <a href="/category">Catégories</a> 
-    <a href="/post_create">Créer un post</a> 
-    <a href="/login">Connexion</a>
-    <a href="/register">S'inscrire</a>
-    <a href="/profile">Mon profil</a>
-</nav>
-
-<main class="center">
-    <section class="form-container profile-card">
-
-        <h2>Profil</h2>
-
-        <div class="profile-info">
-            <p><strong>Nom d'utilisateur :</strong> {{ .Username }}</p>
-            <p><strong>Email :</strong> {{ .Email }}</p>
-            <p><strong>Membre depuis :</strong> {{ .CreatedAt }}</p>
+    <nav>
+        <div class="nav-left">
+            <a href="/">Accueil</a>
+            <a href="/categories">Catégories</a>
+            <a href="/post_create">Créer un post</a>
+            <a href="/login">Connexion</a>
         </div>
 
-        <hr>
+        <form class="search-bar">
+            <input type="text" placeholder="Rechercher..." name="q">
+            <button type="submit">
+                <img src="../../static/search.png" alt="search">
+            </button>
+        </form>
 
-        <h3>Actions</h3>
+        <div class="top-right-icons">
+            <a href="/register" class="icon-btn">
+                <img src="../../static/register.png" alt="Register">
+            </a>
+            <a href="/profile" class="icon-btn">
+                <img src="../../static/profile.png" alt="Profil">
+            </a>
+        </div>
+    </nav>
 
-        <button>Modifier le profil</button>
-        <button class="danger">Supprimer le compte</button>
+    <main>
+        <section class="profile-card">
 
-    </section>  
-</main>
+            <h2>Profil</h2>
 
-<footer>
-    <p>© 2026 Dark Jurassic</p>
-</footer>
-<script>
-    const users = {
-        Alex: {
-            username: "Alex",
-            email: "alex@email.com",
-            memberSince: "2024",
-            followers: ["Emma", "Lucas", "Sarah"],
-            following: ["Noah", "Jade"]
-        },
-        Emma: {
-            username: "Emma",
-            email: "emma@email.com",
-            memberSince: "2023",
-            followers: ["Alex", "Lucas"],
-            following: ["Sarah"]
-        },
-        Lucas: {
-            username: "Lucas",
-            email: "lucas@email.com",
-            memberSince: "2025",
-            followers: ["Alex"],
-            following: ["Emma", "Noah"]
-        }
-    };
+            <div class="profile-info">
+                <p><strong>Nom d'utilisateur :</strong> {{ .Username }}</p>
+                <p><strong>Email :</strong> johndoe@email.com</p>
+                <p><strong>Membre depuis :</strong> 2026</p>
+            </div>
 
-    // récupérer ?user=Alex
-    const params = new URLSearchParams(window.location.search);
-    const user = params.get("user");
+            <hr>
 
-    // si user existe
-    if (users[user]) {
-        const data = users[user];
+            <h3>Actions</h3>
 
-    document.getElementById("username").textContent = data.username;
-    document.getElementById("email").textContent = data.email;
-    document.getElementById("memberSince").textContent = data.memberSince;
+            <button>Modifier le profil</button>
+            <button class="danger">Supprimer le compte</button>
 
-    // followers
-    document.querySelector(".followers ul").innerHTML =
-        data.followers.map(f => `<li>@${f}</li>`).join("");
+        </section>
+    </main>
 
-    // following
-    document.querySelector(".following ul").innerHTML =
-        data.following.map(f => `<li>@${f}</li>`).join("");
-    const currentUser = "JohnDoe";
+    <footer>
+        <p>© 2026 Dark Jurassic</p>
+    </footer>
 
-    const params = new URLSearchParams(window.location.search);
-    const user = params.get("user") || currentUser;
-
-    const isOwner = (user === currentUser);
-
-    if (!isOwner) {
-        document.getElementById("owner-actions").style.display = "none";
-    }
-    }
-</script>
 </body>
+
 </html>

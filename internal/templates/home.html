@@ -1,165 +1,82 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <title>Accueil - Dark Jurassic</title>
+    <title>Profil - Dark Jurassic</title>
     <link rel="stylesheet" href="../../static/styles.css">
 </head>
+
 <body>
 
-<header>
     <header class="banner">
-  <img src="../../static/banner.png" alt="Website Banner">
-</header>
+        <img src="../../static/banner.png" alt="Website Banner">
+    </header>
 
-<nav>
-    <div class="nav-left">
-        <a href="/">Accueil</a> 
-        <a href="/categories">Catégories</a> 
-        <a href="/post_create">Créer un post</a> 
-        <a href="/login">Connexion</a>
-    </div>
+    <nav>
+        <div class="nav-left">
+            <a href="/">Accueil</a>
+            <a href="/categories">Catégories</a>
+            <a href="/post_create">Créer un post</a>
+            <a href="/login">Connexion</a>
+        </div>
 
-    <form class="search-bar">
-    <input type="text" placeholder="Rechercher..." name="q">
-    <button type="submit">
-<<<<<<< HEAD
-        <img src="../../static/search.png" alt="search">
-=======
-        <img src="/static/search.png" alt="search">
->>>>>>> 0c382dec3e5eb3a8fc4e2873f99f5799f2fcc8cb
-    </button>
-</form>
+        <form class="search-bar">
+            <input type="text" placeholder="Rechercher..." name="q">
+            <button type="submit">
+                <img src="../../static/search.png" alt="search">
+            </button>
+        </form>
 
-<div class="top-right-icons">
-    <a href="/register" class="icon-btn">
-        <img src="../../static/profile.png" alt="Register">
-    </a>
-    <a href="/profile" class="icon-btn">
-        <img src="../../static/profile.png" alt="Profil">
-    </a>
-</div>
-
-</nav>
+        <div class="top-right-icons">
+            <a href="/register" class="icon-btn">
+                <img src="../../static/register.png" alt="Register">
+            </a>
+            <a href="/profile" class="icon-btn">
+                <img src="../../static/profile.png" alt="Profil">
+            </a>
+        </div>
+    </nav>
 
 <main>
-    <h1></h1>
     <div class="container">
         <section class="left">
-    <p><a href="profile.html?user=Alex">👤 Alex</a></p> 
-    <p><a href="profile.html?user=Emma">👤 Emma</a></p>
-    <p><a href="profile.html?user=Lucas">👤 Lucas</a></p>
-            <p>👤 Sarah</p>
-    <p>👤 Noah</p>
-    <p>👤 Jade</p>
-    <p>👤 Hugo</p>
-    <p>👤 Lina</p>
-    <p>👤 Paul</p>
-    <p>👤 Chloé</p>
-    <p>👤 Ethan</p>
-    <p>👤 Manon</p>
-    <p>👤 Louis</p>
-    <p>👤 Inès</p>
-    <p>👤 Tom</p>
-    <p>👤 Zoé</p>
-    <p>👤 Nathan</p>
-    <p>👤 Léa</p>
-    <p>👤 Adam</p>
-    <p>👤 Nina</p>
-    <p>👤 Maxime</p>
-        <p>👤 Eva</p>
-        <p>👤 Gabriel</p>
-        <p>👤 Clara</p>
-        <p>👤 Antoine</p>
-        <p>👤 Marie</p>
-        <p>👤 Jules</p>
-        <p>👤 Camille</p>
-        <p>👤 Victor</p>
-        <p>👤 Sofia</p>
+            <h2 class="section-title">Utilisateurs</h2>
         </section>
 
         <section class="center">
-        <h2 class="section-title">Derniers posts</h2>
-
-        <div class="post">
-            <img src="https://www.dino-zoo.com/templates/yootheme/cache/b1/crane-trex-b1b6103c.png" alt="T-Rex">
-
-            <div class="post-content">
-                <h3>Titre du post</h3>
-                <p> <strong>🦖 Le savais-tu ?</strong><br>
-                    <strong>Tyrannosaurus rex avait une morsure extrêmement puissante, capable de broyer les os.</strong><br>
-                    <strong>’était l’un des prédateurs les plus redoutables de son époque.</strong> 
-                </p>
-                
-                        <!-- 🔥 LIKE / DISLIKE -->
-        <div class="post-actions">
-            <button class="like" id="likeBtn">👍 <span id="likeCount">0</span></button>
-            <button class="dislike" id="dislikeBtn">👎 <span id="dislikeCount">0</span></button>
-        </div>
+            <div class="post">
+                <div class="post-content">
                     
-            </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="right">
+                <h2 class="section-title">Catégories populaires</h2>
+
+                <div class="category-list">
+                    <a href="/categories/general" class="category-item">
+                        <img src="../../static/general.png" alt="General">
+                        <h3>Général</h3>
+                    </a>
+                    <a href="/categories/tech" class="category-item">
+                        <img src="../../static/gear.png" alt="Tech">
+                        <h3>Technologie</h3>
+                    </a>
+                    <a href="/categories/games" class="category-item">
+                        <img src="../../static/controller.png" alt="Jeux vidéo">
+                        <h3>Jeux Vidéos</h3>
+                    </a>
+                </div>
+            </section>
+
         </div>
-    </section>
+    </main>
+    <footer>
+        <p>© 2026 Dark Jurassic</p>
+    </footer>
 
-    <section class="right">
-        <h2>Catégories</h2>
-        <ul>
-            <li>Général</li>
-            <li>Tech</li>
-            <li>Jeux vidéo</li>
-        </ul>
-    </section>
-    </div>
-</main>
+</body>
 
-<script>
-let likeCount = 0;
-let dislikeCount = 0;
-
-let userLikeState = "none"; // none | like | dislike
-
-const likeBtn = document.getElementById("likeBtn");
-const dislikeBtn = document.getElementById("dislikeBtn");
-
-const likeDisplay = document.getElementById("likeCount");
-const dislikeDisplay = document.getElementById("dislikeCount");
-
-likeBtn.addEventListener("click", () => {
-
-    if (userLikeState === "like") {
-        likeCount--;
-        userLikeState = "none";
-    } 
-    else {
-        if (userLikeState === "dislike") {
-            dislikeCount--;
-        }
-        likeCount++;
-        userLikeState = "like";
-    }
-
-    updateUI();
-});
-
-dislikeBtn.addEventListener("click", () => {
-
-    if (userLikeState === "dislike") {
-        dislikeCount--;
-        userLikeState = "none";
-    } 
-    else {
-        if (userLikeState === "like") {
-            likeCount--;
-        }
-        dislikeCount++;
-        userLikeState = "dislike";
-    }
-
-    updateUI();
-});
-
-function updateUI() {
-    likeDisplay.textContent = likeCount;
-    dislikeDisplay.textContent = dislikeCount;
-}
-</script>
+</html>
