@@ -1,7 +1,6 @@
 package main
 
 import (
-    "html/template"
     "log"
     "net/http"
     "forum-dark-jurassic/internal/config"
@@ -21,18 +20,6 @@ func main() {
     log.Println("Base de données remplie avec données par défaut.")
     
     userModel := models.NewUserModel(db)
-
-    http.HandleFunc("/test-user", func(w http.ResponseWriter, r *http.Request) {
-        user, err := userModel.FindByID(1) // on teste avec l'utilisateur ID=1
-        if err != nil || user == nil {
-            http.Error(w, "Impossible de récupérer l'utilisateur", http.StatusInternalServerError)
-            return
-        }
-
-        tmpl := template.Must(template.ParseFiles("./internal/templates/test_user.html"))
-        tmpl.Execute(w, user)
-    })
-
     sessionModel := models.NewSessionModel(db)
     authService := services.NewAuthService(userModel, sessionModel)
     authHandler := handlers.NewAuthHandler(authService)
