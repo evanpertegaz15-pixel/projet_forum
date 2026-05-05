@@ -3,7 +3,7 @@
 package services
 
 import (
-	"errors"
+	//"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
@@ -19,6 +19,7 @@ func NewCommentService(comments *models.CommentModel, posts *models.PostModel) *
 	}
 }
 
+/*
 // Vérification admin
 func isAdmin(user *models.User) bool {
 	return user != nil && user.Role == "admin"
@@ -98,3 +99,4 @@ func (s *CommentService) DeleteComment(user *models.User, commentID int) error {
 func (s *CommentService) GetCommentsByPost(postID int) ([]*models.CommentModel, error) {
 	return s.Comments.GetByPostID(postID)
 }
+*/

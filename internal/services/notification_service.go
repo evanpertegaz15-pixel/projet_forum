@@ -3,7 +3,7 @@
 package services
 
 import (
-	"errors"
+	//"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
@@ -28,6 +28,7 @@ func NewNotificationService(
 	}
 }
 
+/*
 // Types de notifications
 const (
 	TypeLike     = "like"
@@ -97,3 +98,4 @@ func (s *NotificationService) MarkAllAsRead(userID int) error {
 func (s *NotificationService) CountUnread(userID int) (int, error) {
 	return s.Notifications.CountUnread(userID)
 }
+*/

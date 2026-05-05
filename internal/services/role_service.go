@@ -3,7 +3,7 @@
 package services
 
 import (
-	"errors"
+	//"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
@@ -24,6 +24,7 @@ const (
 	RoleMod   = "moderator"
 )
 
+/*
 // Vérifier admin
 func (s *RoleService) IsAdmin(user *models.User) bool {
 	return user != nil && user.Role == RoleAdmin
@@ -97,3 +98,4 @@ func (s *RoleService) HasPermission(user *models.User, permission string) bool {
 		return false
 	}
 }
+*/

@@ -3,7 +3,7 @@
 package services
 
 import (
-	"errors"
+	//"errors"
 	"forum-dark-jurassic/internal/models"
 )
 
@@ -25,6 +25,7 @@ func NewReportService(
 	}
 }
 
+/*
 // admin check
 func isAdminCheck(user *models.User) bool {
 	return user != nil && user.Role == "admin"
@@ -139,3 +140,4 @@ func (s *ReportService) DeleteReportedContent(user *models.User, reportID int) e
 
 	return nil
 }
+*/

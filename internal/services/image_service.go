@@ -7,7 +7,7 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
-	"io"
+	//"io"
 	"mime/multipart"
 	"os"
 	"path/filepath"

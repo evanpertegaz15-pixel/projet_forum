@@ -12,10 +12,20 @@ func Seed(db *sql.DB) {
         log.Println("Erreur seed rôles :", err)
     }
 
-    hash, _ := utils.HashPassword("admin")
+    hashAdmin, _ := utils.HashPassword("admin")
+    hashCG, _ := utils.HashPassword("clevergirl")
+    hashES, _ := utils.HashPassword("estherstone")
+    hashBen, _ := utils.HashPassword("ptitebosse")
+    hashDarius, _ := utils.HashPassword("geekosaure")
     _, err = db.Exec(`
-        INSERT OR IGNORE INTO users (email, username, password_hash)
-        VALUES ('admin@dj.com', 'admin', ?)`, hash)
+        INSERT OR IGNORE INTO users (email, username, password_hash, profile_picture)
+        VALUES
+            ('admin@dj.com', 'admin', ?, 'https://s1.qwant.com/thumbr/474x296/0/a/083d74cc5088d961e04d775a5a5a17b7cecf28102ce857b5fb0a561a9a2309/OIP.1WcjWvHMH_HLhv_YmKVX8wHaEo.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%2Fid%2FOIP.1WcjWvHMH_HLhv_YmKVX8wHaEo%3Fpid%3DApi&q=0&b=1&p=0&a=0'),
+            ('clever.girl@dj.com', 'PT1TEFUTEE86', ?, 'https://static.wikia.nocookie.net/jurassicpark/images/4/4a/Ronnie_1.png/revision/latest?cb=20250707082905&path-prefix=fr'),
+            ('esther.stone@dj.com', 'Esth3rSt0nE', ?, 'https://static.wikia.nocookie.net/jurassicpark/images/3/38/Brooklyn%28jw%29.png/revision/latest?cb=20211024165607&path-prefix=fr'),
+            ('ben.pincus@dj.com', 'BoBen', ?, 'https://static.wikia.nocookie.net/jurassicpark/images/6/6c/Bumpy_and_Ben_render.webp/revision/latest?cb=20250419043934&path-prefix=fr'),
+            ('geek.osaure@dj.com', 'G3ek05aure', ?, 'https://static.wikia.nocookie.net/jurassicpark/images/8/85/DariusAdultChaosTheory.webp/revision/latest?cb=20240329090825&path-prefix=fr')
+            `, hashAdmin, hashCG, hashES, hashBen, hashDarius)
     if err != nil {
         log.Println("Erreur seed admin :", err)
     }

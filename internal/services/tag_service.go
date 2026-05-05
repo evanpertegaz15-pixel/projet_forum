@@ -1,9 +1,8 @@
 package services
 // créer, supprimer un tag, auto-complétion, validation d'unicité, association post <-> tag
 import (
-	"errors"
-	"strings"
-
+	//"errors"
+	//"strings"
 	"forum-dark-jurassic/internal/models"
 )
 
@@ -19,6 +18,7 @@ func NewTagService(tags *models.TagModel, postTags *models.PostTagModel) *TagSer
 	}
 }
 
+/*
 // Créer un tag avec validation d’unicité
 func (s *TagService) CreateTag(name string) (int, error) {
 	name = strings.TrimSpace(strings.ToLower(name))
@@ -130,4 +130,4 @@ func (s *TagService) AutocompleteTags(query string) ([]models.Tag, error) {
 	}
 
 	return result, nil
-}
+}*/
