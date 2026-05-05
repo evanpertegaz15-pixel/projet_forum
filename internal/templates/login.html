@@ -12,15 +12,31 @@
   <img src="/static/banner.png" alt="Website Banner">
 </header>
 
-<nav>
-    <a href="/home">Accueil</a> 
-    <a href="/category">Catégories</a> 
-    <a href="/post_create">Créer un post</a> 
-    <a href="/login">Connexion</a>
-    <a href="/register">S'inscrire</a>
-    <a href="/profile">Mon profil</a>
-</nav>
 
+    <nav>
+        <div class="nav-left">
+            <a href="/">Accueil</a>
+            <a href="/categories">Catégories</a>
+            <a href="/post_create">Créer un post</a>
+            <a href="/login">Connexion</a>
+        </div>
+
+        <form class="search-bar">
+            <input type="text" placeholder="Rechercher..." name="q">
+            <button type="submit">
+                <img src="../../static/search.png" alt="search">
+            </button>
+        </form>
+
+        <div class="top-right-icons">
+            <a href="/register" class="icon-btn">
+                <img src="../../static/profile.png" alt="Register">
+            </a>
+            <a href="/profile" class="icon-btn">
+                <img src="../../static/profile.png" alt="Profil">
+            </a>
+        </div>
+    </nav>
 <main>
     <section>
         <h2>Connexion</h2>
