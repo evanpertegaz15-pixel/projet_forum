@@ -73,17 +73,22 @@ section {
 .container {
     display: flex;
     gap: 0;
-    align-items: flex-start;
+    align-items: stretch;
     width: 100%;
     border: 3px solid grey;
+    border-radius: 10px;
     align-self: stretch;
+}
+
+.right {
+    margin-top: 30px;
 }
 
 .left,
 .right {
     width: 250px;
     flex-shrink: 0;
-    height: 80vh;
+    height: auto;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
