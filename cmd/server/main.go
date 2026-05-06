@@ -25,17 +25,19 @@ func main() {
     categoryModel := models.NewCategoryModel(db)
     topicModel := models.NewTopicModel(db)
     
+    userService := services.NewUserService(userModel)
     authService := services.NewAuthService(userModel, sessionModel)
     postService := services.NewPostService(postModel)
     categoryService := services.NewCategoryService(categoryModel)
     topicService := services.NewTopicService(topicModel)
     
+    homeHandler := handlers.NewHomeHandler(userService)
     authHandler := handlers.NewAuthHandler(authService)
     categoryHandler := handlers.NewCategoryHandler(categoryService)
     topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService)
     postHandler := handlers.NewPostHandler(postService, authService)
 
-    http.HandleFunc("/", handlers.Home)
+    http.HandleFunc("/", homeHandler.ShowHome)
     http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
         if r.Method == http.MethodGet {
             authHandler.ShowRegister(w, r)

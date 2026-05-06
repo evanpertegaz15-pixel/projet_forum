@@ -43,7 +43,13 @@
 <main>
     <div class="container">
         <section class="left">
-            <!-- <h2 class="section-title">Utilisateurs</h2> -->
+            <h2 class="section-title">Utilisateurs</h2>
+            <ul class="user-list">
+                {{ range .Users }}
+                    <li>
+                        <strong>{{ .Username }}</strong></li>
+                {{ end }}
+            </ul>
         </section>
 
         <section class="center">
