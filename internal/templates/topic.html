@@ -2,15 +2,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Accueil - Dark Jurassic</title>
-    <link rel="stylesheet" href="../../static/styles.css">
+    <title>Topic - Dark Jurassic</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
-
 <body>
-    <header class="banner">
-  <img src="../../static/banner.png" alt="Website Banner">
-</header>
 
+<header class="banner">
+    <img src="/static/banner.png" alt="Website Banner">
+</header>
 
     <nav>
         <div class="nav-left">
@@ -23,16 +22,31 @@
         <form class="search-bar">
             <input type="text" placeholder="Rechercher..." name="q">
             <button type="submit">
-                <img src="../../static/search.png" alt="search">
+                <img src="/static/search.png" alt="search">
             </button>
         </form>
 
         <div class="top-right-icons">
             <a href="/register" class="icon-btn">
-                <img src="../../static/profile.png" alt="Register">
+                <img src="/static/register.png" alt="Register">
             </a>
             <a href="/profile" class="icon-btn">
-                <img src="../../static/profile.png" alt="Profil">
+                <img src="/static/profile.png" alt="Profil">
             </a>
         </div>
     </nav>
+
+<main>
+    <section>
+        <h2>Posts</h2>
+        {{ range . }}
+            <div class="post">
+                <p>{{ .Content }}</p>
+                <small>Par {{ .Username }} le {{ .CreatedAt }}</small>
+            </div>
+        {{ end }}
+    </section>
+</main>
+
+</body>
+</html>

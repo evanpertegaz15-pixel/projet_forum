@@ -42,23 +42,9 @@
         <section class="form-card">
             <h2>Nouveau post</h2>
 
-            <form action="#" method="post">
-                <label>Titre :</label>
-                <input type="text" name="title" required>
-
-                <label>Catégorie :</label>
-                <select name="category" required>
-                    <option value="">-- Choisir --</option>
-                    <option value="general">Général</option>
-                    <option value="dino">Dinosaures</option>
-                    <option value="theories">Théories</option>
-                    <option value="news">News</option>
-                </select>
-
-                <label>Contenu :</label>
-                <textarea name="content" rows="6" required></textarea>
-
-                <button type="submit">Publier</button>
+            <form action="/post_create_submit" method="POST">
+                <textarea name="content"></textarea>
+                <input type="hidden" name="topic_id" value="{{ .TopicID }}">
             </form>
         </section>
     </main>

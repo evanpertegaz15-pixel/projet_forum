@@ -21,20 +21,19 @@ func main() {
     
     userModel := models.NewUserModel(db)
     sessionModel := models.NewSessionModel(db)
-
-    authService := services.NewAuthService(userModel, sessionModel)
-    authHandler := handlers.NewAuthHandler(authService)
-
     postModel := models.NewPostModel(db)
-    postService := services.NewPostService(postModel)
-    postHandler := handlers.NewPostHandler(postService, authService)
-    
-    /*categoryModel := models.NewCategoryModel(db)
+    categoryModel := models.NewCategoryModel(db)
     topicModel := models.NewTopicModel(db)
     
+    authService := services.NewAuthService(userModel, sessionModel)
+    postService := services.NewPostService(postModel)
     categoryService := services.NewCategoryService(categoryModel)
     topicService := services.NewTopicService(topicModel)
-    */
+    
+    authHandler := handlers.NewAuthHandler(authService)
+    categoryHandler := handlers.NewCategoryHandler(categoryService)
+    topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService)
+    postHandler := handlers.NewPostHandler(postService, authService)
 
     http.HandleFunc("/", handlers.Home)
     http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +51,11 @@ func main() {
         }
     })
     http.HandleFunc("/logout", authHandler.Logout)
-    http.HandleFunc("/profile", authHandler.Profile)
+    http.HandleFunc("/topic_create", topicHandler.CreateTopic)
+    http.HandleFunc("/topic_new", topicHandler.ShowNewTopic)
+    http.HandleFunc("/categories", categoryHandler.ShowCategories)
+    http.HandleFunc("/topics", topicHandler.ShowTopics)
+    http.HandleFunc("/topic", topicHandler.ShowTopic)
     http.HandleFunc("/post_create", postHandler.ShowCreatePostForm)
     http.HandleFunc("/post_create_submit", postHandler.CreatePost)
 

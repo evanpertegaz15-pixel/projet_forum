@@ -9,6 +9,7 @@ type Post struct {
     ID        int
     TopicID   int
     UserID    int
+    Username  string
     Content   string
     CreatedAt time.Time
 }
@@ -23,10 +24,11 @@ func NewPostModel(db *sql.DB) *PostModel {
 
 func (model *PostModel) GetPostsByTopic(topicID int) ([]Post, error) {
     rows, err := model.DB.Query(`
-        SELECT id, topic_id, user_id, content, created_at
-        FROM posts
-        WHERE topic_id = ?
-        ORDER BY created_at ASC
+        SELECT p.id, p.topic_id, p.user_id, u.username, p.content, p.created_at
+        FROM posts p
+        JOIN users u ON p.user_id = u.id
+        WHERE p.topic_id = ?
+        ORDER BY p.created_at ASC
     `, topicID)
     if err != nil {
         return nil, err
@@ -35,7 +37,7 @@ func (model *PostModel) GetPostsByTopic(topicID int) ([]Post, error) {
     var posts []Post
     for rows.Next() {
         var post Post
-        if err := rows.Scan(&post.ID, &post.TopicID, &post.UserID, &post.Content, &post.CreatedAt); err != nil {
+        if err := rows.Scan(&post.ID, &post.TopicID, &post.UserID, &post.Username, &post.Content, &post.CreatedAt); err != nil {
             return nil, err
         }
         posts = append(posts, post)
