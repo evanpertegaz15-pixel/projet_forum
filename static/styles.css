@@ -135,7 +135,19 @@ section {
 .category-item img {
     width: 200px;
     object-fit: contain;
+    transition:
+    width 2s,
+    height 2s,
+    background-color 2s,
+    rotate 2s;    
 }
+
+.category-item h3:hover {
+    color: #999999;
+    transition-duration: 0.2s;
+}
+
+
 
 .section-title {
     padding-bottom: 35px;
@@ -169,6 +181,7 @@ nav a {
 
 nav a:hover {
     color: #00ff88;
+    transition-duration: 0.3s;
 }
 
 .nav-left a {
@@ -254,6 +267,8 @@ form:not(.search-bar) button:hover {
     color: black;
     cursor: pointer;
     flex-shrink: 0;
+    transition-duration: 0.1s;
+
 }
 
 .search-bar button img {
