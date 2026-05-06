@@ -8,6 +8,7 @@ import (
     "forum-dark-jurassic/internal/handlers"
     "forum-dark-jurassic/internal/models"
     "forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/utils"
 )
 
 func main() {
@@ -19,6 +20,13 @@ func main() {
     database.Seed(db)
     log.Println("Base de données remplie avec données par défaut.")
     
+    err := utils.MinifyCSSFile("static/styles.css", "static/styles.min.css")
+    if err != nil {
+        log.Println("Erreur minification CSS:", err)
+    } else {
+        log.Println("CSS minifié avec succès.")
+    }
+
     userModel := models.NewUserModel(db)
     sessionModel := models.NewSessionModel(db)
     postModel := models.NewPostModel(db)
