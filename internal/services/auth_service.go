@@ -4,6 +4,7 @@ import (
 	"time"
 	"errors"
 	"forum-dark-jurassic/internal/models"
+	"forum-dark-jurassic/internal/utils"
 )
 
 type AuthService struct {
@@ -26,7 +27,8 @@ func (auth *AuthService) Register(email, username, password string) (int, error)
 	if existing != nil {
 		return 0, errors.New("Cet email est déjà utilisé.")
 	}
-	return auth.Users.CreateUser(email, username, password)
+	hashed, err := utils.HashPassword(password)
+	return auth.Users.CreateUser(email, username, hashed)
 }
 
 func (auth *AuthService) Login(identifier, password string) (string, error) {
@@ -43,7 +45,10 @@ func (auth *AuthService) Login(identifier, password string) (string, error) {
 	if user == nil {
 		return "", errors.New("Utilisateur non trouvé.")
 	}
-	if !user.CheckPassword(password) {
+	
+	// DEBUG: Vérify password hash
+	isPasswordValid := user.CheckPassword(password)
+	if !isPasswordValid {
 		return "", errors.New("Mot de passe incorrect.")
 	}
 	return auth.Sessions.CreateSession(user.ID)

@@ -1,6 +1,7 @@
 package handlers
-// users -> register, login, logout
+
 import (
+    "log"
 	"html/template"
 	"net/http"
 	"forum-dark-jurassic/internal/services"
@@ -58,6 +59,7 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
         Path:     "/",
         HttpOnly: true,
         SameSite: http.SameSiteLaxMode,
+        MaxAge:   7 * 24 * 60 * 60, // 7 days
     })
     http.Redirect(w, r, "/profile", http.StatusSeeOther)
 }
@@ -78,7 +80,7 @@ func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
         Path:     "/",
         MaxAge:   -1,
         HttpOnly: true,
-        SameSite: http.SameSiteLaxMode,
+        SameSite: http.SameSiteDefaultMode,
     })
     http.Redirect(w, r, "/", http.StatusSeeOther)
 }
@@ -90,10 +92,14 @@ func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
         return
     }
     user, err := handler.Auth.GetUserFromSession(cookie.Value)
+    if err != nil {
+        log.Printf("Error getting user from session: %v\n", err)
+    }
     if err != nil || user == nil {
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
+    log.Printf("COOKIE:", cookie.Value)
     tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
     tmpl.Execute(w, user)
 }

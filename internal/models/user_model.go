@@ -12,7 +12,7 @@ type User struct {
 	Username	string
 	Email	string
 	Password	string
-	ProfilePicture	string
+	ProfilePicture	sql.NullString
 	CreatedAt time.Time
 	UpdatedAt *time.Time
 }
@@ -26,14 +26,10 @@ func NewUserModel(db *sql.DB) *UserModel {
 }
 
 func (model *UserModel) CreateUser(email, username, password string) (int, error) {
-	hashed, err := utils.HashPassword(password)
-	if err != nil {
-		return 0, err
-	}
 	result, err := model.DB.Exec(`
 		INSERT INTO users (email, username, password_hash)
 		VALUES (?, ?, ?)
-	`, email, username, hashed)
+	`, email, username, password)
 	if err != nil {
 		return 0, err
 	}
