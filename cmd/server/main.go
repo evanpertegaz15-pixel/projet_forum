@@ -51,6 +51,7 @@ func main() {
         }
     })
     http.HandleFunc("/logout", authHandler.Logout)
+    http.HandleFunc("/profile", authHandler.Profile)
     http.HandleFunc("/topic_create", topicHandler.CreateTopic)
     http.HandleFunc("/topic_new", topicHandler.ShowNewTopic)
     http.HandleFunc("/categories", categoryHandler.ShowCategories)
