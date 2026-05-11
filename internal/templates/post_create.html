@@ -42,10 +42,10 @@
     <main>
         <section class="form-card">
             <h2>Nouveau post</h2>
-
             <form action="/post_create_submit" method="POST">
                 <textarea name="content"></textarea>
                 <input type="hidden" name="topic_id" value="{{ .TopicID }}">
+                <button type="submit">Publier</button>
             </form>
         </section>
     </main>

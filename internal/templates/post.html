@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Post - Dark Jurassic</title>
+    <link rel="icon" href="../../static/dark_jurassic_icon_nobg.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/styles.min.css">
+</head>
+
+<body>
+   <header class="top-right-icons">
+        <a href="/register" class="icon-btn">
+            <img src="../../static/register.png" alt="Register">
+        </a>
+        <a href="/profile" class="icon-btn">
+            <img src="../../static/profile.png" alt="Profil">
+        </a>
+    </header>
+
+    <header class="banner">
+        <img src="../../static/banner.png" alt="Website Banner">
+    </header>
+
+    <nav>
+        <div class="nav-left">
+            <a href="/">Accueil</a>
+            <a href="/categories">Catégories</a>
+            <a href="/post/create?topic_id={{ .Post.TopicID }}">Créer un post</a>
+            <a href="/login">Connexion</a>
+        </div>
+        
+        <form class="search-bar">
+            <input type="text" placeholder="Rechercher..." name="q">
+            <button type="submit">
+                <img src="../../static/search.png" alt="search">
+            </button>
+        </form>
+    </nav>
+
+    <main>
+    <section class="post-card">
+        <h2>{{ .Post.Username }} a écrit :</h2>
+        <p>{{ .Post.Content }}</p>
+        <p class="date">{{ .Post.CreatedAt }}</p>
+    </section>
+    <hr>
+    <section class="replies">
+        <h3>Réponses :</h3>
+        {{ range .Replies }}
+        <div class="reply-card">
+            <p><strong>{{ .Username }}</strong> :</p>
+            <p>{{ .Content }}</p>
+            <p class="date">{{ .CreatedAt }}</p>
+        </div>
+        {{ else }}
+        <p>Aucune réponse pour l’instant.</p>
+        {{ end }}
+    </section>
+    <hr>
+    <section class="reply-form">
+        <h3>Répondre :</h3>
+        <form method="POST" action="/reply">
+            <input type="hidden" name="topic_id" value="{{ .Post.TopicID }}">
+            <input type="hidden" name="parent_id" value="{{ .Post.ID }}">
+            <textarea name="content" rows="4"></textarea>
+            <button type="submit">Envoyer</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 Dark Jurassic</p>
+</footer>
+
+</body>
+</html>
