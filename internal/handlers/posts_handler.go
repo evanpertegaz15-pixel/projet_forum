@@ -5,6 +5,7 @@ import (
     "net/http"
     "strconv"
     "forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/models"
 )
 
 type PostHandler struct {

@@ -59,7 +59,7 @@ func (model *PostModel) CreatePost(topicID, userID int, content string) (int, er
 }
 
 func (model *PostModel) CreateReply(topicID, userID, parentID int, content string) (int, error) {
-    result, err := m.DB.Exec(`INSERT INTO posts (topic_id, user_id, content, parent_id) VALUES (?, ?, ?, ?)`, topicID, userID, content, parentID)
+    result, err := model.DB.Exec(`INSERT INTO posts (topic_id, user_id, content, parent_id) VALUES (?, ?, ?, ?)`, topicID, userID, content, parentID)
     if err != nil {
         return 0, err
     }
@@ -70,8 +70,8 @@ func (model *PostModel) CreateReply(topicID, userID, parentID int, content strin
     return int(id), nil
 }
 
-func (model *PostModel) GetReplies(postID int) ([]models.Post, error) {
-    rows, err := m.DB.Query(`
+func (model *PostModel) GetReplies(postID int) ([]Post, error) {
+    rows, err := model.DB.Query(`
         SELECT p.id, p.topic_id, p.user_id, u.username, p.content, p.parent_id, p.created_at
         FROM posts p
         JOIN users u ON p.user_id = u.id
@@ -82,9 +82,9 @@ func (model *PostModel) GetReplies(postID int) ([]models.Post, error) {
         return nil, err
     }
     defer rows.Close()
-    var replies []models.Post
+    var replies []Post
     for rows.Next() {
-        var p models.Post
+        var p Post
         err := rows.Scan(&p.ID, &p.TopicID, &p.UserID, &p.Username, &p.Content, &p.ParentID, &p.CreatedAt)
         if err != nil {
             return nil, err
@@ -92,4 +92,19 @@ func (model *PostModel) GetReplies(postID int) ([]models.Post, error) {
         replies = append(replies, p)
     }
     return replies, nil
+}
+
+func (model *PostModel) GetPostByID(postID int) (Post, error) {
+    row := model.DB.QueryRow(`
+        SELECT p.id, p.topic_id, p.user_id, u.username, p.content, p.parent_id, p.created_at
+        FROM posts p
+        JOIN users u ON p.user_id = u.id
+        WHERE p.id = ?
+    `, postID)
+    var p Post
+    err := row.Scan(&p.ID, &p.TopicID, &p.UserID, &p.Username, &p.Content, &p.ParentID, &p.CreatedAt)
+    if err != nil {
+        return Post{}, err
+    }
+    return p, nil
 }
