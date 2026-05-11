@@ -79,10 +79,12 @@ func RunMigrations(db *sql.DB) {
             topic_id INTEGER NOT NULL,
             user_id INTEGER NOT NULL,
             content TEXT NOT NULL,
+            parent_id INTEGER, -- NULL = post principal, sinon = réponse
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME,
             FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE,
-            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (parent_id) REFERENCES posts(id)
         );`,
 
         // TAGS
@@ -229,7 +231,7 @@ func RunMigrations(db *sql.DB) {
             editor_id INTEGER NOT NULL,
             old_content TEXT NOT NULL,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(comment_id) REFERENCES comment(id) ON DELETE CASCADE,
+            FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE,
             FOREIGN KEY(editor_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
 

@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Profil - Dark Jurassic</title>
-    <link rel="stylesheet" href="../../static/styles.css">
+    <title>Accueil - Dark Jurassic</title>
+    <link rel="icon" href="../../static/dark_jurassic_icon_nobg.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/styles.min.css">
 </head>
 
 <body>
@@ -26,7 +27,7 @@
         <div class="nav-left">
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="/topic_new">Créer un topic</a>
+            <a href="/topic/new">Créer un topic</a>
             <a href="/login">Connexion</a>
         </div>
         
@@ -42,7 +43,13 @@
 <main>
     <div class="container">
         <section class="left">
-            <!-- <h2 class="section-title">Utilisateurs</h2> -->
+            <h2 class="section-title">Utilisateurs</h2>
+            <ul class="user-list">
+                {{ range .Users }}
+                    <li>
+                        <strong>{{ .Username }}</strong></li>
+                {{ end }}
+            </ul>
         </section>
 
         <section class="center">

@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Profil - Dark Jurassic</title>
-    <link rel="stylesheet" href="../../static/styles.css">
+    <title>Login - Dark Jurassic</title>
+    <link rel="icon" href="../../static/dark_jurassic_icon_nobg.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/styles.min.css">
 </head>
 
 <body>
@@ -26,7 +27,7 @@
         <div class="nav-left">
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="/topic_new">Créer un topic</a>
+            <a href="/topic/new">Créer un topic</a>
             <a href="/login">Connexion</a>
         </div>
         
@@ -52,7 +53,12 @@
             <button type="submit">Se connecter</button>
             <p class="register-link">Pas encore de compte ? &nbsp;<a href="/register">Inscris-toi ici</a></p>
 
+            <a href="/auth/google/login" class="btn-google">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" width="20" height="20">
+                    Se connecter avec Google
+            </a>
         </form>
+        
     </section>
 </main>
 

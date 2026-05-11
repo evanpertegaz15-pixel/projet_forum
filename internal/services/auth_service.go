@@ -1,20 +1,21 @@
 package services
 
 import (
-	"time"
 	"errors"
 	"forum-dark-jurassic/internal/models"
+	"forum-dark-jurassic/internal/utils"
+	"time"
 )
 
 type AuthService struct {
-	Users	*models.UserModel
-	Sessions	*models.SessionModel
+	Users    *models.UserModel
+	Sessions *models.SessionModel
 }
 
 func NewAuthService(users *models.UserModel, sessions *models.SessionModel) *AuthService {
 	return &AuthService{
-		Users:	users,
-		Sessions:	sessions,
+		Users:    users,
+		Sessions: sessions,
 	}
 }
 
@@ -26,7 +27,11 @@ func (auth *AuthService) Register(email, username, password string) (int, error)
 	if existing != nil {
 		return 0, errors.New("Cet email est déjà utilisé.")
 	}
-	return auth.Users.CreateUser(email, username, password)
+	hashed, err := utils.HashPassword(password)
+	if err != nil {
+		return 0, err
+	}
+	return auth.Users.CreateUser(email, username, hashed)
 }
 
 func (auth *AuthService) Login(identifier, password string) (string, error) {
@@ -43,7 +48,9 @@ func (auth *AuthService) Login(identifier, password string) (string, error) {
 	if user == nil {
 		return "", errors.New("Utilisateur non trouvé.")
 	}
-	if !user.CheckPassword(password) {
+
+	isPasswordValid := user.CheckPassword(password)
+	if !isPasswordValid {
 		return "", errors.New("Mot de passe incorrect.")
 	}
 	return auth.Sessions.CreateSession(user.ID)
@@ -66,4 +73,28 @@ func (auth *AuthService) GetUserFromSession(sessionID string) (*models.User, err
 		return nil, nil
 	}
 	return auth.Users.FindByID(session.UserID)
+}
+
+// ─── Google OAuth ─────────────────────────────────────────────────────────────
+
+// FindOrCreateGoogleUser looks up a user by email.
+// If found, returns their ID. If not, creates a new one with an empty password.
+func (auth *AuthService) FindOrCreateGoogleUser(email, name string) (int64, error) {
+	user, err := auth.Users.FindByEmail(email)
+	if err != nil {
+		return 0, err
+	}
+	if user != nil {
+		return int64(user.ID), nil
+	}
+	id, err := auth.Users.CreateUser(email, name, "")
+	if err != nil {
+		return 0, err
+	}
+	return int64(id), nil
+}
+
+// CreateSession exposes session creation so GoogleCallback can call it directly.
+func (auth *AuthService) CreateSession(userID int64) (string, error) {
+	return auth.Sessions.CreateSession(int(userID))
 }
