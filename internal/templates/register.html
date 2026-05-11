@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <title>Accueil - Dark Jurassic</title>
-    <link rel="stylesheet" href="/static/styles.css">
-
+    <title>Profil - Dark Jurassic</title>
+    <link rel="stylesheet" href="../../static/styles.css">
 </head>
-<body>
 
-<header>
+<body>
+   <header class="top-right-icons">
+        <a href="/register" class="icon-btn">
+            <img src="../../static/register.png" alt="Register">
+        </a>
+        
+        <a href="/profile" class="icon-btn">
+            <img src="../../static/profile.png" alt="Profil">
+        </a>
+    </header>
+
     <header class="banner">
-  <img src="/static/banner.png" alt="Website Banner">
-</header>
+        <img src="../../static/banner.png" alt="Website Banner">
+    </header>
 
 <header>
     <h1>Dark Jurassic</h1>
@@ -21,14 +30,20 @@
 <nav>
     <a href="/home">Accueil</a> 
     <a href="/category">Catégories</a> 
-    <a href="/post_create">Créer un post</a> 
+    <a href="/topic_new">Créer un topic</a> 
     <a href="/login">Connexion</a>
     <a href="/register">S'inscrire</a>
     <a href="/profile">Mon profil</a>
+    <form class="search-bar">
+        <input type="text" placeholder="Rechercher..." name="q">
+        <button type="submit">
+            <img src="../../static/search.png" alt="search">
+        </button>
+    </form>
 </nav>
 
 <main>
-    <section>
+    <section class="form-card">
         <h2>Créer un compte</h2>
 
         <form action="/register" method="POST">
@@ -45,16 +60,14 @@
             <input type="password" name="confirm_password" required><br><br>
 
             <button type="submit">S'inscrire</button>
-        </form>
-    </section>
+            <p class="login-link">Déjà inscris ? &nbsp;<a href="/register">Connecte-toi ici</a></p>
 
-    <section>
-        <p>Déjà un compte ? <a href="/login">Connecte-toi ici</a></p>
+        </form>
     </section>
 </main>
 
 <footer>
-    <p>© 2026 Dark Jurassic</p>
+    <p>© 2026 - Dark Jurassic</p>
 </footer>
 
 </body>

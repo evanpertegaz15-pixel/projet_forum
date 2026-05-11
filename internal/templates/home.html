@@ -8,6 +8,15 @@
 </head>
 
 <body>
+   <header class="top-right-icons">
+        <a href="/register" class="icon-btn">
+            <img src="../../static/register.png" alt="Register">
+        </a>
+        
+        <a href="/profile" class="icon-btn">
+            <img src="../../static/profile.png" alt="Profil">
+        </a>
+    </header>
 
     <header class="banner">
         <img src="../../static/banner.png" alt="Website Banner">
@@ -17,56 +26,46 @@
         <div class="nav-left">
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="/post_create">Créer un post</a>
+            <a href="/topic_new">Créer un topic</a>
             <a href="/login">Connexion</a>
         </div>
-
+        
         <form class="search-bar">
             <input type="text" placeholder="Rechercher..." name="q">
             <button type="submit">
                 <img src="../../static/search.png" alt="search">
             </button>
         </form>
-
-        <div class="top-right-icons">
-            <a href="/register" class="icon-btn">
-                <img src="../../static/register.png" alt="Register">
-            </a>
-            <a href="/profile" class="icon-btn">
-                <img src="../../static/profile.png" alt="Profil">
-            </a>
-        </div>
     </nav>
+
 
 <main>
     <div class="container">
         <section class="left">
-            <h2 class="section-title">Utilisateurs</h2>
+            <!-- <h2 class="section-title">Utilisateurs</h2> -->
         </section>
 
         <section class="center">
             <div class="post">
                 <div class="post-content">
-                    
                     </div>
                 </div>
             </section>
 
             <section class="right">
-                <h2 class="section-title">Catégories populaires</h2>
-
+                <!-- <h2 class="section-title"></h2> RETIRER MARGIN TOP SI REMIS-->
                 <div class="category-list">
-                    <a href="/categories/general" class="category-item">
-                        <img src="../../static/general.png" alt="General">
-                        <h3>Général</h3>
+                    <a href="/categories/dinosaurs" class="category-item">
+                        <img src="../../static/dino.png" alt="Dinosaures">
+                        <h3>Dinosaures</h3>
                     </a>
-                    <a href="/categories/tech" class="category-item">
-                        <img src="../../static/gear.png" alt="Tech">
-                        <h3>Technologie</h3>
+                    <a href="/categories/news" class="category-item">
+                        <img src="../../static/news.png" alt="News">
+                        <h3>News</h3>
                     </a>
-                    <a href="/categories/games" class="category-item">
-                        <img src="../../static/controller.png" alt="Jeux vidéo">
-                        <h3>Jeux Vidéos</h3>
+                    <a href="/categories/theories" class="category-item">
+                        <img src="../../static/theories.png" alt="Theories">
+                        <h3>Théories</h3>
                     </a>
                 </div>
             </section>

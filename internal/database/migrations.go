@@ -78,7 +78,6 @@ func RunMigrations(db *sql.DB) {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             topic_id INTEGER NOT NULL,
             user_id INTEGER NOT NULL,
-            title TEXT NOT NULL,
             content TEXT NOT NULL,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME,

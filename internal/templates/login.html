@@ -1,44 +1,45 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <title>Accueil - Dark Jurassic</title>
+    <title>Profil - Dark Jurassic</title>
     <link rel="stylesheet" href="../../static/styles.css">
 </head>
+
 <body>
+   <header class="top-right-icons">
+        <a href="/register" class="icon-btn">
+            <img src="../../static/register.png" alt="Register">
+        </a>
+        
+        <a href="/profile" class="icon-btn">
+            <img src="../../static/profile.png" alt="Profil">
+        </a>
+    </header>
 
-<header>
     <header class="banner">
-  <img src="../../static/banner.png" alt="Website Banner">
-</header>
-
+        <img src="../../static/banner.png" alt="Website Banner">
+    </header>
 
     <nav>
         <div class="nav-left">
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="/post_create">Créer un post</a>
+            <a href="/topic_new">Créer un topic</a>
             <a href="/login">Connexion</a>
         </div>
-
+        
         <form class="search-bar">
             <input type="text" placeholder="Rechercher..." name="q">
             <button type="submit">
                 <img src="../../static/search.png" alt="search">
             </button>
         </form>
-
-        <div class="top-right-icons">
-            <a href="/register" class="icon-btn">
-                <img src="../../static/profile.png" alt="Register">
-            </a>
-            <a href="/profile" class="icon-btn">
-                <img src="../../static/profile.png" alt="Profil">
-            </a>
-        </div>
     </nav>
+    
 <main>
-    <section>
+    <section class="form-card">
         <h2>Connexion</h2>
 
         <form action="/login" method="POST">
@@ -49,17 +50,17 @@
             <input type="password" name="password" required><br><br>
 
             <button type="submit">Se connecter</button>
-        </form>
-    </section>
+            <p class="register-link">Pas encore de compte ? &nbsp;<a href="/register">Inscris-toi ici</a></p>
 
-    <section>
-        <p>Pas encore de compte ? <a href="/register">Inscris-toi ici</a></p>
+        </form>
     </section>
 </main>
 
-<footer>
-    <p>© 2026 Dark Jurassic</p>
-</footer>
+    <footer>
+        <p>© 2026 Dark Jurassic</p>
+    </footer>
+
 
 </body>
+
 </html>

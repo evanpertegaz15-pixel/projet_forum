@@ -73,17 +73,22 @@ section {
 .container {
     display: flex;
     gap: 0;
-    align-items: flex-start;
+    align-items: stretch;
     width: 100%;
     border: 3px solid grey;
+    border-radius: 10px;
     align-self: stretch;
+}
+
+.right {
+    margin-top: 30px;
 }
 
 .left,
 .right {
     width: 250px;
     flex-shrink: 0;
-    height: 80vh;
+    height: auto;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -129,9 +134,20 @@ section {
 
 .category-item img {
     width: 200px;
-    height: 200px;
     object-fit: contain;
+    transition:
+    width 2s,
+    height 2s,
+    background-color 2s,
+    rotate 2s;    
 }
+
+.category-item h3:hover {
+    color: #999999;
+    transition-duration: 0.2s;
+}
+
+
 
 .section-title {
     padding-bottom: 35px;
@@ -165,6 +181,7 @@ nav a {
 
 nav a:hover {
     color: #00ff88;
+    transition-duration: 0.3s;
 }
 
 .nav-left a {
@@ -229,7 +246,7 @@ form:not(.search-bar) button:hover {
 }
 
 .search-bar input {
-    width: 180px !important;
+    width: 180px;
     height: 34px;
     padding: 0 10px;
     margin: 0;
@@ -250,6 +267,8 @@ form:not(.search-bar) button:hover {
     color: black;
     cursor: pointer;
     flex-shrink: 0;
+    transition-duration: 0.1s;
+
 }
 
 .search-bar button img {
@@ -458,4 +477,87 @@ header.banner img {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.login-link, .register-link, .login-link a {
+    margin-top: 30px;
+    color: rgb(255, 255, 255);
+}
+
+/* =============================================================================
+   CATEGORIES — FIX AFFICHAGE
+   ============================================================================= */
+
+main section ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+main section ul li {
+    margin: 0;
+    padding: 0;
+}
+
+/* lien = card */
+main section ul li a {
+    display: block;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    padding: 14px 16px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+
+    transition: 0.2s ease;
+}
+
+/* hover */
+main section ul li a:hover {
+    border-color: #00ff88;
+    transform: translateX(6px);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+}
+
+
+/* =============================================================================
+   CATEGORY PAGE — HEADER BLOCK
+   ============================================================================= */
+
+.category-header {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.category-header h2 {
+    margin: 0;
+    color: #00ff88;
+}
+
+/* topic list card */
+.topic-card {
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    transition: 0.2s;
+}
+
+.topic-card:hover {
+    border-color: #00ff88;
+    transform: translateX(5px);
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un topic - Dark Jurassic</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<header class="banner">
+    <img src="/static/banner.png" alt="Website Banner">
+</header>
+
+    <nav>
+        <div class="nav-left">
+            <a href="/">Accueil</a>
+            <a href="/categories">Catégories</a>
+            <a href="/topic_new">Créer un topic</a>
+            <a href="/login">Connexion</a>
+        </div>
+
+        <form class="search-bar">
+            <input type="text" placeholder="Rechercher..." name="q">
+            <button type="submit">
+                <img src="/static/search.png" alt="search">
+            </button>
+        </form>
+
+        <div class="top-right-icons">
+            <a href="/register" class="icon-btn">
+                <img src="/static/register.png" alt="Register">
+            </a>
+            <a href="/profile" class="icon-btn">
+                <img src="/static/profile.png" alt="Profil">
+            </a>
+        </div>
+    </nav>
+
+<main>
+    <section>
+        <h2>Créer un nouveau topic</h2>
+
+        <form action="/topic_create" method="POST">
+            <label>Titre :</label><br>
+            <input type="text" name="title" required><br><br>
+            <label>Catégorie :</label><br>
+            <select name="category_id" required>
+                <option value="">-- Choisir --</option>
+                {{ range .Categories }}
+                    <option value="{{ .ID }}">{{ .Name }}</option>
+                {{ end }}
+            </select><br><br>
+            <label>Contenu :</label><br>
+            <textarea name="content" rows="6" required></textarea><br><br>
+            <button type="submit">Créer le topic</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>
