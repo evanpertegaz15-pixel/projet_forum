@@ -1,0 +1,14 @@
+                <img src="https://www.dino-zoo.com/templates/yootheme/cache/b1/crane-trex-b1b6103c.png" alt="T-Rex">
+
+
+<h3>Titre du post</h3>
+                        <p>
+                            <strong>🦖 Le savais-tu ?</strong><br>
+                            <strong>Tyrannosaurus rex avait une morsure extrêmement puissante, capable de broyer les os.</strong><br>
+                            <strong>'était l'un des prédateurs les plus redoutables de son époque.</strong>
+                        </p>
+
+                        <div class="post-actions">
+                            <button class="like" id="likeBtn">👍 <span id="likeCount">0</span></button>
+                            <button class="dislike" id="dislikeBtn">👎 <span id="dislikeCount">0</span></button>
+                        </div>
