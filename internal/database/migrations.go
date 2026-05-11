@@ -231,7 +231,7 @@ func RunMigrations(db *sql.DB) {
             editor_id INTEGER NOT NULL,
             old_content TEXT NOT NULL,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(comment_id) REFERENCES comment(id) ON DELETE CASCADE,
+            FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE,
             FOREIGN KEY(editor_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
 

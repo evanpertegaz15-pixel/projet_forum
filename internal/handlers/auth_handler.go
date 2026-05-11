@@ -99,7 +99,6 @@ func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
-    log.Printf("COOKIE:", cookie.Value)
     tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
     tmpl.Execute(w, user)
 }
@@ -114,16 +113,25 @@ func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
-    user, err := h.Auth.GetUserFromSession(cookie.Value)
-    if err != nil || user == nil {
+    user, err := handler.Auth.GetUserFromSession(cookie.Value)
+    if err != nil {
+        log.Printf("DeleteAccount: failed to get user from session: %v\n", err)
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
+        return
+    }
+    if user == nil {
+        log.Printf("DeleteAccount: no user found for session %s\n", cookie.Value)
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
     err = handler.Auth.Users.DeleteUser(user.ID)
     if err != nil {
+        log.Printf("DeleteAccount: DeleteUser error user_id=%d: %v\n", user.ID, err)
         http.Error(w, "Impossible de supprimer le compte.", http.StatusInternalServerError)
         return
     }
-    h.Auth.Sessions.DeleteSession(cookie.Value)
+    if err := handler.Auth.Sessions.DeleteSession(cookie.Value); err != nil {
+        log.Printf("DeleteAccount: DeleteSession error session=%s user_id=%d: %v\n", cookie.Value, user.ID, err)
+    }
     http.Redirect(w, r, "/", http.StatusSeeOther)
 }

@@ -65,8 +65,16 @@ func (handler *PostHandler) ShowCreatePostForm(w http.ResponseWriter, r *http.Re
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
+    topicID, _ := strconv.Atoi(r.URL.Query().Get("topic_id"))
+    data := struct {
+        User    *models.User
+        TopicID int
+    }{
+        User:   user,
+        TopicID:    topicID,
+    }
     tmpl := template.Must(template.ParseFiles("./internal/templates/post_create.html"))
-    tmpl.Execute(w, user)
+    tmpl.Execute(w, data)
 }
 
 func (handler *PostHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
