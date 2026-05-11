@@ -129,3 +129,8 @@ func (model *UserModel) GetAllUsers() ([]User, error) {
 }
 
 func (user *User) GetRole() {}
+
+func (model *UserModel) DeleteUser(id int) error {
+    _, err := model.DB.Exec("DELETE FROM users WHERE id = ?", id)
+    return err
+}

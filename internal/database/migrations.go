@@ -79,10 +79,12 @@ func RunMigrations(db *sql.DB) {
             topic_id INTEGER NOT NULL,
             user_id INTEGER NOT NULL,
             content TEXT NOT NULL,
+            parent_id INTEGER, -- NULL = post principal, sinon = réponse
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME,
             FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE,
-            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (parent_id) REFERENCES posts(id)
         );`,
 
         // TAGS
