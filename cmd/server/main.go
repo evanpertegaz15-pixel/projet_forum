@@ -9,7 +9,6 @@ import (
 	"forum-dark-jurassic/internal/services"
 	"forum-dark-jurassic/internal/utils"
 	"log"
-
 	"net/http"
 )
 
@@ -47,6 +46,7 @@ func main() {
 	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService)
 	postHandler := handlers.NewPostHandler(postService, authService)
 
+	// ─── Routes ───────────────────────────────────────────────────────────────
 	http.HandleFunc("/", homeHandler.ShowHome)
 	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
@@ -72,6 +72,11 @@ func main() {
 	http.HandleFunc("/post_create", postHandler.ShowCreatePostForm)
 	http.HandleFunc("/post_create_submit", postHandler.CreatePost)
 
+	// ─── Google OAuth Routes ──────────────────────────────────────────────────
+	http.HandleFunc("/auth/google/login", authHandler.GoogleLogin)
+	http.HandleFunc("/auth/google/callback", authHandler.GoogleCallback)
+
+	// ─── Static Files ─────────────────────────────────────────────────────────
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 
 	go middleware.CleanupVisitors()

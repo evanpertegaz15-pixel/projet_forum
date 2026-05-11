@@ -7,11 +7,13 @@ require (
 	github.com/tdewolff/minify/v2 v2.24.13
 	golang.org/x/crypto v0.50.0
 	golang.org/x/image v0.39.0
+	golang.org/x/oauth2 v0.36.0
 	golang.org/x/time v0.15.0
 	modernc.org/sqlite v1.50.0
 )
 
 require (
+	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
