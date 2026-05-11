@@ -21,7 +21,18 @@ func (service *PostService) CreatePost(topicID, userID int, content string) (int
     if content == "" {
         return 0, errors.New("Le contenu ne peut pas être vide.")
     }
-    return service.Posts.CreateTopic(topicID, userID, content)
+    return service.Posts.CreatePost(topicID, userID, content)
+}
+
+func (service *PostService) CreateReply(topicID, userID, parentID int, content string) (int, error) {
+    if content == "" {
+        return 0, errors.New("Le contenu ne peut pas être vide.")
+    }
+    return service.Posts.CreateReply(topicID, userID, parentID, content)
+}
+
+func (service *PostService) GetReplies(postID int) ([]models.Post, error) {
+    return service.Posts.GetReplies(postID)
 }
 
 /*
