@@ -113,7 +113,6 @@ func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
-<<<<<<< HEAD
 	cookie, err := r.Cookie("session_id")
 	if err != nil {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
@@ -219,7 +218,6 @@ func (handler *AuthHandler) GoogleCallback(w http.ResponseWriter, r *http.Reques
 
 	http.Redirect(w, r, "/profile", http.StatusSeeOther)
 }
-=======
     cookie, err := r.Cookie("session_id")
     if err != nil {
         http.Redirect(w, r, "/login", http.StatusSeeOther)
@@ -261,4 +259,3 @@ func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request
     h.Auth.Sessions.DeleteSession(cookie.Value)
     http.Redirect(w, r, "/", http.StatusSeeOther)
 }
->>>>>>> 08324e19a6e550fb8121eeab1019a23f800f1bd1
