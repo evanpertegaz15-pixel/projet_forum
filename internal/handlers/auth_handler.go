@@ -103,3 +103,27 @@ func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
     tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
     tmpl.Execute(w, user)
 }
+
+func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
+        return
+    }
+    cookie, err := r.Cookie("session_id")
+    if err != nil {
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
+        return
+    }
+    user, err := h.Auth.GetUserFromSession(cookie.Value)
+    if err != nil || user == nil {
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
+        return
+    }
+    err = handler.Auth.Users.DeleteUser(user.ID)
+    if err != nil {
+        http.Error(w, "Impossible de supprimer le compte.", http.StatusInternalServerError)
+        return
+    }
+    h.Auth.Sessions.DeleteSession(cookie.Value)
+    http.Redirect(w, r, "/", http.StatusSeeOther)
+}

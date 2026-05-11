@@ -55,7 +55,9 @@
             <h3>Actions</h3>
 
             <button>Modifier le profil</button>
-            <button class="danger">Supprimer le compte</button>
+            <form action="/delete/account" method="POST">
+                <button type="submit" class="danger">Supprimer le compte</button>
+            </form>
 
         </section>
     </main>

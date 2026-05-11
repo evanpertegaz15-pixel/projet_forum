@@ -64,6 +64,7 @@ func main() {
 	})
 	http.HandleFunc("/logout", authHandler.Logout)
 	http.HandleFunc("/profile", authHandler.Profile)
+    http.HandleFunc("/delete/account", authHandler.DeleteAccount)
 	http.HandleFunc("/topic/create", topicHandler.CreateTopic)
 	http.HandleFunc("/topic/new", topicHandler.ShowNewTopic)
 	http.HandleFunc("/categories", categoryHandler.ShowCategories)
