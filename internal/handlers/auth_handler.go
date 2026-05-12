@@ -126,7 +126,6 @@ func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-	log.Printf("COOKIE:", cookie.Value)
 	tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
 	tmpl.Execute(w, user)
 }
@@ -217,22 +216,6 @@ func (handler *AuthHandler) GoogleCallback(w http.ResponseWriter, r *http.Reques
 	})
 
 	http.Redirect(w, r, "/profile", http.StatusSeeOther)
-}
-    cookie, err := r.Cookie("session_id")
-    if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    user, err := handler.Auth.GetUserFromSession(cookie.Value)
-    if err != nil {
-        log.Printf("Error getting user from session: %v\n", err)
-    }
-    if err != nil || user == nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
-    tmpl.Execute(w, user)
 }
 
 func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request) {
