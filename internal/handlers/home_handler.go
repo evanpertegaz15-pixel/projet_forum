@@ -1,9 +1,9 @@
 package handlers
 
 import (
-    "html/template"
     "net/http"
     "forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/utils"
 )
 
 type HomeHandler struct {
@@ -20,8 +20,7 @@ func (handler *HomeHandler) ShowHome(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Erreur interne.", http.StatusInternalServerError)
         return
     }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/home.html"))
-    tmpl.Execute(w, map[string]any{
+    utils.Render(w, "./internal/templates/home.html", map[string]any{
         "Users": users,
     })
 }

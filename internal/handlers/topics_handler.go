@@ -1,12 +1,12 @@
 package handlers
 
 import (
-    "html/template"
     "log"
     "net/http"
     "strconv"
     "forum-dark-jurassic/internal/models"
     "forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/utils"
 )
 
 type TopicHandler struct {
@@ -37,8 +37,7 @@ func (handler *TopicHandler) ShowTopics(w http.ResponseWriter, r *http.Request) 
         http.Error(w, "Erreur interne.", http.StatusInternalServerError)
         return
     }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/topics.html"))
-    tmpl.Execute(w, topics)
+    utils.Render(w,"./internal/templates/topics.html", topics)
 }
 
 func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
@@ -65,8 +64,7 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
         Topic: topic,
         Posts: posts,
     }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/topic.html"))
-    tmpl.Execute(w, data)
+    utils.Render(w,"./internal/templates/topic.html", data)
 }
 
 func (handler *TopicHandler) ShowNewTopic(w http.ResponseWriter, r *http.Request) {
@@ -78,15 +76,10 @@ func (handler *TopicHandler) ShowNewTopic(w http.ResponseWriter, r *http.Request
         http.Error(w, "Impossible de charger les catégories.", http.StatusInternalServerError)
         return
     }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/new_topic.html"))
-    if err := tmpl.Execute(w, map[string]any{
-        "User": user,
-        "Categories":   categories,
-    }); err != nil {
-        log.Printf("ShowNewTopic: template execute error: %v", err)
-        http.Error(w, "Impossible de charger les catégories.", http.StatusInternalServerError)
-        return
-    }
+    utils.Render(w, "./internal/templates/new_topic.html", map[string]any{
+        "User":       user,
+        "Categories": categories,
+    })
 }
 
 func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request) {

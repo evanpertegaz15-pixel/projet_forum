@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"forum-dark-jurassic/internal/services"
-	"html/template"
+	"forum-dark-jurassic/internal/utils"
 	"io"
 	"net/http"
 	"os"
@@ -41,8 +41,7 @@ func NewAuthHandler(auth *services.AuthService) *AuthHandler {
 // ─── Original Handlers ────────────────────────────────────────────────────────
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./internal/templates/home.html"))
-	tmpl.Execute(w, nil)
+	utils.Render(w, "./internal/templates/home.html", nil)
 }
 
 func (handler *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
@@ -62,8 +61,7 @@ func (handler *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AuthHandler) ShowRegister(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./internal/templates/register.html"))
-	tmpl.Execute(w, nil)
+	utils.Render(w, "./internal/templates/register.html", nil)
 }
 
 func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
@@ -90,8 +88,7 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AuthHandler) ShowLogin(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./internal/templates/login.html"))
-	tmpl.Execute(w, nil)
+	utils.Render(w, "./internal/templates/login.html", nil)
 }
 
 func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
@@ -113,8 +110,7 @@ func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
 	user, ok := RequireAuth(w, r, handler.Auth)
 	if !ok { return }
-	tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
-	tmpl.Execute(w, user)
+	utils.Render(w, "./internal/templates/profile.html", user)
 }
 
 // ─── Google OAuth Handlers ────────────────────────────────────────────────────

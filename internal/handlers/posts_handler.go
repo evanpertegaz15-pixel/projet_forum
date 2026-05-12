@@ -1,11 +1,11 @@
 package handlers
 
 import (
-    "html/template"
     "net/http"
     "strconv"
-    "forum-dark-jurassic/internal/services"
     "forum-dark-jurassic/internal/models"
+    "forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/utils"
 )
 
 type PostHandler struct {
@@ -57,8 +57,7 @@ func (handler *PostHandler) ShowCreatePostForm(w http.ResponseWriter, r *http.Re
         User:   user,
         TopicID:    topicID,
     }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/post_create.html"))
-    tmpl.Execute(w, data)
+    utils.Render(w, "./internal/templates/post_create.html", data)
 }
 
 func (handler *PostHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
@@ -88,8 +87,7 @@ func (handler *PostHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
         Post:    post,
         Replies: replies,
     }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/post.html"))
-    tmpl.Execute(w, data)
+    utils.Render(w, "./internal/templates/post.html", data)
 }
 
 func (handler *PostHandler) CreateReply(w http.ResponseWriter, r *http.Request) {

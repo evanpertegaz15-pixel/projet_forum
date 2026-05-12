@@ -1,10 +1,10 @@
 package handlers
 
 import (
-    "html/template"
     "net/http"
     //"strconv"
     "forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/utils"
 )
 
 type CategoryHandler struct {
@@ -21,8 +21,7 @@ func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Re
         http.Error(w, "Erreur interne.", http.StatusInternalServerError)
         return
     }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/categories.html"))
-    tmpl.Execute(w, categories)
+    utils.Render(w, "./internal/templates/categories.html", categories)
 }
 
 /*func (handler *CategoryHandler) ShowTopics(w http.ResponseWriter, r *http.Request) {
