@@ -1,5 +1,3 @@
-// assigner, retirer un rôle, vérifier les permissions
-
 package services
 
 import (
@@ -17,7 +15,6 @@ func NewRoleService(users *models.UserModel) *RoleService {
 	}
 }
 
-// rôles possibles
 const (
 	RoleUser  = "user"
 	RoleAdmin = "admin"

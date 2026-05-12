@@ -22,12 +22,6 @@ func (service *CategoryService) GetCategory(id int) (*models.Category, error) {
 }
 
 /*
-// Vérification admin (simple)
-func isAdminSimple(user *models.User) bool {
-	return user != nil && user.Role == "admin"
-}
-
-// Créer une catégorie
 func (s *CategoryService) CreateCategory(user *models.User, name string) (int, error) {
 	if !isAdmin(user) {
 		return 0, errors.New("permission refusée")
@@ -44,7 +38,6 @@ func (s *CategoryService) CreateCategory(user *models.User, name string) (int, e
 	return s.Categories.Create(name)
 }
 
-// Renommer une catégorie
 func (s *CategoryService) RenameCategory(user *models.User, categoryID int, newName string) error {
 	if !isAdmin(user) {
 		return errors.New("permission refusée")
@@ -61,7 +54,6 @@ func (s *CategoryService) RenameCategory(user *models.User, categoryID int, newN
 	return s.Categories.UpdateName(categoryID, newName)
 }
 
-// Supprimer une catégorie
 func (s *CategoryService) DeleteCategory(user *models.User, categoryID int) error {
 	if !isAdmin(user) {
 		return errors.New("permission refusée")
@@ -75,18 +67,3 @@ func (s *CategoryService) DeleteCategory(user *models.User, categoryID int) erro
 
 	return s.Categories.Delete(categoryID)
 }
-
-// Associer un post à une catégorie
-func (s *CategoryService) AddPostToCategory(postID, categoryID int) error {
-	return s.Posts.AddCategory(postID, categoryID)
-}
-
-// Retirer un post d’une catégorie
-func (s *CategoryService) RemovePostFromCategory(postID, categoryID int) error {
-	return s.Posts.RemoveCategory(postID, categoryID)
-}
-
-// Obtenir les posts d’une catégorie
-func (s *CategoryService) GetPostsByCategory(categoryID int) ([]*models.PostModel, error) {
-	return s.Posts.GetByCategory(categoryID)
-}*/

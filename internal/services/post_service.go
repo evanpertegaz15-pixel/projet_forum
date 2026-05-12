@@ -36,54 +36,6 @@ func (service *PostService) GetReplies(postID int) ([]models.Post, error) {
 }
 
 /*
-// admin check
-func isAdminCheck(user *models.User) bool {
-	return user != nil && user.Role == "admin"
-}
-
-// Créer un post
-func (s *PostService) CreatePost(
-	user *models.User,
-	title string,
-	content string,
-	categoryIDs []int,
-	tagNames []string,
-	imageFilename *string,
-) (int, error) {
-
-	if user == nil {
-		return 0, errors.New("utilisateur non connecté")
-	}
-
-	if title == "" || content == "" {
-		return 0, errors.New("titre ou contenu vide")
-	}
-
-	// créer post
-	postID, err := s.Posts.Create(user.ID, title, content)
-	if err != nil {
-		return 0, err
-	}
-
-	// catégories
-	for _, catID := range categoryIDs {
-		_ = s.Posts.AddCategory(postID, catID)
-	}
-
-	// tags
-	for _, tag := range tagNames {
-		tagID, _ := s.Tags.GetOrCreate(tag)
-		_ = s.Posts.AddTag(postID, tagID)
-	}
-
-	// image
-	if imageFilename != nil {
-		_ = s.Posts.SetImage(postID, *imageFilename)
-	}
-
-	return postID, nil
-}
-
 // Modifier un post
 func (s *PostService) UpdatePost(
 	user *models.User,

@@ -57,49 +57,8 @@ func (s *LikeService) UnlikePost(user *models.User, postID int) error {
 	return s.Likes.Delete(user.ID, postID, 0)
 }
 
-// Like un commentaire
-func (s *LikeService) LikeComment(user *models.User, commentID int) error {
-	if user == nil {
-		return errors.New("utilisateur non connecté")
-	}
-
-	// vérifier commentaire existe
-	comment, err := s.Comments.FindByID(commentID)
-	if err != nil {
-		return err
-	}
-	if comment == nil {
-		return errors.New("commentaire introuvable")
-	}
-
-	// vérifier déjà liké
-	exists, err := s.Likes.Exists(user.ID, 0, commentID)
-	if err != nil {
-		return err
-	}
-	if exists {
-		return errors.New("déjà liké")
-	}
-
-	return s.Likes.Create(user.ID, 0, commentID)
-}
-
-// Unlike un commentaire
-func (s *LikeService) UnlikeComment(user *models.User, commentID int) error {
-	if user == nil {
-		return errors.New("utilisateur non connecté")
-	}
-
-	return s.Likes.Delete(user.ID, 0, commentID)
-}
-
 // Compter likes d’un post
 func (s *LikeService) CountPostLikes(postID int) (int, error) {
 	return s.Likes.Count(postID, 0)
-}
-
-// Compter likes d’un commentaire
-func (s *LikeService) CountCommentLikes(commentID int) (int, error) {
-	return s.Likes.Count(0, commentID)
 }
 */

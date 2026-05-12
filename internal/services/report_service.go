@@ -26,11 +26,6 @@ func NewReportService(
 }
 
 /*
-// admin check
-func isAdminCheck(user *models.User) bool {
-	return user != nil && user.Role == "admin"
-}
-
 // Signaler un post
 func (s *ReportService) ReportPost(user *models.User, postID int, reason string) error {
 	if user == nil {
@@ -55,31 +50,6 @@ func (s *ReportService) ReportPost(user *models.User, postID int, reason string)
 	}
 
 	return s.Reports.Create(user.ID, postID, 0, reason)
-}
-
-// Signaler un commentaire
-func (s *ReportService) ReportComment(user *models.User, commentID int, reason string) error {
-	if user == nil {
-		return errors.New("utilisateur non connecté")
-	}
-
-	comment, err := s.Comments.FindByID(commentID)
-	if err != nil {
-		return err
-	}
-	if comment == nil {
-		return errors.New("commentaire introuvable")
-	}
-
-	exists, err := s.Reports.Exists(user.ID, 0, commentID)
-	if err != nil {
-		return err
-	}
-	if exists {
-		return errors.New("déjà signalé")
-	}
-
-	return s.Reports.Create(user.ID, 0, commentID, reason)
 }
 
 // Lister tous les reports (admin)

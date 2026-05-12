@@ -59,11 +59,6 @@ func (s *NotificationService) NotifyLike(fromUserID, toUserID, postID int) error
 	return s.createNotification(toUserID, fromUserID, TypeLike, &postID, nil)
 }
 
-// Notification commentaire
-func (s *NotificationService) NotifyComment(fromUserID, toUserID, postID int) error {
-	return s.createNotification(toUserID, fromUserID, TypeComment, &postID, nil)
-}
-
 // Notification réponse
 func (s *NotificationService) NotifyReply(fromUserID, toUserID, commentID int) error {
 	return s.createNotification(toUserID, fromUserID, TypeReply, nil, &commentID)
