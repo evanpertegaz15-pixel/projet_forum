@@ -19,6 +19,20 @@ func NewAuthService(users *models.UserModel, sessions *models.SessionModel) *Aut
 	}
 }
 
+func (service *AuthService) CheckPassword(user *models.User, password string) bool {
+    return utils.CheckPasswordHash(user.Password, password)
+}
+
+func (service *AuthService) CreateSession(userID int) (string, error) {
+	id := utils.NewUUID()
+	expires := time.Now().Add(7 * 24 * time.Hour) // = 7 jours
+	err := service.Sessions.InsertSession(id, userID, expires)
+	if err != nil {
+		return "", err
+	}
+	return id, nil
+}
+
 func (auth *AuthService) Register(email, username, password string) (int, error) {
 	existing, err := auth.Users.FindByEmail(email)
 	if err != nil {
@@ -48,12 +62,11 @@ func (auth *AuthService) Login(identifier, password string) (string, error) {
 	if user == nil {
 		return "", errors.New("Utilisateur non trouvé.")
 	}
-
-	isPasswordValid := user.CheckPassword(password)
+	isPasswordValid := auth.CheckPassword(user, password)
 	if !isPasswordValid {
 		return "", errors.New("Mot de passe incorrect.")
 	}
-	return auth.Sessions.CreateSession(user.ID)
+	return auth.CreateSession(user.ID)
 }
 
 func (auth *AuthService) Logout(sessionID string) error {
@@ -95,6 +108,6 @@ func (auth *AuthService) FindOrCreateGoogleUser(email, name string) (int64, erro
 }
 
 // CreateSession exposes session creation so GoogleCallback can call it directly.
-func (auth *AuthService) CreateSession(userID int64) (string, error) {
-	return auth.Sessions.CreateSession(int(userID))
+func (auth *AuthService) CreateSessionFromGoogle(userID int64) (string, error) {
+	return auth.CreateSession(int(userID))
 }

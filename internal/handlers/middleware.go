@@ -1,12 +1,28 @@
 package handlers
-// RequireAuth, RequireRole, LoadUserFromSession
-import (
-	"context"
-	"net/http"
 
-	"forum-dark-jurassic/internal/services"
+import (
+    "net/http"
+	"forum-dark-jurassic/internal/models"
+    "forum-dark-jurassic/internal/services"
 )
 
+func RequireAuth(w http.ResponseWriter, r *http.Request, auth *services.AuthService) (*models.User, bool) {
+    cookie, err := r.Cookie("session_id")
+    if err != nil {
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
+        return nil, false
+    }
+
+    user, err := auth.GetUserFromSession(cookie.Value)
+    if err != nil || user == nil {
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
+        return nil, false
+    }
+
+    return user, true
+}
+
+/*
 type Middleware struct {
 	Auth *services.AuthService
 }
@@ -36,20 +52,6 @@ func (m *Middleware) LoadUserFromSession(next http.Handler) http.Handler {
 		ctx = context.WithValue(ctx, "user", user)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
-	})
-}
-
-// RequireAuth : bloque si utilisateur non connecté
-func (m *Middleware) RequireAuth(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		userID := r.Context().Value("userID")
-
-		if userID == nil {
-			http.Error(w, "Authentification requise", http.StatusUnauthorized)
-			return
-		}
-
-		next.ServeHTTP(w, r)
 	})
 }
 
@@ -83,4 +85,4 @@ func (m *Middleware) RequireRole(roleName string, roleService RoleChecker) func(
 // Interface pour découpler RoleModel / RoleService
 type RoleChecker interface {
 	UserHasRoleByName(userID int, roleName string) (bool, error)
-}
+}*/

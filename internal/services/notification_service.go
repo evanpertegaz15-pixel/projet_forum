@@ -11,20 +11,17 @@ type NotificationService struct {
 	Notifications *models.NotificationModel
 	Users         *models.UserModel
 	Posts         *models.PostModel
-	Comments      *models.CommentModel
 }
 
 func NewNotificationService(
 	notifs *models.NotificationModel,
 	users *models.UserModel,
 	posts *models.PostModel,
-	comments *models.CommentModel,
 ) *NotificationService {
 	return &NotificationService{
 		Notifications: notifs,
 		Users:         users,
 		Posts:         posts,
-		Comments:      comments,
 	}
 }
 

@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"time"
-	"forum-dark-jurassic/internal/utils"
 )
 
 type User struct {
@@ -101,10 +100,6 @@ func (model *UserModel) FindByID(id int) (*User, error) {
         user.UpdatedAt = &updatedAt.Time
     }
     return &user, nil
-}
-
-func (user *User) CheckPassword(password string) bool {
-	return utils.CheckPasswordHash(user.Password, password)
 }
 
 func (model *UserModel) GetAllUsers() ([]User, error) {

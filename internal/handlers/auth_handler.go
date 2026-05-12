@@ -7,10 +7,8 @@ import (
 	"forum-dark-jurassic/internal/services"
 	"html/template"
 	"io"
-	"log"
 	"net/http"
 	"os"
-
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -113,19 +111,8 @@ func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("session_id")
-	if err != nil {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
-		return
-	}
-	user, err := handler.Auth.GetUserFromSession(cookie.Value)
-	if err != nil {
-		log.Printf("Error getting user from session: %v\n", err)
-	}
-	if err != nil || user == nil {
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
-		return
-	}
+	user, ok := RequireAuth(w, r, handler.Auth)
+	if !ok { return }
 	tmpl := template.Must(template.ParseFiles("./internal/templates/profile.html"))
 	tmpl.Execute(w, user)
 }
@@ -199,7 +186,7 @@ func (handler *AuthHandler) GoogleCallback(w http.ResponseWriter, r *http.Reques
 	}
 
 	// 6. Create a session for that user
-	sessionID, err := handler.Auth.CreateSession(userID)
+	sessionID, err := handler.Auth.CreateSessionFromGoogle(userID)
 	if err != nil {
 		http.Error(w, "Erreur de session.", http.StatusInternalServerError)
 		return
@@ -223,30 +210,25 @@ func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request
         http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
         return
     }
+	user, ok := RequireAuth(w, r, handler.Auth)
+	if !ok { return }
     cookie, err := r.Cookie("session_id")
     if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
+        http.Error(w, "Session introuvable.", http.StatusUnauthorized)
         return
     }
-    user, err := handler.Auth.GetUserFromSession(cookie.Value)
-    if err != nil {
-        log.Printf("DeleteAccount: failed to get user from session: %v\n", err)
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    if user == nil {
-        log.Printf("DeleteAccount: no user found for session %s\n", cookie.Value)
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    err = handler.Auth.Users.DeleteUser(user.ID)
-    if err != nil {
-        log.Printf("DeleteAccount: DeleteUser error user_id=%d: %v\n", user.ID, err)
+    if err := handler.Auth.Users.DeleteUser(user.ID); err != nil {
         http.Error(w, "Impossible de supprimer le compte.", http.StatusInternalServerError)
         return
     }
-    if err := handler.Auth.Sessions.DeleteSession(cookie.Value); err != nil {
-        log.Printf("DeleteAccount: DeleteSession error session=%s user_id=%d: %v\n", cookie.Value, user.ID, err)
-    }
+    _ = handler.Auth.Sessions.DeleteSession(cookie.Value)
+    http.SetCookie(w, &http.Cookie{
+        Name:     "session_id",
+        Value:    "",
+        Path:     "/",
+        MaxAge:   -1,
+        HttpOnly: true,
+        SameSite: http.SameSiteLaxMode,
+    })
     http.Redirect(w, r, "/", http.StatusSeeOther)
 }

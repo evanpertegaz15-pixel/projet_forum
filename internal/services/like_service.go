@@ -10,14 +10,12 @@ import (
 type LikeService struct {
 	Likes *models.LikeModel
 	Posts *models.PostModel
-	Comments *models.CommentModel
 }
 
-func NewLikeService(likes *models.LikeModel, posts *models.PostModel, comments *models.CommentModel) *LikeService {
+func NewLikeService(likes *models.LikeModel, posts *models.PostModel) *LikeService {
 	return &LikeService{
 		Likes: likes,
 		Posts: posts,
-		Comments: comments,
 	}
 }
 /*

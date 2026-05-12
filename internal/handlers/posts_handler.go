@@ -22,16 +22,8 @@ func (handler *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
         return
     }
-    cookie, err := r.Cookie("session_id")
-    if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    user, err := handler.Auth.GetUserFromSession(cookie.Value)
-    if err != nil || user == nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
+    user, ok := RequireAuth(w, r, handler.Auth)
+    if !ok { return }
     topicID, err := strconv.Atoi(r.FormValue("topic_id"))
     if err != nil || topicID <= 0 {
         http.Error(w, "Topic invalide.", http.StatusBadRequest)
@@ -55,16 +47,8 @@ func (handler *PostHandler) ShowCreatePostForm(w http.ResponseWriter, r *http.Re
         http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
         return
     }
-    cookie, err := r.Cookie("session_id")
-    if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    user, err := handler.Auth.GetUserFromSession(cookie.Value)
-    if err != nil || user == nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
+    user, ok := RequireAuth(w, r, handler.Auth)
+    if !ok { return }
     topicID, _ := strconv.Atoi(r.URL.Query().Get("topic_id"))
     data := struct {
         User    *models.User
@@ -113,20 +97,12 @@ func (handler *PostHandler) CreateReply(w http.ResponseWriter, r *http.Request) 
         http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
         return
     }
-    cookie, err := r.Cookie("session_id")
-    if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    user, err := handler.Auth.GetUserFromSession(cookie.Value)
-    if err != nil || user == nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
+    user, ok := RequireAuth(w, r, handler.Auth)
+    if !ok { return }
     topicID, _ := strconv.Atoi(r.FormValue("topic_id"))
     parentID, _ := strconv.Atoi(r.FormValue("parent_id"))
     content := r.FormValue("content")
-    _, err = handler.Posts.CreateReply(topicID, user.ID, parentID, content)
+    _, err := handler.Posts.CreateReply(topicID, user.ID, parentID, content)
     if err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return

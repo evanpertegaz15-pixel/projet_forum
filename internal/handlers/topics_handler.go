@@ -70,16 +70,8 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
 }
 
 func (handler *TopicHandler) ShowNewTopic(w http.ResponseWriter, r *http.Request) {
-    cookie, err := r.Cookie("session_id")
-    if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    user, err := handler.Auth.GetUserFromSession(cookie.Value)
-    if err != nil || user == nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
+    user, ok := RequireAuth(w, r, handler.Auth)
+    if !ok { return }
     categories, err := handler.Categories.GetAllCategories()
     if err != nil {
         log.Printf("ShowNewTopic: GetAllCategories error: %v", err)
@@ -102,16 +94,8 @@ func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request)
         http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
         return
     }
-    cookie, err := r.Cookie("session_id")
-    if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
-    user, err := handler.Auth.GetUserFromSession(cookie.Value)
-    if err != nil || user == nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
+    user, ok := RequireAuth(w, r, handler.Auth)
+    if !ok { return }
     categoryID, _ := strconv.Atoi(r.FormValue("category_id"))
     title := r.FormValue("title")
     content := r.FormValue("content")

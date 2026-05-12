@@ -10,18 +10,15 @@ import (
 type ReportService struct {
 	Reports  *models.ReportModel
 	Posts    *models.PostModel
-	Comments *models.CommentModel
 }
 
 func NewReportService(
 	reports *models.ReportModel,
 	posts *models.PostModel,
-	comments *models.CommentModel,
 ) *ReportService {
 	return &ReportService{
 		Reports:  reports,
 		Posts:    posts,
-		Comments: comments,
 	}
 }
 

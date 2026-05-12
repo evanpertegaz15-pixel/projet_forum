@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"time"
-	"forum-dark-jurassic/internal/utils"
 )
 
 type Session struct {
@@ -22,17 +21,12 @@ func NewSessionModel(db *sql.DB) *SessionModel {
 	return &SessionModel{DB: db}
 }
 
-func (model *SessionModel) CreateSession(userID int) (string, error) {
-	id := utils.NewUUID()
-	expires := time.Now().Add(7 * 24 * time.Hour) // = 7 jours
-	_, err := model.DB.Exec(`
-		INSERT INTO sessions (id, user_id, expires_at)
-		VALUES (?, ?, ?)
-	`, id, userID, expires)
-	if err != nil {
-		return "", err
-	}
-	return id, nil
+func (model *SessionModel) InsertSession(id string, userID int, expires time.Time) error {
+    _, err := model.DB.Exec(`
+        INSERT INTO sessions (id, user_id, expires_at)
+        VALUES (?, ?, ?)
+    `, id, userID, expires)
+    return err
 }
 
 func (model *SessionModel) GetSession(id string) (*Session, error) {
