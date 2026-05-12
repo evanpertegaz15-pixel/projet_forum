@@ -7,11 +7,9 @@
     <link rel="stylesheet" href="../../static/styles.min.css">
 </head>
 <body>
-
 <header class="banner">
     <img src="../../static/banner.png" alt="Website Banner">
 </header>
-
     <nav>
         <div class="nav-left">
             <a href="/">Accueil</a>
@@ -19,14 +17,12 @@
             <a href="/topic/new">Créer un topic</a>
             <a href="/login">Connexion</a>
         </div>
-
         <form class="search-bar">
             <input type="text" placeholder="Rechercher..." name="q">
             <button type="submit">
                 <img src="../../static/search.png" alt="search">
             </button>
         </form>
-
         <div class="top-right-icons">
             <a href="/register" class="icon-btn">
                 <img src="../../static/register.png" alt="Register">
@@ -36,18 +32,24 @@
             </a>
         </div>
     </nav>
-
 <main>
+    <h2>Posts du topic : {{ .Topic.Title }}</h2>
     <section>
-        <h2>Posts</h2>
-        {{ range . }}
+        {{ range .Posts }}
             <div class="post">
                 <p>{{ .Content }}</p>
                 <small>Par {{ .Username }} le {{ .CreatedAt }}</small>
             </div>
+        {{ else }}
+            <p>Aucun post pour l’instant.</p>
         {{ end }}
     </section>
+    <h2>Ajouter un post</h2>
+    <form action="/post/create/submit" method="POST">
+        <input type="hidden" name="topic_id" value="{{ .Topic.ID }}">
+        <textarea name="content" required></textarea>
+        <button type="submit">Publier</button>
+    </form>
 </main>
-
 </body>
 </html>

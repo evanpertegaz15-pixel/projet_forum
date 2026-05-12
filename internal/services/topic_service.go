@@ -12,6 +12,10 @@ func NewTopicService(topics *models.TopicModel) *TopicService {
     return &TopicService{Topics: topics}
 }
 
+func (service *TopicService) GetTopicByID(id int) (models.Topic, error) {
+    return service.Topics.GetTopicByID(id)
+}
+
 func (service *TopicService) GetTopicsByCategory(categoryID int) ([]models.Topic, error) {
     return service.Topics.GetTopicsByCategory(categoryID)
 }

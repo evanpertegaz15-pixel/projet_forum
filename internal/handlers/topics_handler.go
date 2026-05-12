@@ -5,6 +5,7 @@ import (
     "log"
     "net/http"
     "strconv"
+    "forum-dark-jurassic/internal/models"
     "forum-dark-jurassic/internal/services"
 )
 
@@ -47,13 +48,25 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Topic incorrect.", http.StatusBadRequest)
         return
     }
+    topic, err := handler.Topics.GetTopicByID(topicID)
+    if err != nil {
+        http.Error(w, "Topic introuvable.", http.StatusNotFound)
+        return
+    }
     posts, err := handler.Posts.GetPostsByTopic(topicID)
     if err != nil {
         http.Error(w, "Erreur interne.", http.StatusInternalServerError)
         return
     }
+    data := struct {
+        Topic models.Topic
+        Posts []models.Post
+    }{
+        Topic: topic,
+        Posts: posts,
+    }
     tmpl := template.Must(template.ParseFiles("./internal/templates/topic.html"))
-    tmpl.Execute(w, posts)
+    tmpl.Execute(w, data)
 }
 
 func (handler *TopicHandler) ShowNewTopic(w http.ResponseWriter, r *http.Request) {

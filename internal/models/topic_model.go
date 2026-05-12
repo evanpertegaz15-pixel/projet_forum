@@ -21,6 +21,20 @@ func NewTopicModel(db *sql.DB) *TopicModel {
     return &TopicModel{DB: db}
 }
 
+func (model *TopicModel) GetTopicByID(id int) (Topic, error) {
+    row := model.DB.QueryRow(`
+        SELECT id, category_id, user_id, title, created_at
+        FROM topics
+        WHERE id = ?
+    `, id)
+    var topic Topic
+    err := row.Scan(&topic.ID, &topic.CategoryID, &topic.UserID, &topic.Title, &topic.CreatedAt)
+    if err != nil {
+        return Topic{}, err
+    }
+    return topic, nil
+}
+
 func (model *TopicModel) GetTopicsByCategory(categoryID int) ([]Topic, error) {
     rows, err := model.DB.Query(`
         SELECT id, category_id, user_id, title, created_at
