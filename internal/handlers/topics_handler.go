@@ -92,8 +92,12 @@ func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request)
     categoryID, _ := strconv.Atoi(r.FormValue("category_id"))
     title := r.FormValue("title")
     content := r.FormValue("content")
-    if categoryID <= 0 || title == "" || content == "" {
+    if categoryID <= 0 || content == "" {
         http.Error(w, "Champs incorrects.", http.StatusBadRequest)
+        return
+    }
+    if err := utils.ValidatePostTitle(title); err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
     topicID, err := handler.Topics.CreateTopic(categoryID, user.ID, title)

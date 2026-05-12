@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	//"time"
 )
 
 type Category struct {

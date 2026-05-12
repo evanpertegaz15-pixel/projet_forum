@@ -52,6 +52,24 @@ func (handler *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	username := r.FormValue("username")
 	password := r.FormValue("password")
+	if !utils.ValidateEmail(email) {
+		utils.Render(w, "./internal/templates/register.html", map[string]any{
+			"Error": "Email invalide.",
+		})
+		return
+	}
+	if !utils.ValidateUsername(username) {
+		utils.Render(w, "./internal/templates/register.html", map[string]any{
+			"Error": "Nom d'utilisateur invalide.",
+		})
+		return
+	}
+	if err := utils.ValidatePassword(password); err != nil {
+		utils.Render(w, "./internal/templates/register.html", map[string]any{
+			"Error": err.Error(),
+		})
+		return
+	}
 	_, err := handler.Auth.Register(email, username, password)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -60,7 +78,7 @@ func (handler *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
-func (h *AuthHandler) ShowRegister(w http.ResponseWriter, r *http.Request) {
+func (handler *AuthHandler) ShowRegister(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, "./internal/templates/register.html", nil)
 }
 
@@ -71,6 +89,18 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	identifier := r.FormValue("identifier")
 	password := r.FormValue("password")
+	if !utils.ValidateEmail(identifier) && !utils.ValidateUsername(identifier) {
+		utils.Render(w, "./internal/templates/register.html", map[string]any{
+			"Error": "Email invalide.",
+		})
+		return
+	}
+	if err := utils.ValidatePassword(password); err != nil {
+		utils.Render(w, "./internal/templates/register.html", map[string]any{
+			"Error": err.Error(),
+		})
+		return
+	}
 	sessionID, err := handler.Auth.Login(identifier, password)
 	if err != nil {
 		http.Error(w, "Identifiants incorrects.", http.StatusUnauthorized)
@@ -87,7 +117,7 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/profile", http.StatusSeeOther)
 }
 
-func (h *AuthHandler) ShowLogin(w http.ResponseWriter, r *http.Request) {
+func (handler *AuthHandler) ShowLogin(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, "./internal/templates/login.html", nil)
 }
 
