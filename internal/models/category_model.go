@@ -9,6 +9,7 @@ type Category struct {
 	Name        string
 	Description sql.NullString
 	CreatedAt   sql.NullTime
+	CreatedAtAgo string
 }
 
 type CategoryModel struct {

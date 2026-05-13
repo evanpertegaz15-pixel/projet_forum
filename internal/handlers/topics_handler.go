@@ -37,6 +37,9 @@ func (handler *TopicHandler) ShowTopics(w http.ResponseWriter, r *http.Request) 
         utils.ErrorInternal(w, "Erreur interne.")
         return
     }
+    for i := range topics {
+        topics[i].CreatedAtAgo = utils.TimeAgo(topics[i].CreatedAt)
+    }
     utils.Render(w,"./internal/templates/topics.html", topics)
 }
 
@@ -56,6 +59,10 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
     if err != nil {
         utils.ErrorInternal(w, "Erreur interne.")
         return
+    }
+    topic.CreatedAtAgo = utils.TimeAgo(topic.CreatedAt)
+    for i := range posts {
+        posts[i].CreatedAtAgo = utils.TimeAgo(posts[i].CreatedAt)
     }
     data := struct {
         Topic models.Topic

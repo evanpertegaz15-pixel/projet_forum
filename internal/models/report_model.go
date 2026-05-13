@@ -13,6 +13,7 @@ type Report struct {
 	Reason      string
 	IsResolved  bool
 	CreatedAt   time.Time
+	CreatedAtAgo string
 }
 
 type ReportModel struct {

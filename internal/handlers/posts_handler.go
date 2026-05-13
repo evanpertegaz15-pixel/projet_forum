@@ -80,6 +80,10 @@ func (handler *PostHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
         utils.ErrorInternal(w, "Erreur lors du chargement des réponses.")
         return
     }
+    post.CreatedAtAgo = utils.TimeAgo(post.CreatedAt)
+    for i := range replies {
+        replies[i].CreatedAtAgo = utils.TimeAgo(replies[i].CreatedAt)
+    }
     data := struct {
         Post    models.Post
         Replies []models.Post

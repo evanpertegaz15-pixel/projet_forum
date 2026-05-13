@@ -11,6 +11,7 @@ type Topic struct {
     UserID     int
     Title      string
     CreatedAt  time.Time
+    CreatedAtAgo string
 }
 
 type TopicModel struct {

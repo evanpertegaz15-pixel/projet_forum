@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"forum-dark-jurassic/internal/models"
+	"forum-dark-jurassic/internal/utils"
 )
 
 type ProfileHandler struct {

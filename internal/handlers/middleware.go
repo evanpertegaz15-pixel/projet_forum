@@ -4,6 +4,7 @@ import (
     "net/http"
 	"forum-dark-jurassic/internal/models"
     "forum-dark-jurassic/internal/services"
+    "forum-dark-jurassic/internal/utils"
 )
 
 func RequireAuth(w http.ResponseWriter, r *http.Request, auth *services.AuthService) (*models.User, bool) {
@@ -12,7 +13,7 @@ func RequireAuth(w http.ResponseWriter, r *http.Request, auth *services.AuthServ
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return nil, false
     }
-    user, err := auth.GetUserFromSession(cookie.Value)
+    user, err := auth.GetUserFromSession(sessionID)
     if err != nil || user == nil {
 		utils.DeleteCookie(w, "session_id")
         http.Redirect(w, r, "/login", http.StatusSeeOther)

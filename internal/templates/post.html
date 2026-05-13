@@ -42,7 +42,7 @@
     <section class="post-card">
         <h2>{{ .Post.Username }} a écrit :</h2>
         <p>{{ .Post.Content }}</p>
-        <p class="date">{{ .Post.CreatedAt }}</p>
+        <p class="date">{{ .Post.CreatedAtAgo }}</p>
     </section>
     <hr>
     <section class="replies">
@@ -51,7 +51,7 @@
         <div class="reply-card">
             <p><strong>{{ .Username }}</strong> :</p>
             <p>{{ .Content }}</p>
-            <p class="date">{{ .CreatedAt }}</p>
+            <p class="date">{{ .CreatedAtAgo }}</p>
         </div>
         {{ else }}
         <p>Aucune réponse pour l’instant.</p>

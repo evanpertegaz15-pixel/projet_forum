@@ -128,6 +128,7 @@ func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
 	user, ok := RequireAuth(w, r, handler.Auth)
 	if !ok { return }
+	user.CreatedAtAgo = utils.TimeAgo(user.CreatedAt)
 	utils.Render(w, "./internal/templates/profile.html", user)
 }
 
@@ -226,7 +227,7 @@ func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request
     }
 	user, ok := RequireAuth(w, r, handler.Auth)
 	if !ok { return }
-    cookie, err := r.Cookie("session_id")
+    _, err := r.Cookie("session_id")
     if err != nil {
         utils.ErrorUnauthorized(w, "Session introuvable.")
         return
@@ -235,14 +236,10 @@ func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request
     	utils.ErrorInternal(w, "Impossible de supprimer le compte.")
         return
     }
-    _ = handler.Auth.Sessions.DeleteSession(cookie.Value)
-    http.SetCookie(w, &http.Cookie{
-        Name:     "session_id",
-        Value:    "",
-        Path:     "/",
-        MaxAge:   -1,
-        HttpOnly: true,
-        SameSite: http.SameSiteLaxMode,
-    })
+	sessionID := utils.GetCookie(r, "session_id")
+	if sessionID != "" {
+		_ = handler.Auth.Sessions.DeleteSession(sessionID)
+	}
+	utils.DeleteCookie(w, "session_id")
     http.Redirect(w, r, "/", http.StatusSeeOther)
 }

@@ -13,6 +13,7 @@ type User struct {
 	Password	string
 	ProfilePicture	sql.NullString
 	CreatedAt time.Time
+	CreatedAtAgo string
 	UpdatedAt *time.Time
 }
 

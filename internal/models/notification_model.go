@@ -12,6 +12,7 @@ type Notification struct {
 	Message   string
 	IsRead    bool
 	CreatedAt time.Time
+	CreatedAtAgo string
 }
 
 type NotificationModel struct {

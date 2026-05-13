@@ -13,6 +13,7 @@ type Post struct {
     Content   string
     ParentID    *int
     CreatedAt time.Time
+    CreatedAtAgo string
 }
 
 type PostModel struct {
