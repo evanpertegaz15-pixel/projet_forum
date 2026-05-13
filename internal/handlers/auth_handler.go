@@ -84,7 +84,7 @@ func (handler *AuthHandler) ShowRegister(w http.ResponseWriter, r *http.Request)
 
 func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
-		http.Error(w, "Formulaire incorrect.", http.StatusBadRequest)
+		utils.ErrorBadRequest(w, "Formulaire incorrect.")
 		return
 	}
 	identifier := r.FormValue("identifier")
@@ -221,18 +221,18 @@ func (handler *AuthHandler) GoogleCallback(w http.ResponseWriter, r *http.Reques
 
 func (handler *AuthHandler) DeleteAccount(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodPost {
-        http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée.")
         return
     }
 	user, ok := RequireAuth(w, r, handler.Auth)
 	if !ok { return }
     cookie, err := r.Cookie("session_id")
     if err != nil {
-        http.Error(w, "Session introuvable.", http.StatusUnauthorized)
+        utils.ErrorUnauthorized(w, "Session introuvable.")
         return
     }
     if err := handler.Auth.Users.DeleteUser(user.ID); err != nil {
-        http.Error(w, "Impossible de supprimer le compte.", http.StatusInternalServerError)
+    	utils.ErrorInternal(w, "Impossible de supprimer le compte.")
         return
     }
     _ = handler.Auth.Sessions.DeleteSession(cookie.Value)

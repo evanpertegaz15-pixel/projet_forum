@@ -19,19 +19,19 @@ func NewPostHandler(posts *services.PostService, auth *services.AuthService) *Po
 
 func (handler *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodPost {
-        http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée.")
         return
     }
     user, ok := RequireAuth(w, r, handler.Auth)
     if !ok { return }
     topicID, err := strconv.Atoi(r.FormValue("topic_id"))
     if err != nil || topicID <= 0 {
-        http.Error(w, "Topic invalide.", http.StatusBadRequest)
+        utils.ErrorBadRequest(w, "Topic invalide.")
         return
     }
     content := r.FormValue("content")
     if content == "" {
-        http.Error(w, "Le contenu ne peut pas être vide.", http.StatusBadRequest)
+        utils.ErrorBadRequest(w, "Le contenu ne peut pas être vide.")
         return
     }
     _, err = handler.Posts.CreatePost(topicID, user.ID, content)
@@ -44,7 +44,7 @@ func (handler *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 func (handler *PostHandler) ShowCreatePostForm(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodGet {
-        http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée.")
         return
     }
     user, ok := RequireAuth(w, r, handler.Auth)
@@ -62,22 +62,22 @@ func (handler *PostHandler) ShowCreatePostForm(w http.ResponseWriter, r *http.Re
 
 func (handler *PostHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodGet {
-        http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée.")
         return
     }
     postID, err := strconv.Atoi(r.URL.Query().Get("id"))
     if err != nil || postID <= 0 {
-        http.Error(w, "Post invalide.", http.StatusBadRequest)
+        utils.ErrorBadRequest(w, "Post invalide.")
         return
     }
     post, err := handler.Posts.Posts.GetPostByID(postID)
     if err != nil {
-        http.Error(w, "Post introuvable.", http.StatusNotFound)
+        utils.ErrorNotFound(w, "Post introuvable.")
         return
     }
     replies, err := handler.Posts.GetReplies(postID)
     if err != nil {
-        http.Error(w, "Erreur lors du chargement des réponses.", http.StatusInternalServerError)
+        utils.ErrorInternal(w, "Erreur lors du chargement des réponses.")
         return
     }
     data := struct {
@@ -92,7 +92,7 @@ func (handler *PostHandler) ShowPost(w http.ResponseWriter, r *http.Request) {
 
 func (handler *PostHandler) CreateReply(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodPost {
-        http.Error(w, "Méthode non autorisée.", http.StatusMethodNotAllowed)
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée.")
         return
     }
     user, ok := RequireAuth(w, r, handler.Auth)

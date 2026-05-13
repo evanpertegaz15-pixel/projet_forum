@@ -29,12 +29,12 @@ func (handler *TopicHandler) ShowTopics(w http.ResponseWriter, r *http.Request) 
     idStr := r.URL.Query().Get("id")
     categoryID, err := strconv.Atoi(idStr)
     if err != nil {
-        http.Error(w, "Catégorie incorrecte.", http.StatusBadRequest)
+        utils.ErrorBadRequest(w, "Catégorie incorrecte.")
         return
     }
     topics, err := handler.Topics.GetTopicsByCategory(categoryID)
     if err != nil {
-        http.Error(w, "Erreur interne.", http.StatusInternalServerError)
+        utils.ErrorInternal(w, "Erreur interne.")
         return
     }
     utils.Render(w,"./internal/templates/topics.html", topics)
@@ -44,17 +44,17 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
     idStr := r.URL.Query().Get("id")
     topicID, err := strconv.Atoi(idStr)
     if err != nil {
-        http.Error(w, "Topic incorrect.", http.StatusBadRequest)
+        utils.ErrorBadRequest(w, "Topic incorrect.")
         return
     }
     topic, err := handler.Topics.GetTopicByID(topicID)
     if err != nil {
-        http.Error(w, "Topic introuvable.", http.StatusNotFound)
+        utils.ErrorNotFound(w, "Topic introuvable.")
         return
     }
     posts, err := handler.Posts.GetPostsByTopic(topicID)
     if err != nil {
-        http.Error(w, "Erreur interne.", http.StatusInternalServerError)
+        utils.ErrorInternal(w, "Erreur interne.")
         return
     }
     data := struct {
@@ -73,7 +73,7 @@ func (handler *TopicHandler) ShowNewTopic(w http.ResponseWriter, r *http.Request
     categories, err := handler.Categories.GetAllCategories()
     if err != nil {
         log.Printf("ShowNewTopic: GetAllCategories error: %v", err)
-        http.Error(w, "Impossible de charger les catégories.", http.StatusInternalServerError)
+        utils.ErrorInternal(w, "Impossible de charger les catégories.")
         return
     }
     utils.Render(w, "./internal/templates/new_topic.html", map[string]any{
@@ -84,7 +84,7 @@ func (handler *TopicHandler) ShowNewTopic(w http.ResponseWriter, r *http.Request
 
 func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodPost {
-        http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée")
         return
     }
     user, ok := RequireAuth(w, r, handler.Auth)
@@ -93,7 +93,7 @@ func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request)
     title := r.FormValue("title")
     content := r.FormValue("content")
     if categoryID <= 0 || content == "" {
-        http.Error(w, "Champs incorrects.", http.StatusBadRequest)
+        utils.ErrorBadRequest(w, "Champs incorrects.")
         return
     }
     if err := utils.ValidatePostTitle(title); err != nil {

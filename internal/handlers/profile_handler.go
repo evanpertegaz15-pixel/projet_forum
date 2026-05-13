@@ -21,7 +21,7 @@ func (h *ProfileHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) 
 	userIDParam := r.URL.Query().Get("id")
 	userID, err := strconv.Atoi(userIDParam)
 	if err != nil {
-		http.Error(w, "id utilisateur invalide", http.StatusBadRequest)
+		utils.ErrorBadRequest(w, "id utilisateur invalide")
 		return
 	}
 	user, err := h.Users.FindByID(userID)
@@ -30,7 +30,7 @@ func (h *ProfileHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	if user == nil {
-		http.Error(w, "Utilisateur introuvable", http.StatusNotFound)
+		utils.ErrorNotFound(w, "Utilisateur introuvable")
 		return
 	}
 	response := map[string]any{
@@ -48,7 +48,7 @@ func (h *ProfileHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) 
 func (h *ProfileHandler) GetMyProfile(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("userID")
 	if userID == nil {
-		http.Error(w, "Non authentifié", http.StatusUnauthorized)
+		utils.ErrorUnauthorized(w, "Non authentifié")
 		return
 	}
 	user, err := h.Users.FindByID(userID.(int))
@@ -57,7 +57,7 @@ func (h *ProfileHandler) GetMyProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if user == nil {
-		http.Error(w, "Utilisateur introuvable", http.StatusNotFound)
+		utils.ErrorNotFound(w, "Utilisateur introuvable")
 		return
 	}
 	response := map[string]any{

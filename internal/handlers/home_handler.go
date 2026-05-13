@@ -17,7 +17,7 @@ func NewHomeHandler(users *services.UserService) *HomeHandler {
 func (handler *HomeHandler) ShowHome(w http.ResponseWriter, r *http.Request) {
     users, err := handler.Users.GetAllUsers()
     if err != nil {
-        http.Error(w, "Erreur interne.", http.StatusInternalServerError)
+        utils.ErrorInternal(w, "Erreur interne.")
         return
     }
     utils.Render(w, "./internal/templates/home.html", map[string]any{

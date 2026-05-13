@@ -18,7 +18,7 @@ func NewCategoryHandler(categories *services.CategoryService) *CategoryHandler {
 func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Request) {
     categories, err := handler.Categories.GetAllCategories()
     if err != nil {
-        http.Error(w, "Erreur interne.", http.StatusInternalServerError)
+        utils.ErrorInternal(w, "Erreur interne.")
         return
     }
     utils.Render(w, "./internal/templates/categories.html", categories)
