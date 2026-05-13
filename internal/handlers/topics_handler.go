@@ -80,6 +80,10 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
 func (handler *TopicHandler) ShowNewTopic(w http.ResponseWriter, r *http.Request) {
     user, ok := RequireAuth(w, r, handler.Auth)
     if !ok { return }
+    if user.HasRole("blocked") {
+        utils.ErrorForbidden(w, "Votre compte ne peut plus créer de topics.")
+        return
+    }
     categories, err := handler.Categories.GetAllCategories()
     if err != nil {
         log.Printf("ShowNewTopic: GetAllCategories error: %v", err)
@@ -104,6 +108,10 @@ func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request)
     content := r.FormValue("content")
     if categoryID <= 0 || content == "" {
         utils.ErrorBadRequest(w, "Champs incorrects.")
+        return
+    }
+    if user.HasRole("blocked") {
+        utils.ErrorForbidden(w, "Votre compte ne peut plus créer de topics.")
         return
     }
     if err := utils.ValidatePostTitle(title); err != nil {

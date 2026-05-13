@@ -48,6 +48,7 @@
                 <p><strong>Nom d'utilisateur :</strong> {{ .Username }}</p>
                 <p><strong>Email :</strong> {{ .Email }}</p>
                 <p><strong>Date de création du compte :</strong> {{ .CreatedAtAgo }}</p>
+                <p><strong>Rôle(s) :</strong> {{ if .Roles }}{{ range $idx, $role := .Roles }}{{ if $idx }}, {{ end }}{{ $role.Label }}{{ end }}{{ else }}Aucun rôle assigné{{ end }}</p>
             </div>
 
             <hr>

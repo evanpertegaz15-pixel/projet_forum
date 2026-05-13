@@ -69,42 +69,35 @@ func (m *UserRoleModel) HasRoleByName(userID int, roleName string) (bool, error)
 	return count > 0, nil
 }
 
-// Lister tous les rôles d’un utilisateur
 func (m *UserRoleModel) GetRolesByUserID(userID int) ([]Role, error) {
 	query := `
-		SELECT r.id, r.name, r.permissions
-		FROM roles r
-		JOIN user_roles ur ON ur.role_id = r.id
-		WHERE ur.user_id = ?
-	`
-
-	rows, err := m.DB.Query(query, userID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var roles []Role
-
-	for rows.Next() {
-		var r Role
-		err := rows.Scan(&r.ID, &r.Name, &r.Permissions)
-		if err != nil {
-			return nil, err
-		}
-		roles = append(roles, r)
-	}
-
-	return roles, nil
+        SELECT r.id, r.name, r.label
+        FROM roles r
+        JOIN user_roles ur ON ur.role_id = r.id
+        WHERE ur.user_id = ?
+    `
+    rows, err := m.DB.Query(query, userID)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+    var roles []Role
+    for rows.Next() {
+        var r Role
+        err := rows.Scan(&r.ID, &r.Name, &r.Label)
+        if err != nil {
+            return nil, err
+        }
+        roles = append(roles, r)
+    }
+    return roles, nil
 }
 
-// Retirer tous les rôles d’un utilisateur (utile pour reset admin)
 func (m *UserRoleModel) ClearUserRoles(userID int) error {
 	query := `
 		DELETE FROM user_roles
 		WHERE user_id = ?
 	`
-
 	_, err := m.DB.Exec(query, userID)
 	return err
 }

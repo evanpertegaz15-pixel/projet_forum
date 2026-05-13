@@ -7,7 +7,7 @@ import (
 )
 
 func Seed(db *sql.DB) {
-    _, err := db.Exec(`INSERT OR IGNORE INTO roles (name, label) VALUES ('admin', 'Administrateur'), ('moderator', 'Modérateur'), ('ranger', 'Ranger'), ('user', 'Utilisateur')`)
+    _, err := db.Exec(`INSERT OR IGNORE INTO roles (name, label) VALUES ('admin', 'Administrateur'), ('moderator', 'Modérateur'), ('ranger', 'Ranger'), ('user', 'Utilisateur'), ('blocked', 'Bloqué')`)
     if err != nil {
         log.Println("Erreur seed rôles :", err)
     }
@@ -28,6 +28,57 @@ func Seed(db *sql.DB) {
             `, hashAdmin, hashCG, hashES, hashBen, hashDarius)
     if err != nil {
         log.Println("Erreur seed admin :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT OR IGNORE INTO user_roles (user_id, role_id)
+        SELECT u.id, r.id
+        FROM users u
+        JOIN roles r ON r.name = 'admin'
+        WHERE u.email = 'admin@dj.com'
+    `)
+    if err != nil {
+        log.Println("Erreur seed admin role :", err)
+    }
+    _, err = db.Exec(`
+        INSERT OR IGNORE INTO user_roles (user_id, role_id)
+        SELECT u.id, r.id
+        FROM users u
+        JOIN roles r ON r.name = 'moderator'
+        WHERE u.email = 'clever.girl@dj.com'
+    `)
+    if err != nil {
+        log.Println("Erreur seed moderator role :", err)
+    }
+    _, err = db.Exec(`
+        INSERT OR IGNORE INTO user_roles (user_id, role_id)
+        SELECT u.id, r.id
+        FROM users u
+        JOIN roles r ON r.name = 'ranger'
+        WHERE u.email = 'esther.stone@dj.com'
+    `)
+    if err != nil {
+        log.Println("Erreur seed ranger role :", err)
+    }
+    _, err = db.Exec(`
+        INSERT OR IGNORE INTO user_roles (user_id, role_id)
+        SELECT u.id, r.id
+        FROM users u
+        JOIN roles r ON r.name = 'blocked'
+        WHERE u.email = 'geek.osaure@dj.com'
+    `)
+    if err != nil {
+        log.Println("Erreur seed blocked role :", err)
+    }
+    _, err = db.Exec(`
+        INSERT OR IGNORE INTO user_roles (user_id, role_id)
+        SELECT u.id, r.id
+        FROM users u
+        JOIN roles r ON r.name = 'user'
+        WHERE u.email IN ('admin@dj.com', 'clever.girl@dj.com', 'esther.stone@dj.com', 'ben.pincus@dj.com', 'geek.osaure@dj.com')
+    `)
+    if err != nil {
+        log.Println("Erreur seed user roles :", err)
     }
 
     _, err = db.Exec(`

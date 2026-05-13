@@ -24,6 +24,10 @@ func (handler *PostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
     }
     user, ok := RequireAuth(w, r, handler.Auth)
     if !ok { return }
+    if user.HasRole("blocked") {
+        utils.ErrorForbidden(w, "Votre compte ne peut plus publier de messages.")
+        return
+    }
     topicID, err := strconv.Atoi(r.FormValue("topic_id"))
     if err != nil || topicID <= 0 {
         utils.ErrorBadRequest(w, "Topic invalide.")
@@ -49,6 +53,10 @@ func (handler *PostHandler) ShowCreatePostForm(w http.ResponseWriter, r *http.Re
     }
     user, ok := RequireAuth(w, r, handler.Auth)
     if !ok { return }
+    if user.HasRole("blocked") {
+        utils.ErrorForbidden(w, "Votre compte ne peut plus publier de messages.")
+        return
+    }
     topicID, _ := strconv.Atoi(r.URL.Query().Get("topic_id"))
     data := struct {
         User    *models.User
@@ -101,6 +109,10 @@ func (handler *PostHandler) CreateReply(w http.ResponseWriter, r *http.Request) 
     }
     user, ok := RequireAuth(w, r, handler.Auth)
     if !ok { return }
+    if user.HasRole("blocked") {
+        utils.ErrorForbidden(w, "Votre compte ne peut plus publier de réponses.")
+        return
+    }
     topicID, _ := strconv.Atoi(r.FormValue("topic_id"))
     parentID, _ := strconv.Atoi(r.FormValue("parent_id"))
     content := r.FormValue("content")

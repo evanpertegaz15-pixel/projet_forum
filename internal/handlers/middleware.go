@@ -22,6 +22,22 @@ func RequireAuth(w http.ResponseWriter, r *http.Request, auth *services.AuthServ
     return user, true
 }
 
+func RequireRole(auth *services.AuthService, role string) func(http.Handler) http.Handler {
+    return func(next http.Handler) http.Handler {
+        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+            user, ok := RequireAuth(w, r, auth)
+            if !ok {
+                return
+            }
+            if !auth.UserHasRole(user, role) {
+                utils.ErrorForbidden(w, "Permission refusée.")
+                return
+            }
+            next.ServeHTTP(w, r)
+        })
+    }
+}
+
 /*
 type Middleware struct {
 	Auth *services.AuthService

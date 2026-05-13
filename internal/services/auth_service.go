@@ -111,3 +111,12 @@ func (auth *AuthService) FindOrCreateGoogleUser(email, name string) (int64, erro
 func (auth *AuthService) CreateSessionFromGoogle(userID int64) (string, error) {
 	return auth.CreateSession(int(userID))
 }
+
+func (auth *AuthService) UserHasRole(user *models.User, role string) bool {
+    for _, r := range user.Roles {
+        if r.Name == role {
+            return true
+        }
+    }
+    return false
+}
