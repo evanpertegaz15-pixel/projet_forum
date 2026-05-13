@@ -1,11 +1,13 @@
 package utils
-// pour les session.id, les notifications, les logs, les uploads d'images
-// NewUUID() string
 
 import (
 	"github.com/google/uuid"
 )
 
 func NewUUID() string {
-	return uuid.New().String()
+    u, err := uuid.NewV7()
+    if err != nil {
+        return uuid.New().String() // fallback v4
+    }
+    return u.String()
 }

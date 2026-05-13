@@ -20,8 +20,8 @@ func ValidateUsername(username string) bool {
 
 func ValidatePassword(password string) error {
     password = strings.TrimSpace(password)
-    if len(password) < 6 {
-        return errors.New("Le mot de passe doit faire au moins 6 caractères.")
+    if len(password) < 4 {
+        return errors.New("Le mot de passe doit faire au moins 4 caractères.")
     }
     if len(password) > 72 {
         return errors.New("Le mot de passe est trop long.")

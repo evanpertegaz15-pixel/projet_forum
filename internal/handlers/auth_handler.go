@@ -90,20 +90,22 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	identifier := r.FormValue("identifier")
 	password := r.FormValue("password")
 	if !utils.ValidateEmail(identifier) && !utils.ValidateUsername(identifier) {
-		utils.Render(w, "./internal/templates/register.html", map[string]any{
-			"Error": "Email invalide.",
+		utils.Render(w, "./internal/templates/login.html", map[string]any{
+			"Error": "Identifiant invalide.",
 		})
 		return
 	}
 	if err := utils.ValidatePassword(password); err != nil {
-		utils.Render(w, "./internal/templates/register.html", map[string]any{
+		utils.Render(w, "./internal/templates/login.html", map[string]any{
 			"Error": err.Error(),
 		})
 		return
 	}
 	sessionID, err := handler.Auth.Login(identifier, password)
 	if err != nil {
-		http.Error(w, "Identifiants incorrects.", http.StatusUnauthorized)
+		utils.Render(w, "./internal/templates/login.html", map[string]any{
+            "Error": "Identifiants incorrects.",
+        })
 		return
 	}
 	http.SetCookie(w, &http.Cookie{
