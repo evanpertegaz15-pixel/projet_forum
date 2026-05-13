@@ -108,14 +108,7 @@ func (handler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
         })
 		return
 	}
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session_id",
-		Value:    sessionID,
-		Path:     "/",
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-		MaxAge:   7 * 24 * 60 * 60,
-	})
+	utils.SetCookie(w, "session_id", sessionID, 7*24*60*60)
 	http.Redirect(w, r, "/profile", http.StatusSeeOther)
 }
 
@@ -128,14 +121,7 @@ func (handler *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		_ = handler.Auth.Logout(cookie.Value)
 	}
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session_id",
-		Value:    "",
-		Path:     "/",
-		MaxAge:   -1,
-		HttpOnly: true,
-		SameSite: http.SameSiteDefaultMode,
-	})
+	utils.DeleteCookie(w, "session_id")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 

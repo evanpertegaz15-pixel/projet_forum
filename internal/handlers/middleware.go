@@ -7,18 +7,17 @@ import (
 )
 
 func RequireAuth(w http.ResponseWriter, r *http.Request, auth *services.AuthService) (*models.User, bool) {
-    cookie, err := r.Cookie("session_id")
-    if err != nil {
+	sessionID := utils.GetCookie(r, "session_id")
+    if sessionID == "" {
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return nil, false
     }
-
     user, err := auth.GetUserFromSession(cookie.Value)
     if err != nil || user == nil {
+		utils.DeleteCookie(w, "session_id")
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return nil, false
     }
-
     return user, true
 }
 
