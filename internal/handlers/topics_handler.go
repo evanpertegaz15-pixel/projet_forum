@@ -67,12 +67,28 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
             postsWithReplies[i].Replies[j].CreatedAtAgo = utils.TimeAgo(postsWithReplies[i].Replies[j].CreatedAt)
         }
     }
+    user, _ := RequireAuth(w, r, handler.Auth)
+
+    reportStatus := ""
+    switch r.URL.Query().Get("report_status") {
+    case "success":
+        reportStatus = "Signalement envoyé."
+    case "error":
+        reportStatus = "Erreur lors du signalement."
+    }
+
     data := struct {
         Topic            models.Topic
         PostsWithReplies []models.PostWithReplies
+        User             *models.User
+        ReportStatus     string
+        ReturnURL        string
     }{
         Topic:            topic,
         PostsWithReplies: postsWithReplies,
+        User:             user,
+        ReportStatus:     reportStatus,
+        ReturnURL:        "/topic?id=" + strconv.Itoa(topicID),
     }
     utils.Render(w,"./internal/templates/topic.html", data)
 }
@@ -129,4 +145,29 @@ func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request)
         return
     }
     http.Redirect(w, r, "/topic?id="+strconv.Itoa(topicID), http.StatusSeeOther)
+}
+
+func (handler *TopicHandler) DeleteTopic(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée.")
+        return
+    }
+    user, ok := RequireAuth(w, r, handler.Auth)
+    if !ok { return }
+    topicID, err := strconv.Atoi(r.FormValue("topic_id"))
+    if err != nil {
+        utils.ErrorBadRequest(w, "ID de topic invalide.")
+        return
+    }
+    err = handler.Topics.DeleteTopic(user, topicID)
+    if err != nil {
+        utils.ErrorForbidden(w, "Permission refusée.")
+        return
+    }
+    categoryID := r.FormValue("category_id")
+    if categoryID != "" {
+        http.Redirect(w, r, "/topics?id="+categoryID, http.StatusSeeOther)
+    } else {
+        http.Redirect(w, r, "/", http.StatusSeeOther)
+    }
 }

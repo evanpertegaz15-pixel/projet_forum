@@ -120,13 +120,36 @@ func (m *ReportModel) ResolveReport(reportID int) error {
 	return err
 }
 
-// Supprimer un report (nettoyage admin)
+func (m *ReportModel) GetReportByID(reportID int) (*Report, error) {
+	query := `
+		SELECT id, reporter_id, target_type, target_id, reason, is_resolved, created_at
+		FROM reports
+		WHERE id = ?
+	`
+	var r Report
+	err := m.DB.QueryRow(query, reportID).Scan(
+		&r.ID,
+		&r.ReporterID,
+		&r.TargetType,
+		&r.TargetID,
+		&r.Reason,
+		&r.IsResolved,
+		&r.CreatedAt,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &r, nil
+}
+
 func (m *ReportModel) DeleteReport(reportID int) error {
 	query := `
 		DELETE FROM reports
 		WHERE id = ?
 	`
-
 	_, err := m.DB.Exec(query, reportID)
 	return err
 }

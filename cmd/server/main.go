@@ -28,6 +28,7 @@ func main() {
 		log.Println("CSS minifié avec succès.")
 	}
 
+	reportModel := models.NewReportModel(db)
 	userModel := models.NewUserModel(db)
 	sessionModel := models.NewSessionModel(db)
 	postModel := models.NewPostModel(db)
@@ -39,12 +40,14 @@ func main() {
 	postService := services.NewPostService(postModel)
 	categoryService := services.NewCategoryService(categoryModel)
 	topicService := services.NewTopicService(topicModel)
+	reportService := services.NewReportService(reportModel, postModel, topicModel, userModel)
 
 	homeHandler := handlers.NewHomeHandler(userService)
 	authHandler := handlers.NewAuthHandler(authService)
 	categoryHandler := handlers.NewCategoryHandler(categoryService)
 	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService)
 	postHandler := handlers.NewPostHandler(postService, authService)
+	reportHandler := handlers.NewReportHandler(reportService, authService)
 
 	// ─── Routes ───────────────────────────────────────────────────────────────
 	http.HandleFunc("/", homeHandler.ShowHome)
@@ -74,6 +77,14 @@ func main() {
 	http.HandleFunc("/post/create/submit", postHandler.CreatePost)
     http.HandleFunc("/post", postHandler.ShowPost)
     http.HandleFunc("/reply", postHandler.CreateReply)
+    http.HandleFunc("/post/delete", postHandler.DeletePost)
+    http.HandleFunc("/topic/delete", topicHandler.DeleteTopic)
+    http.HandleFunc("/report", reportHandler.CreateReport)
+	http.HandleFunc("/reports", reportHandler.ShowReports)
+    http.HandleFunc("/reports/open", reportHandler.GetOpenReports)
+    http.HandleFunc("/report/resolve", reportHandler.ResolveReport)
+    http.HandleFunc("/report/delete", reportHandler.DeleteReport)
+    http.HandleFunc("/report/delete-content", reportHandler.DeleteReportedContent)
 
 	// ─── Google OAuth Routes ──────────────────────────────────────────────────
 	http.HandleFunc("/auth/google/login", authHandler.GoogleLogin)

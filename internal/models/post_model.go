@@ -52,6 +52,11 @@ func (model *PostModel) GetPostsByTopic(topicID int) ([]Post, error) {
     return posts, nil
 }
 
+func (model *PostModel) Delete(postID int) error {
+	_, err := model.DB.Exec(`DELETE FROM posts WHERE id = ?`, postID)
+	return err
+}
+
 func (model *PostModel) CreatePost(topicID, userID int, content string) (int, error) {
     result, err := model.DB.Exec(`INSERT INTO posts (topic_id, user_id, content, parent_id) VALUES (?, ?, ?, NULL)`, topicID, userID, content)
     if err != nil {

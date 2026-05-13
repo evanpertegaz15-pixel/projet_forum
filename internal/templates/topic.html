@@ -15,6 +15,11 @@
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
             <a href="/topic/new">Créer un topic</a>
+            {{ if .User }}
+                {{ if or (.User.HasRole "admin") (.User.HasRole "moderator") }}
+                    <a href="/reports">Reports</a>
+                {{ end }}
+            {{ end }}
             <a href="/login">Connexion</a>
         </div>
         <form class="search-bar">
@@ -34,12 +39,63 @@
     </nav>
 <main>
     <h2>Posts du topic : {{ .Topic.Title }}</h2>
+    {{ if .ReportStatus }}
+        <div class="notification">{{ .ReportStatus }}</div>
+    {{ end }}
+    {{ if .User }}
+        {{ if or (.User.HasRole "admin") (.User.HasRole "moderator") (.User.HasRole "ranger") (eq .Topic.UserID .User.ID) }}
+            <div class="moderation-actions">
+                <form method="POST" action="/topic/delete" style="display:inline;">
+                    <input type="hidden" name="topic_id" value="{{ .Topic.ID }}">
+                    <input type="hidden" name="category_id" value="{{ .Topic.CategoryID }}">
+                    <button type="submit" class="danger" onclick="return confirm('Supprimer ce topic ?')">Supprimer le topic</button>
+                </form>
+                <form method="POST" action="/report" style="display:inline;">
+                    <input type="hidden" name="target_type" value="topic">
+                    <input type="hidden" name="target_id" value="{{ .Topic.ID }}">
+                    <input type="text" name="reason" placeholder="Raison du signalement" required>
+                    <button type="submit">Signaler le topic</button>
+                </form>
+            </div>
+        {{ else }}
+            <form method="POST" action="/report" style="display:inline;">
+                <input type="hidden" name="target_type" value="topic">
+                <input type="hidden" name="target_id" value="{{ .Topic.ID }}">
+                <input type="text" name="reason" placeholder="Raison du signalement" required>
+                <button type="submit">Signaler le topic</button>
+            </form>
+        {{ end }}
+    {{ end }}
     <section>
         {{ range .PostsWithReplies }}
             <div class="post-card">
                 <h3>{{ .Post.Username }} a écrit :</h3>
                 <p>{{ .Post.Content }}</p>
                 <small>{{ .Post.CreatedAtAgo }}</small>
+                {{ if $.User }}
+                    {{ if or ($.User.HasRole "admin") ($.User.HasRole "moderator") ($.User.HasRole "ranger") (eq .Post.UserID $.User.ID) }}
+                        <div class="post-actions">
+                            <form method="POST" action="/post/delete" style="display:inline;">
+                                <input type="hidden" name="post_id" value="{{ .Post.ID }}">
+                                <input type="hidden" name="topic_id" value="{{ .Post.TopicID }}">
+                                <button type="submit" class="danger" onclick="return confirm('Supprimer ce post ?')">Supprimer</button>
+                            </form>
+                            <form method="POST" action="/report" style="display:inline;">
+                                <input type="hidden" name="target_type" value="post">
+                                <input type="hidden" name="target_id" value="{{ .Post.ID }}">
+                                <input type="text" name="reason" placeholder="Raison" required>
+                                <button type="submit">Signaler</button>
+                            </form>
+                        </div>
+                    {{ else }}
+                        <form method="POST" action="/report" style="display:inline;">
+                            <input type="hidden" name="target_type" value="post">
+                            <input type="hidden" name="target_id" value="{{ .Post.ID }}">
+                            <input type="text" name="reason" placeholder="Raison" required>
+                            <button type="submit">Signaler</button>
+                        </form>
+                    {{ end }}
+                {{ end }}
                 <!-- Formulaire de réponse pour les posts principaux -->
                 <div class="reply-form">
                     <form method="POST" action="/reply">
@@ -58,6 +114,30 @@
                             <p><strong>{{ .Username }}</strong> :</p>
                             <p>{{ .Content }}</p>
                             <small>{{ .CreatedAtAgo }}</small>
+                            {{ if $.User }}
+                                {{ if or ($.User.HasRole "admin") ($.User.HasRole "moderator") ($.User.HasRole "ranger") (eq .UserID $.User.ID) }}
+                                    <div class="reply-actions">
+                                        <form method="POST" action="/post/delete" style="display:inline;">
+                                            <input type="hidden" name="post_id" value="{{ .ID }}">
+                                            <input type="hidden" name="topic_id" value="{{ .TopicID }}">
+                                            <button type="submit" class="danger" onclick="return confirm('Supprimer cette réponse ?')">Supprimer</button>
+                                        </form>
+                                        <form method="POST" action="/report" style="display:inline;">
+                                            <input type="hidden" name="target_type" value="post">
+                                            <input type="hidden" name="target_id" value="{{ .ID }}">
+                                            <input type="text" name="reason" placeholder="Raison" required>
+                                            <button type="submit">Signaler</button>
+                                        </form>
+                                    </div>
+                                {{ else }}
+                                    <form method="POST" action="/report" style="display:inline;">
+                                        <input type="hidden" name="target_type" value="post">
+                                        <input type="hidden" name="target_id" value="{{ .ID }}">
+                                        <input type="text" name="reason" placeholder="Raison" required>
+                                        <button type="submit">Signaler</button>
+                                    </form>
+                                {{ end }}
+                            {{ end }}
                         </div>
                         {{ end }}
                     </div>

@@ -1,110 +1,120 @@
-// signaler un post / commentaire, modération
-
 package services
 
 import (
-	//"errors"
+	"errors"
 	"forum-dark-jurassic/internal/models"
+	"forum-dark-jurassic/internal/utils"
 )
 
 type ReportService struct {
-	Reports  *models.ReportModel
-	Posts    *models.PostModel
+	Reports *models.ReportModel
+	Posts   *models.PostModel
+	Topics  *models.TopicModel
+	Users   *models.UserModel
 }
 
 func NewReportService(
 	reports *models.ReportModel,
 	posts *models.PostModel,
+	topics *models.TopicModel,
+	users *models.UserModel,
 ) *ReportService {
 	return &ReportService{
-		Reports:  reports,
-		Posts:    posts,
+		Reports: reports,
+		Posts:   posts,
+		Topics:  topics,
+		Users:   users,
 	}
 }
 
-/*
-// Signaler un post
-func (s *ReportService) ReportPost(user *models.User, postID int, reason string) error {
+func (s *ReportService) CreateReport(user *models.User, targetType string, targetID int, reason string) error {
 	if user == nil {
 		return errors.New("utilisateur non connecté")
 	}
-
-	post, err := s.Posts.FindByID(postID)
-	if err != nil {
-		return err
+	if targetType != "post" && targetType != "topic" {
+		return errors.New("type de cible invalide")
 	}
-	if post == nil {
-		return errors.New("post introuvable")
+	if targetType == "post" {
+		post, err := s.Posts.GetPostByID(targetID)
+		if err != nil {
+			return err
+		}
+		if post.ID == 0 {
+			return errors.New("post introuvable")
+		}
+	} else if targetType == "topic" {
+		topic, err := s.Topics.GetTopicByID(targetID)
+		if err != nil {
+			return err
+		}
+		if topic.ID == 0 {
+			return errors.New("topic introuvable")
+		}
 	}
-
-	// éviter spam (1 report par user par post)
-	exists, err := s.Reports.Exists(user.ID, postID, 0)
-	if err != nil {
-		return err
-	}
-	if exists {
-		return errors.New("déjà signalé")
-	}
-
-	return s.Reports.Create(user.ID, postID, 0, reason)
+	return s.Reports.CreateReport(user.ID, targetType, targetID, reason)
 }
 
-// Lister tous les reports (admin)
-func (s *ReportService) GetAllReports(user *models.User) ([]*models.ReportModel, error) {
-	if !isAdminCheck(user) {
+func (s *ReportService) GetAllReports(user *models.User) ([]models.Report, error) {
+	if !s.canManageReports(user) {
 		return nil, errors.New("permission refusée")
 	}
-	return s.Reports.GetAll()
+	reports, err := s.Reports.GetAllReports()
+	if err != nil {
+		return nil, err
+	}
+	for i := range reports {
+		reports[i].CreatedAtAgo = utils.TimeAgo(reports[i].CreatedAt)
+	}
+	return reports, nil
 }
 
-// Reports en attente
-func (s *ReportService) GetPendingReports(user *models.User) ([]*models.ReportModel, error) {
-	if !isAdminCheck(user) {
+func (s *ReportService) GetOpenReports(user *models.User) ([]models.Report, error) {
+	if !s.canManageReports(user) {
 		return nil, errors.New("permission refusée")
 	}
-	return s.Reports.GetByStatus("pending")
+	reports, err := s.Reports.GetOpenReports()
+	if err != nil {
+		return nil, err
+	}
+	for i := range reports {
+		reports[i].CreatedAtAgo = utils.TimeAgo(reports[i].CreatedAt)
+	}
+	return reports, nil
 }
 
-// Marquer comme traité
 func (s *ReportService) ResolveReport(user *models.User, reportID int) error {
-	if !isAdminCheck(user) {
+	if !s.canManageReports(user) {
 		return errors.New("permission refusée")
 	}
-	return s.Reports.UpdateStatus(reportID, "resolved")
+	return s.Reports.ResolveReport(reportID)
 }
 
-// Rejeter un report
-func (s *ReportService) RejectReport(user *models.User, reportID int) error {
-	if !isAdminCheck(user) {
+func (s *ReportService) DeleteReport(user *models.User, reportID int) error {
+	if !user.HasRole("admin") {
 		return errors.New("permission refusée")
 	}
-	return s.Reports.UpdateStatus(reportID, "rejected")
+	return s.Reports.DeleteReport(reportID)
 }
 
-// Action modération : supprimer contenu signalé
 func (s *ReportService) DeleteReportedContent(user *models.User, reportID int) error {
-	if !isAdminCheck(user) {
+	if !s.canManageReports(user) {
 		return errors.New("permission refusée")
 	}
-
-	report, err := s.Reports.FindByID(reportID)
+	report, err := s.Reports.GetReportByID(reportID)
 	if err != nil {
 		return err
 	}
 	if report == nil {
 		return errors.New("report introuvable")
 	}
-
-	// si post
-	if report.PostID != nil {
-		return s.Posts.Delete(*report.PostID)
+	if report.TargetType == "post" {
+		return s.Posts.Delete(report.TargetID)
+	} else if report.TargetType == "topic" {
+		return s.Topics.DeleteTopic(report.TargetID)
 	}
-
-	// si commentaire
-	if report.CommentID != nil {
-		return s.Comments.Delete(*report.CommentID)
-	}
-
-	return nil
+	return errors.New("type de cible non supporté")
 }
-*/
+
+func (s *ReportService) canManageReports(user *models.User) bool {
+	return user != nil && (user.HasRole("admin") || user.HasRole("moderator"))
+}

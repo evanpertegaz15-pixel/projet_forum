@@ -69,3 +69,12 @@ func (model *TopicModel) CreateTopic(categoryID, userID int, title string) (int,
     }
     return int(id), nil
 }
+
+func (model *TopicModel) DeleteTopic(topicID int) error {
+    _, err := model.DB.Exec(`DELETE FROM posts WHERE topic_id = ?`, topicID)
+    if err != nil {
+        return err
+    }
+    _, err = model.DB.Exec(`DELETE FROM topics WHERE id = ?`, topicID)
+    return err
+}

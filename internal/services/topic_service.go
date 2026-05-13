@@ -26,3 +26,17 @@ func (service *TopicService) CreateTopic(categoryID, userID int, title string) (
     }
     return service.Topics.CreateTopic(categoryID, userID, title)
 }
+
+func (service *TopicService) DeleteTopic(user *models.User, topicID int) error {
+    topic, err := service.Topics.GetTopicByID(topicID)
+    if err != nil {
+        return err
+    }
+    if topic.ID == 0 {
+        return errors.New("topic introuvable")
+    }
+    if topic.UserID != user.ID && !user.HasRole("admin") && !user.HasRole("moderator") && !user.HasRole("ranger") {
+        return errors.New("permission refusée")
+    }
+    return service.Topics.DeleteTopic(topicID)
+}

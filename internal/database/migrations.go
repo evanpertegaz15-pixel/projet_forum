@@ -162,13 +162,12 @@ func RunMigrations(db *sql.DB) {
         `CREATE TABLE IF NOT EXISTS reports (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             reporter_id INTEGER NOT NULL,
-            post_id INTEGER,
-            comment_id INTEGER,
+            target_type TEXT NOT NULL, -- 'post' or 'topic'
+            target_id INTEGER NOT NULL,
             reason TEXT NOT NULL,
+            is_resolved INTEGER NOT NULL DEFAULT 0,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(reporter_id) REFERENCES users(id) ON DELETE CASCADE,
-            FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
-            FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE
+            FOREIGN KEY(reporter_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
 
         // SETTINGS

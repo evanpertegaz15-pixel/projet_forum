@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Signalements - Dark Jurassic</title>
+    <link rel="icon" href="../../static/dark_jurassic_icon_nobg.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/styles.min.css">
+</head>
+<body>
+<header class="banner">
+    <img src="../../static/banner.png" alt="Website Banner">
+</header>
+<nav>
+    <div class="nav-left">
+        <a href="/">Accueil</a>
+        <a href="/categories">Catégories</a>
+        <a href="/topic/new">Créer un topic</a>
+        <a href="/reports">Reports</a>
+        <a href="/login">Connexion</a>
+    </div>
+    <div class="top-right-icons">
+        <a href="/register" class="icon-btn">
+            <img src="../../static/register.png" alt="Register">
+        </a>
+        <a href="/profile" class="icon-btn">
+            <img src="../../static/profile.png" alt="Profil">
+        </a>
+    </div>
+</nav>
+<main>
+    <h2>Signalements en attente</h2>
+    {{ if .Status }}
+        <div class="notification">{{ .Status }}</div>
+    {{ end }}
+    {{ if .Reports }}
+        <table class="reports-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Cible</th>
+                    <th>Raison</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .Reports }}
+                <tr>
+                    <td>{{ .ID }}</td>
+                    <td>{{ .TargetType }}</td>
+                    <td>{{ .TargetID }}</td>
+                    <td>{{ .Reason }}</td>
+                    <td>{{ .CreatedAtAgo }}</td>
+                    <td>
+                        <form method="POST" action="/report/resolve" style="display:inline;">
+                            <input type="hidden" name="report_id" value="{{ .ID }}">
+                            <input type="hidden" name="return_url" value="/reports">
+                            <button type="submit">Résoudre</button>
+                        </form>
+                        <form method="POST" action="/report/delete" style="display:inline;">
+                            <input type="hidden" name="report_id" value="{{ .ID }}">
+                            <input type="hidden" name="return_url" value="/reports">
+                            <button type="submit" class="danger">Supprimer</button>
+                        </form>
+                        <form method="POST" action="/report/delete-content" style="display:inline;">
+                            <input type="hidden" name="report_id" value="{{ .ID }}">
+                            <input type="hidden" name="return_url" value="/reports">
+                            <button type="submit" class="danger">Supprimer contenu</button>
+                        </form>
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    {{ else }}
+        <p>Aucun signalement en attente.</p>
+    {{ end }}
+</main>
+</body>
+</html>

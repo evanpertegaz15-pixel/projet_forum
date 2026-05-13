@@ -132,3 +132,28 @@ func (handler *PostHandler) CreateReply(w http.ResponseWriter, r *http.Request) 
     }
     http.Redirect(w, r, "/topic?id="+strconv.Itoa(topicID), http.StatusSeeOther)
 }
+
+func (handler *PostHandler) DeletePost(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        utils.ErrorMethodNotAllowed(w, "Méthode non autorisée.")
+        return
+    }
+    user, ok := RequireAuth(w, r, handler.Auth)
+    if !ok { return }
+    postID, err := strconv.Atoi(r.FormValue("post_id"))
+    if err != nil {
+        utils.ErrorBadRequest(w, "ID de post invalide.")
+        return
+    }
+    err = handler.Posts.DeletePost(user, postID)
+    if err != nil {
+        utils.ErrorForbidden(w, "Permission refusée.")
+        return
+    }
+    topicID := r.FormValue("topic_id")
+    if topicID != "" {
+        http.Redirect(w, r, "/topic?id="+topicID, http.StatusSeeOther)
+    } else {
+        http.Redirect(w, r, "/", http.StatusSeeOther)
+    }
+}
