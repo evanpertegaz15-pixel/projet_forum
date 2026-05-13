@@ -38,7 +38,7 @@
         {{ range .Posts }}
             <div class="post">
                 <p>{{ .Content }}</p>
-                <small>Par {{ .Username }} {{ .CreatedAtAgo }}</small>
+                <small>Par {{ .Username }} - {{ .CreatedAtAgo }}</small>
             </div>
         {{ else }}
             <p>Aucun post pour l’instant.</p>
