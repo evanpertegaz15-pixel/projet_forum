@@ -35,6 +35,10 @@ func (service *PostService) GetReplies(postID int) ([]models.Post, error) {
     return service.Posts.GetReplies(postID)
 }
 
+func (service *PostService) GetPostsWithRepliesByTopic(topicID int) ([]models.PostWithReplies, error) {
+    return service.Posts.GetPostsWithRepliesByTopic(topicID)
+}
+
 /*
 // Modifier un post
 func (s *PostService) UpdatePost(

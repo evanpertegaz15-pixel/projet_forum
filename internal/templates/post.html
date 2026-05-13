@@ -58,6 +58,7 @@
         {{ end }}
     </section>
     <hr>
+    {{ if not .Post.ParentID }}
     <section class="reply-form">
         <h3>Répondre :</h3>
         <form method="POST" action="/reply">
@@ -67,6 +68,11 @@
             <button type="submit">Envoyer</button>
         </form>
     </section>
+    {{ else }}
+    <section>
+        <p>Ce post est une réponse et ne peut pas recevoir d'autres réponses.</p>
+    </section>
+    {{ end }}
 </main>
 
 <footer>

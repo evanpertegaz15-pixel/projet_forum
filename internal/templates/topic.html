@@ -35,10 +35,33 @@
 <main>
     <h2>Posts du topic : {{ .Topic.Title }}</h2>
     <section>
-        {{ range .Posts }}
-            <div class="post">
-                <p>{{ .Content }}</p>
-                <small>Par {{ .Username }} - {{ .CreatedAtAgo }}</small>
+        {{ range .PostsWithReplies }}
+            <div class="post-card">
+                <h3>{{ .Post.Username }} a écrit :</h3>
+                <p>{{ .Post.Content }}</p>
+                <small>{{ .Post.CreatedAtAgo }}</small>
+                <!-- Formulaire de réponse pour les posts principaux -->
+                <div class="reply-form">
+                    <form method="POST" action="/reply">
+                        <input type="hidden" name="topic_id" value="{{ .Post.TopicID }}">
+                        <input type="hidden" name="parent_id" value="{{ .Post.ID }}">
+                        <textarea name="content" placeholder="Répondre à ce post..." rows="2" required></textarea>
+                        <button type="submit">Répondre</button>
+                    </form>
+                </div>
+                <!-- Affichage des réponses -->
+                {{ if .Replies }}
+                    <div class="replies">
+                        <h4>Réponses :</h4>
+                        {{ range .Replies }}
+                        <div class="reply-card">
+                            <p><strong>{{ .Username }}</strong> :</p>
+                            <p>{{ .Content }}</p>
+                            <small>{{ .CreatedAtAgo }}</small>
+                        </div>
+                        {{ end }}
+                    </div>
+                {{ end }}
             </div>
         {{ else }}
             <p>Aucun post pour l’instant.</p>

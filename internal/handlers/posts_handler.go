@@ -104,10 +104,19 @@ func (handler *PostHandler) CreateReply(w http.ResponseWriter, r *http.Request) 
     topicID, _ := strconv.Atoi(r.FormValue("topic_id"))
     parentID, _ := strconv.Atoi(r.FormValue("parent_id"))
     content := r.FormValue("content")
-    _, err := handler.Posts.CreateReply(topicID, user.ID, parentID, content)
+    parentPost, err := handler.Posts.Posts.GetPostByID(parentID)
+    if err != nil {
+        utils.ErrorInternal(w, "Erreur lors de la vérification du post parent.")
+        return
+    }
+    if parentPost.ParentID != nil {
+        utils.ErrorBadRequest(w, "Impossible de répondre à une réponse.")
+        return
+    }
+    _, err = handler.Posts.CreateReply(topicID, user.ID, parentID, content)
     if err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
-    http.Redirect(w, r, "/post?id="+strconv.Itoa(parentID), http.StatusSeeOther)
+    http.Redirect(w, r, "/topic?id="+strconv.Itoa(topicID), http.StatusSeeOther)
 }

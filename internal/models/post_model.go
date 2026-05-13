@@ -16,6 +16,11 @@ type Post struct {
     CreatedAtAgo string
 }
 
+type PostWithReplies struct {
+    Post    Post
+    Replies []Post
+}
+
 type PostModel struct {
     DB *sql.DB
 }
@@ -29,7 +34,7 @@ func (model *PostModel) GetPostsByTopic(topicID int) ([]Post, error) {
         SELECT p.id, p.topic_id, p.user_id, u.username, p.content, p.created_at
         FROM posts p
         JOIN users u ON p.user_id = u.id
-        WHERE p.topic_id = ?
+        WHERE p.topic_id = ? AND p.parent_id IS NULL
         ORDER BY p.created_at ASC
     `, topicID)
     if err != nil {
@@ -95,6 +100,25 @@ func (model *PostModel) GetReplies(postID int) ([]Post, error) {
     return replies, nil
 }
 
+func (model *PostModel) GetPostsWithRepliesByTopic(topicID int) ([]PostWithReplies, error) {
+    mainPosts, err := model.GetPostsByTopic(topicID)
+    if err != nil {
+        return nil, err
+    }
+    var postsWithReplies []PostWithReplies
+    for _, mainPost := range mainPosts {
+        replies, err := model.GetReplies(mainPost.ID)
+        if err != nil {
+            return nil, err
+        }
+        postsWithReplies = append(postsWithReplies, PostWithReplies{
+            Post:    mainPost,
+            Replies: replies,
+        })
+    }
+    return postsWithReplies, nil
+}
+
 func (model *PostModel) GetPostByID(postID int) (Post, error) {
     row := model.DB.QueryRow(`
         SELECT p.id, p.topic_id, p.user_id, u.username, p.content, p.parent_id, p.created_at
@@ -102,10 +126,15 @@ func (model *PostModel) GetPostByID(postID int) (Post, error) {
         JOIN users u ON p.user_id = u.id
         WHERE p.id = ?
     `, postID)
-    var p Post
-    err := row.Scan(&p.ID, &p.TopicID, &p.UserID, &p.Username, &p.Content, &p.ParentID, &p.CreatedAt)
+    var post Post
+    var parentID sql.NullInt64
+    err := row.Scan(&post.ID, &post.TopicID, &post.UserID, &post.Username, &post.Content, &parentID, &post.CreatedAt)
     if err != nil {
         return Post{}, err
     }
-    return p, nil
+    if parentID.Valid {
+        parentIDInt := int(parentID.Int64)
+        post.ParentID = &parentIDInt
+    }
+    return post, nil
 }

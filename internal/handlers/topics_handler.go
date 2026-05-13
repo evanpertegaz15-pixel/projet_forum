@@ -55,21 +55,24 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
         utils.ErrorNotFound(w, "Topic introuvable.")
         return
     }
-    posts, err := handler.Posts.GetPostsByTopic(topicID)
+    postsWithReplies, err := handler.Posts.GetPostsWithRepliesByTopic(topicID)
     if err != nil {
         utils.ErrorInternal(w, "Erreur interne.")
         return
     }
     topic.CreatedAtAgo = utils.TimeAgo(topic.CreatedAt)
-    for i := range posts {
-        posts[i].CreatedAtAgo = utils.TimeAgo(posts[i].CreatedAt)
+    for i := range postsWithReplies {
+        postsWithReplies[i].Post.CreatedAtAgo = utils.TimeAgo(postsWithReplies[i].Post.CreatedAt)
+        for j := range postsWithReplies[i].Replies {
+            postsWithReplies[i].Replies[j].CreatedAtAgo = utils.TimeAgo(postsWithReplies[i].Replies[j].CreatedAt)
+        }
     }
     data := struct {
-        Topic models.Topic
-        Posts []models.Post
+        Topic            models.Topic
+        PostsWithReplies []models.PostWithReplies
     }{
-        Topic: topic,
-        Posts: posts,
+        Topic:            topic,
+        PostsWithReplies: postsWithReplies,
     }
     utils.Render(w,"./internal/templates/topic.html", data)
 }
