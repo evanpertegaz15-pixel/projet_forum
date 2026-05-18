@@ -14,14 +14,16 @@ type TopicHandler struct {
     Posts  *services.PostService
     Categories *services.CategoryService
     Auth *services.AuthService
+    Likes *services.LikeService
 }
 
-func NewTopicHandler(topics *services.TopicService, posts *services.PostService, categories *services.CategoryService, auth *services.AuthService) *TopicHandler {
+func NewTopicHandler(topics *services.TopicService, posts *services.PostService, categories *services.CategoryService, auth *services.AuthService, likes *services.LikeService) *TopicHandler {
     return &TopicHandler{
         Topics: topics,
         Posts:  posts,
         Categories: categories,
         Auth:   auth,
+        Likes:  likes,
     }
 }
 
@@ -61,14 +63,31 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
         return
     }
     topic.CreatedAtAgo = utils.TimeAgo(topic.CreatedAt)
+    topicLikes, err := handler.Likes.CountTopicLikes(topicID)
+    if err != nil {
+        utils.ErrorInternal(w, "Erreur interne.")
+        return
+    }
+    topic.LikesCount = topicLikes
     for i := range postsWithReplies {
         postsWithReplies[i].Post.CreatedAtAgo = utils.TimeAgo(postsWithReplies[i].Post.CreatedAt)
+        count, err := handler.Likes.CountPostLikes(postsWithReplies[i].Post.ID)
+        if err != nil {
+            utils.ErrorInternal(w, "Erreur interne.")
+            return
+        }
+        postsWithReplies[i].Post.LikesCount = count
         for j := range postsWithReplies[i].Replies {
             postsWithReplies[i].Replies[j].CreatedAtAgo = utils.TimeAgo(postsWithReplies[i].Replies[j].CreatedAt)
+            replyCount, err := handler.Likes.CountPostLikes(postsWithReplies[i].Replies[j].ID)
+            if err != nil {
+                utils.ErrorInternal(w, "Erreur interne.")
+                return
+            }
+            postsWithReplies[i].Replies[j].LikesCount = replyCount
         }
     }
     user, _ := RequireAuth(w, r, handler.Auth)
-
     reportStatus := ""
     switch r.URL.Query().Get("report_status") {
     case "success":
@@ -76,7 +95,6 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
     case "error":
         reportStatus = "Erreur lors du signalement."
     }
-
     data := struct {
         Topic            models.Topic
         PostsWithReplies []models.PostWithReplies

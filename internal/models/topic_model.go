@@ -12,6 +12,7 @@ type Topic struct {
     Title      string
     CreatedAt  time.Time
     CreatedAtAgo string
+    LikesCount int
 }
 
 type TopicModel struct {

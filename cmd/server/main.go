@@ -47,7 +47,7 @@ func main() {
 	homeHandler := handlers.NewHomeHandler(userService)
 	authHandler := handlers.NewAuthHandler(authService)
 	categoryHandler := handlers.NewCategoryHandler(categoryService)
-	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService)
+	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService, likeService)
 	postHandler := handlers.NewPostHandler(postService, authService)
 	likesHandler := handlers.NewLikesHandler(likeService, authService)
 	reportHandler := handlers.NewReportHandler(reportService, authService)

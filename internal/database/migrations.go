@@ -146,6 +146,10 @@ func RunMigrations(db *sql.DB) {
             FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE,
             FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE
         );`,
+		`DELETE FROM likes WHERE rowid NOT IN (SELECT MIN(rowid) FROM likes GROUP BY user_id, post_id, comment_id, topic_id);`,
+		`CREATE UNIQUE INDEX IF NOT EXISTS idx_likes_unique_post ON likes(user_id, post_id) WHERE comment_id IS NULL AND topic_id IS NULL;`,
+		`CREATE UNIQUE INDEX IF NOT EXISTS idx_likes_unique_comment ON likes(user_id, comment_id) WHERE post_id IS NULL AND topic_id IS NULL;`,
+		`CREATE UNIQUE INDEX IF NOT EXISTS idx_likes_unique_topic ON likes(user_id, topic_id) WHERE post_id IS NULL AND comment_id IS NULL;`,
 
 		// NOTIFICATIONS
 		`CREATE TABLE IF NOT EXISTS notifications (

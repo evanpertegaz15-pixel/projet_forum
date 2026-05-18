@@ -27,7 +27,7 @@ func NewLikeModel(db *sql.DB) *LikeModel {
 
 func (model *LikeModel) CreateLike(userID, postID, commentID, topicID int) error {
 	query := `
-		INSERT INTO likes (user_id, post_id, comment_id, topic_id, value, created_at)
+		INSERT OR IGNORE INTO likes (user_id, post_id, comment_id, topic_id, value, created_at)
 		VALUES (?, ?, ?, ?, ?, ?)
 	`
 	var postVal interface{} = nil
