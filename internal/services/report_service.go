@@ -1,6 +1,7 @@
 package services
 
 import (
+	"database/sql"
 	"errors"
 	"forum-dark-jurassic/internal/models"
 	"forum-dark-jurassic/internal/utils"
@@ -65,6 +66,10 @@ func (s *ReportService) GetAllReports(user *models.User) ([]models.Report, error
 	for i := range reports {
 		reports[i].CreatedAtAgo = utils.TimeAgo(reports[i].CreatedAt)
 	}
+	reports, err = s.populateReportDetails(reports)
+	if err != nil {
+		return nil, err
+	}
 	return reports, nil
 }
 
@@ -78,6 +83,50 @@ func (s *ReportService) GetOpenReports(user *models.User) ([]models.Report, erro
 	}
 	for i := range reports {
 		reports[i].CreatedAtAgo = utils.TimeAgo(reports[i].CreatedAt)
+	}
+	reports, err = s.populateReportDetails(reports)
+	if err != nil {
+		return nil, err
+	}
+	return reports, nil
+}
+
+func (service *ReportService) populateReportDetails(reports []models.Report) ([]models.Report, error) {
+	for i := range reports {
+		if reports[i].TargetType == "post" {
+			post, err := service.Posts.GetPostByID(reports[i].TargetID)
+			if err != nil {
+				if err == sql.ErrNoRows {
+					reports[i].TargetContent = "(contenu supprimé ou introuvable)"
+				} else {
+					return nil, err
+				}
+			} else {
+				reports[i].TargetContent = post.Content
+				topic, err := service.Topics.GetTopicByID(post.TopicID)
+				if err != nil {
+					if err == sql.ErrNoRows {
+						reports[i].TopicTitle = "(topic supprimé)"
+					} else {
+						return nil, err
+					}
+				} else {
+					reports[i].TopicTitle = topic.Title
+				}
+			}
+		} else if reports[i].TargetType == "topic" {
+			topic, err := service.Topics.GetTopicByID(reports[i].TargetID)
+			if err != nil {
+				if err == sql.ErrNoRows {
+					reports[i].TargetTitle = "(topic supprimé ou introuvable)"
+				} else {
+					return nil, err
+				}
+			} else {
+				reports[i].TargetTitle = topic.Title
+				reports[i].TopicTitle = topic.Title
+			}
+		}
 	}
 	return reports, nil
 }

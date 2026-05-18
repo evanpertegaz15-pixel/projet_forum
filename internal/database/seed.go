@@ -88,6 +88,310 @@ func Seed(db *sql.DB) {
     }
 
     _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Dinosaures en liberté'
+        FROM categories c, users u
+        WHERE c.name = 'Général' AND u.username = 'admin'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Dinosaures en liberté')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic général :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Nouvelles découvertes sur le parc'
+        FROM categories c, users u
+        WHERE c.name = 'Isla Nublar' AND u.username = 'PT1TEFUTEE86'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Nouvelles découvertes sur le parc')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic Isla Nublar :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Les herbivores sont-ils sous-estimés ?'
+        FROM categories c, users u
+        WHERE c.name = 'Herbivores' AND u.username = 'Esth3rSt0nE'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Les herbivores sont-ils sous-estimés ?')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic Herbivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Les plus dangereux omnivores'
+        FROM categories c, users u
+        WHERE c.name = 'Omnivores' AND u.username = 'BoBen'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Les plus dangereux omnivores')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic Omnivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Qui est le vrai roi du parc ?'
+        FROM categories c, users u
+        WHERE c.name = 'Carnivores' AND u.username = 'G3ek05aure'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Qui est le vrai roi du parc ?')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic Carnivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Théorie du retour des ADN perdus'
+        FROM categories c, users u
+        WHERE c.name = 'Théories' AND u.username = 'admin'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Théorie du retour des ADN perdus')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic Théories :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Incident du tyrannosaure hier'
+        FROM categories c, users u
+        WHERE c.name = 'Incidents' AND u.username = 'PT1TEFUTEE86'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Incident du tyrannosaure hier')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic Incidents :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Bienvenue sur ce topic dédié aux dinosaures en liberté. Partagez vos meilleures observations et vos questions.'
+        FROM topics t, users u
+        WHERE t.title = 'Dinosaures en liberté' AND u.username = 'admin'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Bienvenue sur ce topic dédié aux dinosaures en liberté.%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post général :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'La nouvelle zone d"Isla Nublar semble être un terrain de jeu parfait pour les explorateurs. Qu"en pensez-vous ?'
+        FROM topics t, users u
+        WHERE t.title = 'Nouvelles découvertes sur le parc' AND u.username = 'PT1TEFUTEE86'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'La nouvelle zone d Isla Nublar semble être un terrain de jeu parfait%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post Isla Nublar :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Je pense que les herbivores sont souvent sous-estimés. Ils ont une place cruciale dans l"équilibre du parc.'
+        FROM topics t, users u
+        WHERE t.title = 'Les herbivores sont-ils sous-estimés ?' AND u.username = 'Esth3rSt0nE'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Je pense que les herbivores sont souvent sous-estimés.%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post Herbivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Les omnivores les plus dangereux sont ceux qui savent se fondre dans la nature. Quels sont vos favoris ?'
+        FROM topics t, users u
+        WHERE t.title = 'Les plus dangereux omnivores' AND u.username = 'BoBen'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Les omnivores les plus dangereux sont ceux qui savent se fondre%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post Omnivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Ce sera un débat sans fin, mais je parie que le tyrannosaure règne en maître. Qui est selon vous le roi ?'
+        FROM topics t, users u
+        WHERE t.title = 'Qui est le vrai roi du parc ?' AND u.username = 'G3ek05aure'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Ce sera un débat sans fin, mais je parie que le tyrannosaure règne en maître.%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post Carnivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'La théorie du retour des ADN perdus est fascinante : si on pouvait recréer des espèces éteintes, quels seraient les enjeux ?'
+        FROM topics t, users u
+        WHERE t.title = 'Théorie du retour des ADN perdus' AND u.username = 'admin'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'La théorie du retour des ADN perdus est fascinante%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post Théories :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Un incident a été signalé avec le tyrannosaure hier soir. Quelqu"un a-t-il des infos supplémentaires ?'
+        FROM topics t, users u
+        WHERE t.title = 'Incident du tyrannosaure hier' AND u.username = 'PT1TEFUTEE86'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Un incident a été signalé avec le tyrannosaure hier soir.%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post Incidents :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Photos et vidéos du parc'
+        FROM categories c, users u
+        WHERE c.name = 'Général' AND u.username = 'BoBen'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Photos et vidéos du parc')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic photos :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Comportement social des herbivores'
+        FROM categories c, users u
+        WHERE c.name = 'Herbivores' AND u.username = 'PT1TEFUTEE86'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Comportement social des herbivores')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic comportement herbivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Voici quelques photos récentes que j"ai prises lors de ma dernière patrouille.'
+        FROM topics t, users u
+        WHERE t.title = 'Photos et vidéos du parc' AND u.username = 'BoBen'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Voici quelques photos récentes%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post photos :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Les herbivores forment souvent des groupes protecteurs autour des petits. J"ai observé ce comportement hier.'
+        FROM topics t, users u
+        WHERE t.title = 'Comportement social des herbivores' AND u.username = 'Esth3rSt0nE'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Les herbivores forment souvent des groupes protecteurs%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post comportement herbivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content, parent_id)
+        SELECT t.id, u.id, 'Super observation, merci pour les photos !', p.id
+        FROM topics t, users u, posts p
+        WHERE t.title = 'Photos et vidéos du parc' AND u.username = 'Esth3rSt0nE'
+          AND p.topic_id = t.id AND p.user_id = (SELECT id FROM users WHERE username = 'BoBen')
+          AND p.content LIKE 'Voici quelques photos récentes%'
+          AND NOT EXISTS (SELECT 1 FROM posts WHERE parent_id = p.id AND content LIKE 'Super observation, merci pour les photos !')
+    `)
+    if err != nil {
+        log.Println("Erreur seed reply photos :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content, parent_id)
+        SELECT t.id, u.id, 'Est-ce que quelqu"un a remarqué des changements de migration cette saison ?', p.id
+        FROM topics t, users u, posts p
+        WHERE t.title = 'Comportement social des herbivores' AND u.username = 'G3ek05aure'
+          AND p.topic_id = t.id AND p.user_id = (SELECT id FROM users WHERE username = 'Esth3rSt0nE')
+          AND p.content LIKE 'Les herbivores forment souvent des groupes protecteurs%'
+          AND NOT EXISTS (SELECT 1 FROM posts WHERE parent_id = p.id AND content LIKE 'Est-ce que quelqu un a remarqué des changements de migration cette saison ?')
+    `)
+    if err != nil {
+        log.Println("Erreur seed reply herbivores :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Zones interdites et périmètres de sécurité'
+        FROM categories c, users u
+        WHERE c.name = 'Isla Nublar' AND u.username = 'admin'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Zones interdites et périmètres de sécurité')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic zones interdites :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Des rangers ont récemment renforcé le périmètre près de la côte nord. Prudence recommandée.'
+        FROM topics t, users u
+        WHERE t.title = 'Zones interdites et périmètres de sécurité' AND u.username = 'admin'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Des rangers ont récemment renforcé le périmètre%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post zones interdites :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO topics (category_id, user_id, title)
+        SELECT c.id, u.id, 'Éthique de la recréation d"espèces'
+        FROM categories c, users u
+        WHERE c.name = 'Théories' AND u.username = 'BoBen'
+        AND NOT EXISTS (SELECT 1 FROM topics WHERE title = 'Éthique de la recréation d espèces')
+    `)
+    if err != nil {
+        log.Println("Erreur seed topic éthique :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO posts (topic_id, user_id, content)
+        SELECT t.id, u.id, 'Si l"on recrée des espèces, devons-nous les protéger ou les étudier seulement ?'
+        FROM topics t, users u
+        WHERE t.title = 'Éthique de la recréation d espèces' AND u.username = 'admin'
+        AND NOT EXISTS (SELECT 1 FROM posts WHERE topic_id = t.id AND user_id = u.id AND content LIKE 'Si l on recrée des espèces, devons-nous les protéger%')
+    `)
+    if err != nil {
+        log.Println("Erreur seed post éthique :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO reports (reporter_id, target_type, target_id, reason, is_resolved)
+        SELECT u.id, 'post', p.id, 'Contenu trop sensationnaliste', 0
+        FROM users u, posts p
+        WHERE u.username = 'PT1TEFUTEE86'
+          AND p.content LIKE 'Bienvenue sur ce topic dédié aux dinosaures en liberté.%'
+          AND NOT EXISTS (SELECT 1 FROM reports WHERE reporter_id = u.id AND target_type = 'post' AND target_id = p.id)
+    `)
+    if err != nil {
+        log.Println("Erreur seed report 1 :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO reports (reporter_id, target_type, target_id, reason, is_resolved)
+        SELECT u.id, 'post', p.id, 'Hors sujet et agressif', 0
+        FROM users u, posts p
+        WHERE u.username = 'Esth3rSt0nE'
+          AND p.content LIKE 'Les omnivores les plus dangereux sont ceux qui savent se fondre dans la nature.%'
+          AND NOT EXISTS (SELECT 1 FROM reports WHERE reporter_id = u.id AND target_type = 'post' AND target_id = p.id)
+    `)
+    if err != nil {
+        log.Println("Erreur seed report 2 :", err)
+    }
+
+    _, err = db.Exec(`
+        INSERT INTO reports (reporter_id, target_type, target_id, reason, is_resolved)
+        SELECT u.id, 'post', p.id, 'Signalement urgent, possible fausse information', 0
+        FROM users u, posts p
+        WHERE u.username = 'BoBen'
+          AND p.content LIKE 'Un incident a été signalé avec le tyrannosaure hier soir.%'
+          AND NOT EXISTS (SELECT 1 FROM reports WHERE reporter_id = u.id AND target_type = 'post' AND target_id = p.id)
+    `)
+    if err != nil {
+        log.Println("Erreur seed report 3 :", err)
+    }
+
+    _, err = db.Exec(`
         INSERT OR IGNORE INTO settings (key, value) VALUES
             ('forum_name', 'Dark Jurassic'),
             ('forum_description', 'Le forum des théories les plus folles en rapport avec les dinosaures.'),
@@ -104,5 +408,16 @@ func Seed(db *sql.DB) {
         `)
     if err != nil {
         log.Println("Erreur seed settings :", err)
+    }
+
+    _, err = db.Exec(`
+                INSERT INTO reports (reporter_id, target_type, target_id, reason, is_resolved)
+                SELECT u.id, 'topic', t.id, 'Sujet encourage des expériences contraires à l''éthique', 0
+        FROM users u, topics t
+        WHERE u.username = 'Esth3rSt0nE' AND t.title = 'Éthique de la recréation d espèces'
+          AND NOT EXISTS (SELECT 1 FROM reports WHERE reporter_id = u.id AND target_type = 'topic' AND target_id = t.id)
+    `)
+    if err != nil {
+        log.Println("Erreur seed report topic :", err)
     }
 }

@@ -39,6 +39,8 @@
                     <th>ID</th>
                     <th>Type</th>
                     <th>Cible</th>
+                    <th>Topic lié</th>
+                    <th>Contenu / Sujet</th>
                     <th>Raison</th>
                     <th>Date</th>
                     <th>Actions</th>
@@ -49,7 +51,9 @@
                 <tr>
                     <td>{{ .ID }}</td>
                     <td>{{ .TargetType }}</td>
-                    <td>{{ .TargetID }}</td>
+                    <td>{{ if eq .TargetType "post" }}Post #{{ .TargetID }}{{ else if eq .TargetType "topic" }}Topic #{{ .TargetID }}{{ else }}{{ .TargetType }} #{{ .TargetID }}{{ end }}</td>
+                    <td>{{ if .TopicTitle }}{{ .TopicTitle }}{{ else }}-{{ end }}</td>
+                    <td>{{ if .TargetContent }}{{ .TargetContent }}{{ else if .TargetTitle }}{{ .TargetTitle }}{{ else }}-{{ end }}</td>
                     <td>{{ .Reason }}</td>
                     <td>{{ .CreatedAtAgo }}</td>
                     <td>

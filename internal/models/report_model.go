@@ -1,19 +1,21 @@
 package models
-// panneau admin, enregister un report
 import (
 	"database/sql"
 	"time"
 )
 
 type Report struct {
-	ID          int
-	ReporterID  int
-	TargetType  string // "post", "comment", "user"
-	TargetID    int
-	Reason      string
-	IsResolved  bool
-	CreatedAt   time.Time
-	CreatedAtAgo string
+	ID             int
+	ReporterID     int
+	TargetType     string // "post", "comment", "user"
+	TargetID       int
+	Reason         string
+	IsResolved     bool
+	CreatedAt      time.Time
+	CreatedAtAgo   string
+	TargetTitle    string
+	TargetContent  string
+	TopicTitle     string
 }
 
 type ReportModel struct {
