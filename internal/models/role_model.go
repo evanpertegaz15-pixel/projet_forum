@@ -91,3 +91,23 @@ func (model *RoleModel) UserHasRole(userID int, roleName string) (bool, error) {
     }
     return count > 0, nil
 }
+
+func (model *RoleModel) GetAllRoles() ([]Role, error) {
+    rows, err := model.DB.Query(`
+        SELECT id, name, label
+        FROM roles
+    `)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+    roles := []Role{}
+    for rows.Next() {
+        var r Role
+        if err := rows.Scan(&r.ID, &r.Name, &r.Label); err != nil {
+            return nil, err
+        }
+        roles = append(roles, r)
+    }
+    return roles, nil
+}
