@@ -120,3 +120,19 @@ func (auth *AuthService) UserHasRole(user *models.User, role string) bool {
     }
     return false
 }
+
+func (auth *AuthService) UpdateEmail(userID int, newEmail string) error {
+	return auth.Users.UpdateEmail(userID, newEmail)
+}
+
+func (auth *AuthService) UpdateUsername(userID int, newUsername string) error {
+	return auth.Users.UpdateUsername(userID, newUsername)
+}
+
+func (auth *AuthService) UpdatePassword(userID int, newPassword string) error {
+	hashed, err := utils.HashPassword(newPassword)
+	if err != nil {
+		return err
+	}
+	return auth.Users.UpdatePassword(userID, hashed)
+}

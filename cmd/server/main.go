@@ -35,6 +35,8 @@ func main() {
 	categoryModel := models.NewCategoryModel(db)
 	topicModel := models.NewTopicModel(db)
 	likeModel := models.NewLikeModel(db)
+	roleModel := models.NewRoleModel(db)
+	userRoleModel := models.NewUserRoleModel(db)
 
 	userService := services.NewUserService(userModel)
 	authService := services.NewAuthService(userModel, sessionModel)
@@ -43,6 +45,7 @@ func main() {
 	topicService := services.NewTopicService(topicModel)
 	likeService := services.NewLikeService(likeModel, postModel, topicModel)
 	reportService := services.NewReportService(reportModel, postModel, topicModel, userModel)
+	userManagementService := services.NewUserManagementService(userModel, userRoleModel, roleModel)
 
 	homeHandler := handlers.NewHomeHandler(userService)
 	authHandler := handlers.NewAuthHandler(authService)
@@ -51,6 +54,7 @@ func main() {
 	postHandler := handlers.NewPostHandler(postService, authService)
 	likesHandler := handlers.NewLikesHandler(likeService, authService)
 	reportHandler := handlers.NewReportHandler(reportService, authService)
+	userManagementHandler := handlers.NewUserManagementHandler(userManagementService, authService)
 
 	// ─── Routes ───────────────────────────────────────────────────────────────
 	http.HandleFunc("/", homeHandler.ShowHome)
@@ -70,6 +74,8 @@ func main() {
 	})
 	http.HandleFunc("/logout", authHandler.Logout)
 	http.HandleFunc("/profile", authHandler.Profile)
+	http.HandleFunc("/profile/edit", authHandler.ShowEditProfile)
+	http.HandleFunc("/profile/update", authHandler.UpdateProfile)
 	http.HandleFunc("/delete/account", authHandler.DeleteAccount)
 	http.HandleFunc("/topic/create", topicHandler.CreateTopic)
 	http.HandleFunc("/topic/new", topicHandler.ShowNewTopic)
@@ -88,6 +94,11 @@ func main() {
 	http.HandleFunc("/report/resolve", reportHandler.ResolveReport)
 	http.HandleFunc("/report/delete", reportHandler.DeleteReport)
 	http.HandleFunc("/report/delete-content", reportHandler.DeleteReportedContent)
+	http.HandleFunc("/admin/users", userManagementHandler.ListUsers)
+	http.HandleFunc("/admin/users/role", userManagementHandler.AssignRole)
+	http.HandleFunc("/admin/users/role/remove", userManagementHandler.RemoveRole)
+	http.HandleFunc("/admin/users/block", userManagementHandler.BlockUser)
+	http.HandleFunc("/admin/users/unblock", userManagementHandler.UnblockUser)
 	
 	// ─── Google OAuth Routes ──────────────────────────────────────────────────
 	http.HandleFunc("/auth/google/login", authHandler.GoogleLogin)

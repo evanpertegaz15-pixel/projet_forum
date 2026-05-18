@@ -170,3 +170,18 @@ func (model *UserModel) DeleteUser(id int) error {
     _, err := model.DB.Exec("DELETE FROM users WHERE id = ?", id)
     return err
 }
+
+func (model *UserModel) UpdateEmail(userID int, newEmail string) error {
+	_, err := model.DB.Exec(`UPDATE users SET email = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, newEmail, userID)
+	return err
+}
+
+func (model *UserModel) UpdateUsername(userID int, newUsername string) error {
+	_, err := model.DB.Exec(`UPDATE users SET username = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, newUsername, userID)
+	return err
+}
+
+func (model *UserModel) UpdatePassword(userID int, newPasswordHash string) error {
+	_, err := model.DB.Exec(`UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, newPasswordHash, userID)
+	return err
+}
