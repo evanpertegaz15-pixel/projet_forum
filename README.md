@@ -16,7 +16,7 @@ Dark Jurassic est un forum web développé en **Go** (backend) avec **HTML/CSS**
 
 ### Prérequis
  
-Il faut avoir **Go 1.22 ou supérieur** installé sur sa machine.
+Il faut avoir **Go 1.25** installé sur sa machine.
  
 Pour vérifier :
  
