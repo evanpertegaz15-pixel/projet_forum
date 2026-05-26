@@ -1,49 +1,37 @@
-/* =============================================================================
-   RESET & BASE
-   ============================================================================= */
+keep it like this but minimize my css 
 
 * {
     box-sizing: border-box;
 }
-
 body {
     margin: 0 auto;
     padding: 0;
     max-width: none;
     background-color: #121212;
-    color: white;
+    color: #fff;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
-
-
-/* =============================================================================
-   TYPOGRAPHY
-   ============================================================================= */
-
-h1, h2, a, p, li, label {
-    color: white;
+h1,
+h2,
+a,
+p,
+li,
+label {
+    color: #fff;
     font-family: Arial, Helvetica, sans-serif;
 }
-
 .fun-fact {
     font-size: 20px;
     line-height: 1.5;
 }
-
-
-/* =============================================================================
-   LAYOUT — Page Structure
-   ============================================================================= */
-
 header {
     text-align: center;
     padding: 0;
     background-color: #0e1113;
 }
-
 main {
     display: flex;
     flex-direction: column;
@@ -53,23 +41,15 @@ main {
     flex: 1;
     padding: 30px 0;
 }
-
 footer {
     text-align: center;
     padding: 10px;
     background-color: #1f1f1f;
 }
-
 section {
     padding: 15px;
     margin-bottom: 0;
 }
-
-
-/* =============================================================================
-   LAYOUT — Three-Column Container
-   ============================================================================= */
-
 .container {
     display: flex;
     gap: 0;
@@ -79,11 +59,9 @@ section {
     border-radius: 10px;
     align-self: stretch;
 }
-
 .right {
     margin-top: 30px;
 }
-
 .left,
 .right {
     width: 250px;
@@ -93,16 +71,13 @@ section {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-
 .left::-webkit-scrollbar,
 .right::-webkit-scrollbar {
     display: none;
 }
-
 .left {
     border-right: 1px solid grey;
 }
-
 .center {
     flex: 1;
     min-width: 0;
@@ -116,50 +91,32 @@ section {
     display: flex;
     flex-direction: column;
 }
-
 .center::-webkit-scrollbar {
     display: none;
 }
-
 .left,
 .center,
 .right {
     min-width: 0;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Category List
-   ============================================================================= */
-
 .category-item img {
     width: 200px;
     object-fit: contain;
     transition:
-    width 2s,
-    height 2s,
-    background-color 2s,
-    rotate 2s;    
+        width 2s,
+        height 2s,
+        background-color 2s,
+        rotate 2s;
 }
-
 .category-item h3:hover {
-    color: #999999;
+    color: #999;
     transition-duration: 0.2s;
 }
-
-
-
 .section-title {
     padding-bottom: 35px;
     margin-bottom: 35px;
     border-bottom: 1px solid grey;
 }
-
-
-/* =============================================================================
-   NAVIGATION
-   ============================================================================= */
-
 nav {
     display: flex;
     justify-content: center;
@@ -168,83 +125,65 @@ nav {
     height: 54px;
     padding: 0 20px;
     max-width: 850px;
-    margin: 20px auto 0;       
+    margin: 20px auto 0;
     background-color: #181818;
     border-radius: 8px;
 }
-
 nav a {
-    color: white;
+    color: #fff;
     margin: 0 10px;
     text-decoration: none;
 }
-
 nav a:hover {
-    color: #00ff88;
+    color: #0f8;
     transition-duration: 0.3s;
 }
-
 .nav-left a {
     font-size: 18px;
     padding: 10px 15px;
 }
-
 .nav-right {
     display: flex;
     gap: 10px;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Forms
-   ============================================================================= */
-
-input, textarea, select {
+input,
+textarea,
+select {
     width: 100%;
     padding: 8px 10px;
     margin: 8px 0;
     border: none;
     border-radius: 5px;
     background-color: #2a2a2a;
-    color: white;
+    color: #fff;
     outline: none;
 }
-
 form:not(.search-bar) {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
-
 form:not(.search-bar) button {
     width: 100%;
     padding: 10px;
     margin-top: 10px;
-    background-color: #00ff88;
+    background-color: #0f8;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-    color: black;
+    font-weight: 700;
+    color: #000;
 }
-
 form:not(.search-bar) button:hover {
     background-color: #00cc6a;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Search Bar
-   ============================================================================= */
-
 .search-bar {
     display: flex;
     flex-direction: row;
     align-items: center;
     flex-shrink: 0;
 }
-
 .search-bar input {
     width: 180px;
     height: 34px;
@@ -253,7 +192,6 @@ form:not(.search-bar) button:hover {
     border-radius: 6px 0 0 6px;
     flex-shrink: 0;
 }
-
 .search-bar button {
     width: 34px;
     height: 34px;
@@ -263,70 +201,49 @@ form:not(.search-bar) button:hover {
     padding: 6px;
     border: none;
     border-radius: 0 6px 6px 0;
-    background-color: #00ff88;
-    color: black;
+    background-color: #0f8;
+    color: #000;
     cursor: pointer;
     flex-shrink: 0;
     transition-duration: 0.1s;
-
 }
-
 .search-bar button img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
-
 .search-bar button:hover {
     background-color: #00cc6a;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Buttons
-   ============================================================================= */
-
 button {
-    background: none;
+    background: 0 0;
     border: none;
     padding: 0;
     cursor: pointer;
 }
-
 button img {
     width: 24px;
     height: 24px;
 }
-
 .icon-btn {
     font-size: 22px;
     text-decoration: none;
 }
-
 .dislike {
-    background-color: #cc0000;
-    color: white;
+    background-color: #c00;
+    color: #fff;
 }
-
 .dislike:hover {
-    background-color: #ff4444;
-    color: black;
+    background-color: #f44;
+    color: #000;
 }
-
 .danger {
-    background-color: #ff4444;
+    background-color: #f44;
     margin-top: 10px;
 }
-
 .danger:hover {
-    background-color: #cc0000;
+    background-color: #c00;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Top-Right Icon Tray
-   ============================================================================= */
-
 .top-right-icons {
     position: fixed;
     top: 10px;
@@ -334,12 +251,11 @@ button img {
     z-index: 1000;
     display: flex;
     gap: 10px;
-    background: none;
+    background: 0 0;
     border: none;
     padding: 0;
     cursor: pointer;
 }
-
 .top-right-icons .icon-btn {
     font-size: 22px;
     text-decoration: none;
@@ -348,17 +264,10 @@ button img {
     padding: 8px;
     border-radius: 8px;
 }
-
 .top-right-icons img {
     width: 32px;
     height: 32px;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Post
-   ============================================================================= */
-
 .post img {
     width: 100%;
     max-height: 300px;
@@ -367,19 +276,12 @@ button img {
     border-radius: 8px;
     margin-bottom: 15px;
 }
-
 .post-actions {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
     margin-top: 10px;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Card (shared base for profile and form pages)
-   ============================================================================= */
-
 .profile-card,
 .form-card {
     background-color: #1e1e1e;
@@ -389,149 +291,108 @@ button img {
     max-width: 100%;
     text-align: center;
 }
-
 .profile-card {
-    height: 450px;
+    height: 565px;
 }
-
 .profile-card button,
 .form-card button {
     display: block;
     width: 100%;
     padding: 15px;
     margin-top: 20px;
-    background-color: #00ff88;
+    background-color: #0f8;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-    color: black;
+    font-weight: 700;
+    color: #000;
 }
-
 .profile-card button:hover,
 .form-card button:hover {
     background-color: #00cc6a;
 }
-
 .profile-card button.danger {
-    background-color: #00ff88;
+    background-color: rgb(255, 69, 69);
 }
-
 .profile-card button.danger:hover {
-    background-color: #00cc6a;
+    background-color: #cf2d2d;
 }
-
 .profile-info {
     text-align: left;
     margin-bottom: 15px;
     line-height: 1.3;
 }
-
 .profile-info p {
     margin: 8px 0;
 }
-
 hr {
     margin-top: 30px;
     margin-bottom: 30px;
     border-color: grey;
 }
-
-
-/* =============================================================================
-   COMPONENTS — Follow Section
-   ============================================================================= */
-
 .follow-section {
     margin-top: 20px;
 }
-
 .follow-section h3 {
     margin-bottom: 10px;
 }
-
 .follow-section ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .follow-section li {
     background-color: #2a2a2a;
     padding: 8px;
     margin: 5px 0;
     border-radius: 5px;
 }
-
-
-/* =============================================================================
-   UTILITIES
-   ============================================================================= */
-
 ul {
     list-style-type: none;
     padding: 0;
 }
-
 header.banner img {
     width: 100%;
     height: auto;
     display: block;
 }
-
-.login-link, .register-link, .login-link a {
+.login-link,
+.register-link,
+.login-link a {
     margin-top: 30px;
-    color: rgb(255, 255, 255);
+    color: #fff;
 }
-
-/* =============================================================================
-   CATEGORIES — FIX AFFICHAGE
-   ============================================================================= */
-
 main section ul {
     list-style: none;
     padding: 0;
     margin: 20px auto;
     width: 100%;
     max-width: 600px;
-
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
-
 main section ul li {
     margin: 0;
     padding: 0;
 }
-
-/* lien = card */
 main section ul li a {
     display: block;
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
     padding: 14px 16px;
     border-radius: 10px;
-    color: white;
+    color: #fff;
     text-decoration: none;
     font-size: 18px;
-
     transition: 0.2s ease;
 }
-
-/* hover */
 main section ul li a:hover {
-    border-color: #00ff88;
+    border-color: #0f8;
     transform: translateX(6px);
     box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
-    color: #00ff88;
+    color: #0f8;
 }
-
-
-/* =============================================================================
-   CATEGORY PAGE — HEADER BLOCK
-   ============================================================================= */
-
 .category-header {
     background: #1a1a1a;
     padding: 20px;
@@ -541,13 +402,10 @@ main section ul li a:hover {
     width: 100%;
     max-width: 800px;
 }
-
 .category-header h2 {
     margin: 0;
-    color: #00ff88;
+    color: #0f8;
 }
-
-/* topic list card */
 .topic-card {
     background: #181818;
     border: 1px solid #2a2a2a;
@@ -556,24 +414,16 @@ main section ul li a:hover {
     margin-bottom: 10px;
     transition: 0.2s;
 }
-
 .topic-card:hover {
-    border-color: #00ff88;
+    border-color: #0f8;
     transform: translateX(5px);
 }
-
-
-/* =============================================================================
-   COMPONENTS — Feed (Reddit-style home page)
-   ============================================================================= */
-
 .feed {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 12px 0;
 }
-
 .feed-item {
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
@@ -582,17 +432,17 @@ main section ul li a:hover {
     display: flex;
     gap: 12px;
     align-items: flex-start;
-    transition: border-color 0.2s, transform 0.15s;
+    transition:
+        border-color 0.2s,
+        transform 0.15s;
     text-decoration: none;
-    color: white;
+    color: #fff;
 }
-
 .feed-item:hover {
-    border-color: #00ff88;
+    border-color: #0f8;
     transform: translateX(4px);
     box-shadow: 0 0 12px rgba(0, 255, 136, 0.15);
 }
-
 .feed-vote {
     display: flex;
     flex-direction: column;
@@ -601,19 +451,16 @@ main section ul li a:hover {
     min-width: 36px;
     flex-shrink: 0;
 }
-
 .feed-vote-icon {
     font-size: 18px;
     line-height: 1;
     color: #555;
 }
-
 .feed-vote-count {
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 700;
     color: #aaa;
 }
-
 .feed-body {
     flex: 1;
     min-width: 0;
@@ -621,7 +468,6 @@ main section ul li a:hover {
     flex-direction: column;
     gap: 6px;
 }
-
 .feed-meta {
     font-size: 11px;
     color: #666;
@@ -629,19 +475,17 @@ main section ul li a:hover {
     gap: 8px;
     flex-wrap: wrap;
 }
-
 .feed-category-badge {
     background: #1e3a2a;
-    color: #00ff88;
-    border: 1px solid #00ff8844;
+    color: #0f8;
+    border: 1px solid #0f84;
     padding: 1px 7px;
     border-radius: 20px;
     font-size: 10px;
-    font-weight: bold;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
 .feed-title {
     font-size: 15px;
     font-weight: 600;
@@ -649,28 +493,24 @@ main section ul li a:hover {
     line-height: 1.4;
     word-break: break-word;
 }
-
 .feed-footer {
     font-size: 11px;
     color: #555;
 }
-
 .feed-empty {
     text-align: center;
     color: #555;
     padding: 40px 0;
     font-size: 14px;
 }
-
 .feed-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 0 14px 0;
+    padding: 10px 0 14px;
     border-bottom: 1px solid #2a2a2a;
     margin-bottom: 4px;
 }
-
 .feed-header h2 {
     font-size: 15px;
     font-weight: 700;
@@ -679,21 +519,14 @@ main section ul li a:hover {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-
 .feed-header a {
     font-size: 12px;
-    color: #00ff88;
+    color: #0f8;
     text-decoration: none;
 }
-
 .feed-header a:hover {
     text-decoration: underline;
 }
-
-/* =============================================================================
-   TOPIC PAGE — Reddit-style layout
-   ============================================================================= */
-
 .topic-main {
     display: flex;
     flex-direction: column;
@@ -705,7 +538,6 @@ main section ul li a:hover {
     gap: 16px;
     flex: 1;
 }
-
 .topic-header-card {
     width: 100%;
     background: #1a1a1a;
@@ -713,7 +545,6 @@ main section ul li a:hover {
     border-radius: 10px;
     padding: 16px 20px;
 }
-
 .topic-title-row {
     display: flex;
     align-items: center;
@@ -721,47 +552,40 @@ main section ul li a:hover {
     gap: 12px;
     flex-wrap: wrap;
 }
-
 .topic-title {
     font-size: 20px;
     font-weight: 700;
     color: #e8e8e8;
     margin: 0;
 }
-
 .topic-meta {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
 }
-
 .topic-likes {
     font-size: 13px;
-    color: #00ff88;
-    font-weight: bold;
+    color: #0f8;
+    font-weight: 700;
 }
-
 .vote-form-inline {
     display: inline;
 }
-
 .btn-vote-small {
     background: #1e3a2a;
-    color: #00ff88;
-    border: 1px solid #00ff8844;
+    color: #0f8;
+    border: 1px solid #0f84;
     border-radius: 20px;
     padding: 3px 10px;
     font-size: 12px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 700;
 }
-
 .btn-vote-small:hover {
-    background: #00ff88;
-    color: black;
+    background: #0f8;
+    color: #000;
 }
-
 .moderation-bar {
     display: flex;
     align-items: center;
@@ -771,36 +595,32 @@ main section ul li a:hover {
     padding-top: 10px;
     border-top: 1px solid #2a2a2a;
 }
-
 .form-inline {
     display: flex;
     align-items: center;
     gap: 6px;
     flex-direction: row;
 }
-
 .input-inline {
     background: #2a2a2a;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: #fff;
     padding: 4px 8px;
     font-size: 12px;
     width: 180px;
     margin: 0;
 }
-
 .input-inline-sm {
     background: #2a2a2a;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: #fff;
     padding: 3px 6px;
     font-size: 11px;
     width: 130px;
     margin: 0;
 }
-
 .btn-mod {
     background: #2a2a2a;
     color: #aaa;
@@ -810,33 +630,26 @@ main section ul li a:hover {
     font-size: 12px;
     cursor: pointer;
 }
-
 .btn-mod:hover {
     background: #333;
-    color: white;
+    color: #fff;
 }
-
 .btn-mod.danger {
     background: #3a1a1a;
-    color: #ff6666;
-    border-color: #ff444433;
+    color: #f66;
+    border-color: #f443;
     margin-top: 0;
 }
-
 .btn-mod.danger:hover {
-    background: #ff4444;
-    color: white;
+    background: #f44;
+    color: #fff;
 }
-
-/* ── Posts feed ── */
-
 .posts-feed {
     display: flex;
     flex-direction: column;
     gap: 12px;
     width: 100%;
 }
-
 .post-thread {
     display: flex;
     gap: 10px;
@@ -846,13 +659,9 @@ main section ul li a:hover {
     padding: 14px 16px;
     transition: border-color 0.2s;
 }
-
 .post-thread:hover {
     border-color: #333;
 }
-
-/* ── Vote column ── */
-
 .post-vote-col {
     display: flex;
     flex-direction: column;
@@ -861,9 +670,8 @@ main section ul li a:hover {
     min-width: 28px;
     flex-shrink: 0;
 }
-
 .btn-arrow {
-    background: none;
+    background: 0 0;
     border: none;
     padding: 2px;
     cursor: pointer;
@@ -873,34 +681,26 @@ main section ul li a:hover {
     justify-content: center;
     transition: background 0.15s;
 }
-
 .btn-arrow:hover {
     background: #2a2a2a;
 }
-
 .btn-arrow img {
     width: 16px;
     height: 16px;
     opacity: 0.5;
 }
-
 .btn-arrow:hover img {
     opacity: 1;
 }
-
 .vote-score {
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 700;
     color: #aaa;
     line-height: 1;
 }
-
 .vote-form {
     display: flex;
 }
-
-/* ── Post body ── */
-
 .post-body {
     flex: 1;
     min-width: 0;
@@ -908,7 +708,6 @@ main section ul li a:hover {
     flex-direction: column;
     gap: 8px;
 }
-
 .post-meta-line {
     display: flex;
     align-items: center;
@@ -916,16 +715,13 @@ main section ul li a:hover {
     flex-wrap: wrap;
     font-size: 12px;
 }
-
 .post-author {
-    font-weight: bold;
-    color: #00ff88;
+    font-weight: 700;
+    color: #0f8;
 }
-
 .post-date {
     color: #555;
 }
-
 .post-content {
     color: #d0d0d0;
     font-size: 14px;
@@ -934,9 +730,8 @@ main section ul li a:hover {
     white-space: pre-wrap;
     word-break: break-word;
 }
-
 .btn-text {
-    background: none;
+    background: 0 0;
     border: none;
     color: #555;
     font-size: 11px;
@@ -944,27 +739,21 @@ main section ul li a:hover {
     padding: 0;
     text-transform: lowercase;
 }
-
 .btn-text:hover {
     color: #aaa;
 }
-
 .btn-text-danger {
-    background: none;
+    background: 0 0;
     border: none;
-    color: #884444;
+    color: #844;
     font-size: 11px;
     cursor: pointer;
     padding: 0;
     text-transform: lowercase;
 }
-
 .btn-text-danger:hover {
-    color: #ff6666;
+    color: #f66;
 }
-
-/* ── Replies ── */
-
 .replies-list {
     display: flex;
     flex-direction: column;
@@ -973,12 +762,10 @@ main section ul li a:hover {
     margin-left: 6px;
     padding-left: 12px;
 }
-
 .reply-row {
     display: flex;
     gap: 8px;
 }
-
 .reply-vote-col {
     display: flex;
     flex-direction: column;
@@ -987,9 +774,8 @@ main section ul li a:hover {
     min-width: 22px;
     flex-shrink: 0;
 }
-
 .btn-arrow-sm {
-    background: none;
+    background: 0 0;
     border: none;
     padding: 1px;
     cursor: pointer;
@@ -999,33 +785,27 @@ main section ul li a:hover {
     justify-content: center;
     transition: background 0.15s;
 }
-
 .btn-arrow-sm:hover {
     background: #2a2a2a;
 }
-
 .btn-arrow-sm img {
     width: 12px;
     height: 12px;
     opacity: 0.4;
 }
-
 .btn-arrow-sm:hover img {
     opacity: 0.9;
 }
-
 .vote-score-sm {
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 700;
     color: #666;
     line-height: 1;
 }
-
 .reply-body {
     flex: 1;
     min-width: 0;
 }
-
 .reply-content {
     color: #b0b0b0;
     font-size: 13px;
@@ -1034,13 +814,9 @@ main section ul li a:hover {
     white-space: pre-wrap;
     word-break: break-word;
 }
-
-/* ── Reply form ── */
-
 .reply-form-inline {
     margin-top: 6px;
 }
-
 .form-reply {
     display: flex;
     flex-direction: column;
@@ -1048,42 +824,35 @@ main section ul li a:hover {
     gap: 6px;
     width: 100%;
 }
-
 .form-reply textarea {
     width: 100%;
     background: #222;
     border: 1px solid #333;
     border-radius: 6px;
-    color: white;
+    color: #fff;
     padding: 8px 10px;
     font-size: 13px;
     resize: vertical;
     margin: 0;
 }
-
 .form-reply textarea:focus {
-    border-color: #00ff8855;
+    border-color: #0f85;
     outline: none;
 }
-
 .btn-reply {
     background: #1e3a2a;
-    color: #00ff88;
-    border: 1px solid #00ff8844;
+    color: #0f8;
+    border: 1px solid #0f84;
     border-radius: 20px;
     padding: 4px 14px;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
 }
-
 .btn-reply:hover {
-    background: #00ff88;
-    color: black;
+    background: #0f8;
+    color: #000;
 }
-
-/* ── New post box ── */
-
 .new-post-box {
     width: 100%;
     background: #1a1a1a;
@@ -1091,16 +860,14 @@ main section ul li a:hover {
     border-radius: 10px;
     padding: 16px 20px;
 }
-
 .new-post-title {
     font-size: 14px;
     color: #aaa;
-    font-weight: bold;
+    font-weight: 700;
     margin: 0 0 10px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
 }
-
 .form-new-post {
     display: flex;
     flex-direction: column;
@@ -1108,67 +875,77 @@ main section ul li a:hover {
     gap: 8px;
     width: 100%;
 }
-
 .form-new-post textarea {
     width: 100%;
     background: #222;
     border: 1px solid #333;
     border-radius: 6px;
-    color: white;
+    color: #fff;
     padding: 10px 12px;
     font-size: 14px;
     resize: vertical;
     margin: 0;
 }
-
 .form-new-post textarea:focus {
-    border-color: #00ff8855;
+    border-color: #0f85;
     outline: none;
 }
-
 .btn-publish {
-    background: #00ff88;
-    color: black;
+    background: #0f8;
+    color: #000;
     border: none;
     border-radius: 20px;
     padding: 6px 20px;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
 }
-
 .btn-publish:hover {
     background: #00cc6a;
 }
-
 .empty-feed {
     color: #555;
     text-align: center;
     padding: 40px 0;
     font-size: 14px;
 }
-
 .login-prompt {
     color: #666;
     font-size: 14px;
     text-align: center;
 }
-
 .login-prompt a {
-    color: #00ff88;
+    color: #0f8;
     text-decoration: none;
 }
-
 .login-prompt a:hover {
     text-decoration: underline;
 }
-
 .notification {
     background: #1e3a2a;
-    color: #00ff88;
-    border: 1px solid #00ff8844;
+    color: #0f8;
+    border: 1px solid #0f84;
     border-radius: 6px;
     padding: 6px 12px;
     font-size: 13px;
     margin-top: 10px;
+}
+
+
+.btn-google {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    color: black;
+    border: 1px solid #bbbfc5;
+    border-radius: 15px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+
+.btn-google:hover {
+    background-color: #f1f1f1;
+    color: black;
 }
