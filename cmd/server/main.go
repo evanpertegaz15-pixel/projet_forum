@@ -38,7 +38,7 @@ func main() {
 	roleModel := models.NewRoleModel(db)
 	userRoleModel := models.NewUserRoleModel(db)
 
-	userService := services.NewUserService(userModel)
+	// userService := services.NewUserService(userModel)
 	authService := services.NewAuthService(userModel, sessionModel)
 	postService := services.NewPostService(postModel)
 	categoryService := services.NewCategoryService(categoryModel)
@@ -100,7 +100,7 @@ func main() {
 	http.HandleFunc("/admin/users/role/remove", userManagementHandler.RemoveRole)
 	http.HandleFunc("/admin/users/block", userManagementHandler.BlockUser)
 	http.HandleFunc("/admin/users/unblock", userManagementHandler.UnblockUser)
-	
+
 	// ─── Google OAuth Routes ──────────────────────────────────────────────────
 	http.HandleFunc("/auth/google/login", authHandler.GoogleLogin)
 	http.HandleFunc("/auth/google/callback", authHandler.GoogleCallback)
