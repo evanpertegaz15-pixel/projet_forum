@@ -38,7 +38,7 @@ func main() {
 	roleModel := models.NewRoleModel(db)
 	userRoleModel := models.NewUserRoleModel(db)
 
-	userService := services.NewUserService(userModel)
+	//userService := services.NewUserService(userModel)
 	authService := services.NewAuthService(userModel, sessionModel)
 	postService := services.NewPostService(postModel)
 	categoryService := services.NewCategoryService(categoryModel)
