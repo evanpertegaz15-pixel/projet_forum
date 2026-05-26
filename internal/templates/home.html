@@ -42,7 +42,6 @@
 <main>
     <div class="container">
         <section class="left">
-            <h2 class="section-title">Utilisateurs</h2>
             <ul class="user-list">
                 {{ range .Users }}
                     <li>
@@ -54,7 +53,6 @@
         <section class="center">
             <div class="feed-header">
                 <h2>Derniers topics</h2>
-                <a href="/categories">Voir les catégories →</a>
             </div>
 
            <div class="feed">
@@ -92,11 +90,11 @@
                     <img src="../../static/dino.png" alt="Dinosaures">
                     <h3>Dinosaures</h3>
                 </a>
-                <a href="/categories/news" class="category-item">
+                <a href="topics?id=2" class="category-item">
                     <img src="../../static/news.png" alt="News">
                     <h3>News</h3>
                 </a>
-                <a href="/categories/theories" class="category-item">
+                <a href="/topics?id=6" class="category-item">
                     <img src="../../static/theories.png" alt="Theories">
                     <h3>Théories</h3>
                 </a>
