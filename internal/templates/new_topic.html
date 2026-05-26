@@ -41,7 +41,7 @@
     <section>
         <h2>Créer un nouveau topic</h2>
 
-        <form action="/topic/create" method="POST">
+        <form action="/topic/create" method="POST" enctype="multipart/form-data">
             <label>Titre :</label><br>
             <input type="text" name="title" required><br><br>
             <label>Catégorie :</label><br>
@@ -53,6 +53,8 @@
             </select><br><br>
             <label>Contenu :</label><br>
             <textarea name="content" rows="6" required></textarea><br><br>
+            <label>Image d’illustration (optionnelle) :</label><br>
+            <input type="file" name="image" accept="image/png, image/jpeg"><br><br>
             <button type="submit">Créer le topic</button>
         </form>
     </section>
