@@ -1,4 +1,4 @@
-# Project Forum
+# Projet Forum
 ### B1 - Evan Pertegaz, Louis Godard, Arthur Demarcq
  
 ## The Dark Jurassic
