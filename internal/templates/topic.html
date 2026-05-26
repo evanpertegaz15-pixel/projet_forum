@@ -38,139 +38,112 @@
         </div>
     </nav>
 <main>
-    <h2>Posts du topic : {{ .Topic.Title }}</h2>
-    {{ if .User }}
-        <form method="POST" action="/like/topic" style="display:inline; margin-bottom:12px;">
-            <input type="hidden" name="topic_id" value="{{ .Topic.ID }}">
-            <input type="hidden" name="return_url" value="/topic?id={{ .Topic.ID }}">
-            <button type="submit">J'aime ce topic</button>
-        </form>
-    {{ end }}
-    <p>{{ .Topic.LikesCount }} {{ if eq .Topic.LikesCount 1 }}J'aime{{ else }}J'aimes{{ end }}</p>
+<main class="topic-page">
+    <div class="topic-header">
+        <h1>{{ .Topic.Title }}</h1>
+    </div>
+
     {{ if .ReportStatus }}
         <div class="notification">{{ .ReportStatus }}</div>
     {{ end }}
+
     {{ if .User }}
-        {{ if or (.User.HasRole "admin") (.User.HasRole "moderator") (.User.HasRole "ranger") (eq .Topic.UserID .User.ID) }}
-            <div class="moderation-actions">
-                <form method="POST" action="/topic/delete" style="display:inline;">
+        <div class="topic-actions">
+            {{ if or (.User.HasRole "admin") (.User.HasRole "moderator") (.User.HasRole "ranger") (eq .Topic.UserID .User.ID) }}
+                <form method="POST" action="/topic/delete">
                     <input type="hidden" name="topic_id" value="{{ .Topic.ID }}">
                     <input type="hidden" name="category_id" value="{{ .Topic.CategoryID }}">
-                    <button type="submit" class="danger" onclick="return confirm('Supprimer ce topic ?')">Supprimer le topic</button>
+                    <button type="submit" class="danger"
+                            onclick="return confirm('Supprimer ce topic ?')">
+                        Supprimer le topic
+                    </button>
                 </form>
-                <form method="POST" action="/report" style="display:inline;">
-                    <input type="hidden" name="target_type" value="topic">
-                    <input type="hidden" name="target_id" value="{{ .Topic.ID }}">
-                    <input type="text" name="reason" placeholder="Raison du signalement" required>
-                    <button type="submit">Signaler le topic</button>
-                </form>
-            </div>
-        {{ else }}
-            <form method="POST" action="/report" style="display:inline;">
+            {{ end }}
+
+            <form method="POST" action="/report">
                 <input type="hidden" name="target_type" value="topic">
                 <input type="hidden" name="target_id" value="{{ .Topic.ID }}">
-                <input type="text" name="reason" placeholder="Raison du signalement" required>
+                <input type="text" name="reason"
+                       placeholder="Raison du signalement" required>
                 <button type="submit">Signaler le topic</button>
             </form>
-        {{ end }}
+        </div>
     {{ end }}
-    <section>
+
+    <section class="posts-list">
         {{ range .PostsWithReplies }}
-            <div class="post-card">
-                <h3>{{ .Post.Username }} a écrit :</h3>
-                <p>{{ .Post.Content }}</p>
-                <small>{{ .Post.CreatedAtAgo }} · {{ .Post.LikesCount }} {{ if eq .Post.LikesCount 1 }}J'aime{{ else }}J'aimes{{ end }}</small>
+            <article class="post-card">
+                <div class="post-header">
+                    <h3>{{ .Post.Username }}</h3>
+                    <small>{{ .Post.CreatedAtAgo }}</small>
+                </div>
+
+                <div class="post-content">
+                    <p>{{ .Post.Content }}</p>
+                </div>
+
                 {{ if $.User }}
-                    <form method="POST" action="/like/post" style="display:inline; margin-right: 8px;">
-                        <input type="hidden" name="post_id" value="{{ .Post.ID }}">
-                        <input type="hidden" name="return_url" value="/topic?id={{ $.Topic.ID }}">
-                        <button type="submit">J'aime</button>
-                    </form>
-                    {{ if or ($.User.HasRole "admin") ($.User.HasRole "moderator") ($.User.HasRole "ranger") (eq .Post.UserID $.User.ID) }}
-                        <div class="post-actions">
-                            <form method="POST" action="/post/delete" style="display:inline;">
+                    <div class="post-actions">
+                        {{ if or ($.User.HasRole "admin") ($.User.HasRole "moderator") ($.User.HasRole "ranger") (eq .Post.UserID $.User.ID) }}
+                            <form method="POST" action="/post/delete">
                                 <input type="hidden" name="post_id" value="{{ .Post.ID }}">
                                 <input type="hidden" name="topic_id" value="{{ .Post.TopicID }}">
-                                <button type="submit" class="danger" onclick="return confirm('Supprimer ce post ?')">Supprimer</button>
+                                <button type="submit" class="danger"
+                                        onclick="return confirm('Supprimer ce post ?')">
+                                    Supprimer
+                                </button>
                             </form>
-                            <form method="POST" action="/report" style="display:inline;">
-                                <input type="hidden" name="target_type" value="post">
-                                <input type="hidden" name="target_id" value="{{ .Post.ID }}">
-                                <input type="text" name="reason" placeholder="Raison" required>
-                                <button type="submit">Signaler</button>
-                            </form>
-                        </div>
-                    {{ else }}
-                        <form method="POST" action="/report" style="display:inline;">
+                        {{ end }}
+
+                        <form method="POST" action="/report">
                             <input type="hidden" name="target_type" value="post">
                             <input type="hidden" name="target_id" value="{{ .Post.ID }}">
-                            <input type="text" name="reason" placeholder="Raison" required>
+                            <input type="text" name="reason"
+                                   placeholder="Raison" required>
                             <button type="submit">Signaler</button>
                         </form>
-                    {{ end }}
+                    </div>
                 {{ end }}
-                <!-- Formulaire de réponse pour les posts principaux -->
+
                 <div class="reply-form">
                     <form method="POST" action="/reply">
                         <input type="hidden" name="topic_id" value="{{ .Post.TopicID }}">
                         <input type="hidden" name="parent_id" value="{{ .Post.ID }}">
-                        <textarea name="content" placeholder="Répondre à ce post..." rows="2" required></textarea>
+                        <textarea name="content"
+                                  placeholder="Répondre à ce post..."
+                                  rows="3" required></textarea>
                         <button type="submit">Répondre</button>
                     </form>
                 </div>
-                <!-- Affichage des réponses -->
+
                 {{ if .Replies }}
                     <div class="replies">
-                        <h4>Réponses :</h4>
                         {{ range .Replies }}
-                        <div class="reply-card">
-                            <p><strong>{{ .Username }}</strong> :</p>
-                            <p>{{ .Content }}</p>
-                            <small>{{ .CreatedAtAgo }} · {{ .LikesCount }} {{ if eq .LikesCount 1 }}J'aime{{ else }}J'aimes{{ end }}</small>
-                            {{ if $.User }}
-                                <form method="POST" action="/like/post" style="display:inline; margin-right: 8px;">
-                                    <input type="hidden" name="post_id" value="{{ .ID }}">
-                                    <input type="hidden" name="return_url" value="/topic?id={{ $.Topic.ID }}">
-                                    <button type="submit">J'aime</button>
-                                </form>
-                                {{ if or ($.User.HasRole "admin") ($.User.HasRole "moderator") ($.User.HasRole "ranger") (eq .UserID $.User.ID) }}
-                                    <div class="reply-actions">
-                                        <form method="POST" action="/post/delete" style="display:inline;">
-                                            <input type="hidden" name="post_id" value="{{ .ID }}">
-                                            <input type="hidden" name="topic_id" value="{{ .TopicID }}">
-                                            <button type="submit" class="danger" onclick="return confirm('Supprimer cette réponse ?')">Supprimer</button>
-                                        </form>
-                                        <form method="POST" action="/report" style="display:inline;">
-                                            <input type="hidden" name="target_type" value="post">
-                                            <input type="hidden" name="target_id" value="{{ .ID }}">
-                                            <input type="text" name="reason" placeholder="Raison" required>
-                                            <button type="submit">Signaler</button>
-                                        </form>
-                                    </div>
-                                {{ else }}
-                                    <form method="POST" action="/report" style="display:inline;">
-                                        <input type="hidden" name="target_type" value="post">
-                                        <input type="hidden" name="target_id" value="{{ .ID }}">
-                                        <input type="text" name="reason" placeholder="Raison" required>
-                                        <button type="submit">Signaler</button>
-                                    </form>
-                                {{ end }}
-                            {{ end }}
-                        </div>
+                            <div class="reply-card">
+                                <strong>{{ .Username }}</strong>
+                                <p>{{ .Content }}</p>
+                                <small>{{ .CreatedAtAgo }}</small>
+                            </div>
                         {{ end }}
                     </div>
                 {{ end }}
-            </div>
+            </article>
         {{ else }}
             <p>Aucun post pour l’instant.</p>
         {{ end }}
     </section>
-    <h2>Ajouter un post</h2>
-    <form action="/post/create/submit" method="POST">
-        <input type="hidden" name="topic_id" value="{{ .Topic.ID }}">
-        <textarea name="content" required></textarea>
-        <button type="submit">Publier</button>
-    </form>
+
+    <section class="new-post-card">
+        <h2>Ajouter un post</h2>
+        <form action="/post/create/submit" method="POST">
+            <input type="hidden" name="topic_id" value="{{ .Topic.ID }}">
+            <textarea name="content"
+                      placeholder="Écris ton message..."
+                      rows="5" required></textarea>
+            <button type="submit">Publier</button>
+        </form>
+    </section>
+</main>
 </main>
 </body>
 </html>
