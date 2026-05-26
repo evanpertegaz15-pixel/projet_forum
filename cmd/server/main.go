@@ -47,7 +47,8 @@ func main() {
 	reportService := services.NewReportService(reportModel, postModel, topicModel, userModel)
 	userManagementService := services.NewUserManagementService(userModel, userRoleModel, roleModel)
 
-	homeHandler := handlers.NewHomeHandler(userService)
+	homeModel := models.NewHomeModel(db)
+	homeHandler := handlers.NewHomeHandler(homeModel)
 	authHandler := handlers.NewAuthHandler(authService)
 	categoryHandler := handlers.NewCategoryHandler(categoryService, postService, topicService, authService)
 	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService, likeService)
@@ -110,6 +111,7 @@ func main() {
 	go middleware.CleanupVisitors()
 
 	http.HandleFunc("/like/post", likesHandler.TogglePostLike)
+	http.HandleFunc("/dislike/post", likesHandler.TogglePostDislike)
 	http.HandleFunc("/like/topic", likesHandler.ToggleTopicLike)
 	http.HandleFunc("/like/comment", likesHandler.ToggleCommentLike)
 	http.HandleFunc("/likes/post", likesHandler.GetPostLikesCount)

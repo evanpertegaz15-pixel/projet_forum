@@ -15,7 +15,7 @@
 <body>
 
 <header class="banner">
-    <img src="../../static/banner.png" alt="Website Banner">
+    <img src="/static/banner.png" alt="Website Banner">
 </header>
 
 <nav>
@@ -85,74 +85,27 @@
     <!-- TOPIC ACTIONS -->
 
     {{ if .User }}
-
-        <section class="topic-actions">
-
-            <!-- DELETE TOPIC -->
-
-            {{ if or (.User.HasRole "admin")
-                      (.User.HasRole "moderator")
-                      (.User.HasRole "ranger")
-                      (eq .Topic.UserID .User.ID) }}
-
-                <form class="topic-delete-form"
-                      method="POST"
-                      action="/topic/delete">
-
-                    <input type="hidden"
-                           name="topic_id"
-                           value="{{ .Topic.ID }}">
-
-                    <input type="hidden"
-                           name="category_id"
-                           value="{{ .Topic.CategoryID }}">
-
-                    <button type="submit"
-                            class="danger"
+        <div class="topic-actions">
+            {{ if or (.User.HasRole "admin") (.User.HasRole "moderator") (.User.HasRole "ranger") (eq .Topic.UserID .User.ID) }}
+                <form method="POST" action="/topic/delete">
+                    <input type="hidden" name="topic_id" value="{{ .Topic.ID }}">
+                    <input type="hidden" name="category_id" value="{{ .Topic.CategoryID }}">
+                    <button type="submit" class="danger"
                             onclick="return confirm('Supprimer ce topic ?')">
-
                         Supprimer le topic
-
                     </button>
-
                 </form>
-
             {{ end }}
 
-            <!-- REPORT TOPIC -->
-
-            <form class="topic-report-form"
-                  method="POST"
-                  action="/report">
-
-                <input type="hidden"
-                       name="target_type"
-                       value="topic">
-
-                <input type="hidden"
-                       name="target_id"
-                       value="{{ .Topic.ID }}">
-
-                <input type="text"
-                       name="reason"
-                       class="topic-report-input"
-                       placeholder="Raison du signalement"
-                       required>
-
-                <button type="submit"
-                        class="topic-report-button">
-
-                    Signaler le topic
-
-                </button>
-
+            <form method="POST" action="/report">
+                <input type="hidden" name="target_type" value="topic">
+                <input type="hidden" name="target_id" value="{{ .Topic.ID }}">
+                <input type="text" name="reason"
+                       placeholder="Raison du signalement" required>
+                <button type="submit">Signaler le topic</button>
             </form>
-
-        </section>
-
+        </div>
     {{ end }}
-
-    <!-- POSTS -->
 
     <section class="posts-list">
 
@@ -364,6 +317,6 @@
     </section>
 
 </main>
-
+</main>
 </body>
 </html>

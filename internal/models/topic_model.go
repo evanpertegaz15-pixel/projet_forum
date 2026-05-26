@@ -71,6 +71,28 @@ func (model *TopicModel) CreateTopic(categoryID, userID int, title string) (int,
     return int(id), nil
 }
 
+func (model *TopicModel) GetLatestTopics(limit int) ([]Topic, error) {
+    rows, err := model.DB.Query(`
+        SELECT t.id, t.category_id, t.user_id, t.title, t.created_at
+        FROM topics t
+        ORDER BY t.created_at DESC
+        LIMIT ?
+    `, limit)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+    var topics []Topic
+    for rows.Next() {
+        var topic Topic
+        if err := rows.Scan(&topic.ID, &topic.CategoryID, &topic.UserID, &topic.Title, &topic.CreatedAt); err != nil {
+            return nil, err
+        }
+        topics = append(topics, topic)
+    }
+    return topics, nil
+}
+
 func (model *TopicModel) DeleteTopic(topicID int) error {
     _, err := model.DB.Exec(`DELETE FROM posts WHERE topic_id = ?`, topicID)
     if err != nil {

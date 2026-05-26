@@ -150,3 +150,27 @@ func (handler *LikesHandler) GetCommentLikesCount(w http.ResponseWriter, r *http
 		"count": count,
 	})
 }
+func (handler *LikesHandler) TogglePostDislike(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		return
+	}
+	user, ok := RequireAuth(w, r, handler.Auth)
+	if !ok {
+		return
+	}
+	postID, err := strconv.Atoi(r.FormValue("post_id"))
+	if err != nil {
+		http.Error(w, "post_id invalide", http.StatusBadRequest)
+		return
+	}
+	if err := handler.Likes.TogglePostDislike(user, postID); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if returnURL := r.FormValue("return_url"); returnURL != "" {
+		http.Redirect(w, r, returnURL, http.StatusSeeOther)
+		return
+	}
+	json.NewEncoder(w).Encode(map[string]bool{"disliked": true})
+}
