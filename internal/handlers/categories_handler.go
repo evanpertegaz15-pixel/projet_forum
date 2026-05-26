@@ -108,19 +108,3 @@ func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Re
     utils.Render(w, "./internal/templates/categories.html", data)
 
 }
-
-/*func (handler *CategoryHandler) ShowTopics(w http.ResponseWriter, r *http.Request) {
-    idStr := r.URL.Query().Get("id")
-    categoryID, err := strconv.Atoi(idStr)
-    if err != nil {
-        http.Error(w, "Catégorie incorrecte.", http.StatusBadRequest)
-        return
-    }
-    topics, err := handler.Categories.Topics.GetTopicsByCategory(categoryID)
-    if err != nil {
-        http.Error(w, "Erreur interne.", http.StatusInternalServerError)
-        return
-    }
-    tmpl := template.Must(template.ParseFiles("./internal/templates/topics.html"))
-    tmpl.Execute(w, topics)
-}*/

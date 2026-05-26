@@ -1,5 +1,3 @@
-// upload, resize, suppression automatique d'une image
-
 package services
 
 import (
