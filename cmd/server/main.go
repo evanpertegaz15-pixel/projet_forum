@@ -50,7 +50,7 @@ func main() {
 	homeModel := models.NewHomeModel(db)
 	homeHandler := handlers.NewHomeHandler(homeModel)
 	authHandler := handlers.NewAuthHandler(authService)
-	categoryHandler := handlers.NewCategoryHandler(categoryService)
+	categoryHandler := handlers.NewCategoryHandler(categoryService, postService, topicService, authService)
 	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService, likeService)
 	postHandler := handlers.NewPostHandler(postService, authService)
 	likesHandler := handlers.NewLikesHandler(likeService, authService)

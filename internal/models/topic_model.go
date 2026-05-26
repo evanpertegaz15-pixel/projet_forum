@@ -101,3 +101,29 @@ func (model *TopicModel) DeleteTopic(topicID int) error {
     _, err = model.DB.Exec(`DELETE FROM topics WHERE id = ?`, topicID)
     return err
 }
+
+func (model *TopicModel) GetLikedTopicsByUser(userID, categoryID int) ([]Topic, error) {
+    query := `SELECT t.id, t.category_id, t.user_id, t.title, t.created_at
+        FROM topics t
+        WHERE t.id IN (SELECT topic_id FROM likes WHERE user_id = ? AND value = 1 AND topic_id IS NOT NULL)`
+    args := []interface{}{userID}
+    if categoryID > 0 {
+        query += ` AND t.category_id = ?`
+        args = append(args, categoryID)
+    }
+    query += ` ORDER BY t.created_at DESC`
+    rows, err := model.DB.Query(query, args...)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+    var topics []Topic
+    for rows.Next() {
+        var t Topic
+        if err := rows.Scan(&t.ID, &t.CategoryID, &t.UserID, &t.Title, &t.CreatedAt); err != nil {
+            return nil, err
+        }
+        topics = append(topics, t)
+    }
+    return topics, nil
+}

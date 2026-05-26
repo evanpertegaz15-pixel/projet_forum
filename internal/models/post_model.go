@@ -6,13 +6,14 @@ import (
 )
 
 type Post struct {
-    ID        int
-    TopicID   int
-    UserID    int
-    Username  string
-    Content   string
-    ParentID    *int
-    CreatedAt time.Time
+    ID         int
+    TopicID    int
+    UserID     int
+    Username   string
+    TopicTitle string
+    Content    string
+    ParentID   *int
+    CreatedAt  time.Time
     CreatedAtAgo string
     LikesCount    int
     DislikesCount int
@@ -47,6 +48,44 @@ func (model *PostModel) GetPostsByTopic(topicID int) ([]Post, error) {
     for rows.Next() {
         var post Post
         if err := rows.Scan(&post.ID, &post.TopicID, &post.UserID, &post.Username, &post.Content, &post.CreatedAt); err != nil {
+            return nil, err
+        }
+        posts = append(posts, post)
+    }
+    return posts, nil
+}
+
+func (model *PostModel) GetFilteredPosts(categoryID, authorID, likedByUserID int) ([]Post, error) {
+    query := `
+        SELECT p.id, p.topic_id, p.user_id, u.username, p.content, p.parent_id, p.created_at, t.title
+        FROM posts p
+        JOIN topics t ON p.topic_id = t.id
+        JOIN users u ON p.user_id = u.id
+        WHERE 1=1`
+    args := []interface{}{}
+    if categoryID > 0 {
+        query += ` AND t.category_id = ?`
+        args = append(args, categoryID)
+    }
+    if authorID > 0 {
+        query += ` AND p.user_id = ?`
+        args = append(args, authorID)
+    }
+    if likedByUserID > 0 {
+        query += ` AND p.id IN (SELECT post_id FROM likes WHERE user_id = ? AND value = 1 AND post_id IS NOT NULL)`
+        args = append(args, likedByUserID)
+    }
+    query += ` ORDER BY p.created_at DESC`
+    rows, err := model.DB.Query(query, args...)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+    var posts []Post
+    for rows.Next() {
+        var post Post
+        err := rows.Scan(&post.ID, &post.TopicID, &post.UserID, &post.Username, &post.Content, &post.ParentID, &post.CreatedAt, &post.TopicTitle)
+        if err != nil {
             return nil, err
         }
         posts = append(posts, post)

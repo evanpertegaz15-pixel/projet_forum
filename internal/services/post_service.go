@@ -17,6 +17,10 @@ func (service *PostService) GetPostsByTopic(topicID int) ([]models.Post, error) 
     return service.Posts.GetPostsByTopic(topicID)
 }
 
+func (service *PostService) GetFilteredPosts(categoryID, authorID, likedByUserID int) ([]models.Post, error) {
+    return service.Posts.GetFilteredPosts(categoryID, authorID, likedByUserID)
+}
+
 func (service *PostService) CreatePost(topicID, userID int, content string) (int, error) {
     if content == "" {
         return 0, errors.New("Le contenu ne peut pas être vide.")
