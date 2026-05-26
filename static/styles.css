@@ -561,3 +561,614 @@ main section ul li a:hover {
     border-color: #00ff88;
     transform: translateX(5px);
 }
+
+
+/* =============================================================================
+   COMPONENTS — Feed (Reddit-style home page)
+   ============================================================================= */
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 0;
+}
+
+.feed-item {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: border-color 0.2s, transform 0.15s;
+    text-decoration: none;
+    color: white;
+}
+
+.feed-item:hover {
+    border-color: #00ff88;
+    transform: translateX(4px);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.15);
+}
+
+.feed-vote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 36px;
+    flex-shrink: 0;
+}
+
+.feed-vote-icon {
+    font-size: 18px;
+    line-height: 1;
+    color: #555;
+}
+
+.feed-vote-count {
+    font-size: 13px;
+    font-weight: bold;
+    color: #aaa;
+}
+
+.feed-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.feed-meta {
+    font-size: 11px;
+    color: #666;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.feed-category-badge {
+    background: #1e3a2a;
+    color: #00ff88;
+    border: 1px solid #00ff8844;
+    padding: 1px 7px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.feed-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e8e8e8;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.feed-footer {
+    font-size: 11px;
+    color: #555;
+}
+
+.feed-empty {
+    text-align: center;
+    color: #555;
+    padding: 40px 0;
+    font-size: 14px;
+}
+
+.feed-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 14px 0;
+    border-bottom: 1px solid #2a2a2a;
+    margin-bottom: 4px;
+}
+
+.feed-header h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ccc;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.feed-header a {
+    font-size: 12px;
+    color: #00ff88;
+    text-decoration: none;
+}
+
+.feed-header a:hover {
+    text-decoration: underline;
+}
+
+/* =============================================================================
+   TOPIC PAGE — Reddit-style layout
+   ============================================================================= */
+
+.topic-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    gap: 16px;
+    flex: 1;
+}
+
+.topic-header-card {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 16px 20px;
+}
+
+.topic-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.topic-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8e8e8;
+    margin: 0;
+}
+
+.topic-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.topic-likes {
+    font-size: 13px;
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.vote-form-inline {
+    display: inline;
+}
+
+.btn-vote-small {
+    background: #1e3a2a;
+    color: #00ff88;
+    border: 1px solid #00ff8844;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-vote-small:hover {
+    background: #00ff88;
+    color: black;
+}
+
+.moderation-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #2a2a2a;
+}
+
+.form-inline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-direction: row;
+}
+
+.input-inline {
+    background: #2a2a2a;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    width: 180px;
+    margin: 0;
+}
+
+.input-inline-sm {
+    background: #2a2a2a;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 3px 6px;
+    font-size: 11px;
+    width: 130px;
+    margin: 0;
+}
+
+.btn-mod {
+    background: #2a2a2a;
+    color: #aaa;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.btn-mod:hover {
+    background: #333;
+    color: white;
+}
+
+.btn-mod.danger {
+    background: #3a1a1a;
+    color: #ff6666;
+    border-color: #ff444433;
+    margin-top: 0;
+}
+
+.btn-mod.danger:hover {
+    background: #ff4444;
+    color: white;
+}
+
+/* ── Posts feed ── */
+
+.posts-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.post-thread {
+    display: flex;
+    gap: 10px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: border-color 0.2s;
+}
+
+.post-thread:hover {
+    border-color: #333;
+}
+
+/* ── Vote column ── */
+
+.post-vote-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 28px;
+    flex-shrink: 0;
+}
+
+.btn-arrow {
+    background: none;
+    border: none;
+    padding: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.btn-arrow:hover {
+    background: #2a2a2a;
+}
+
+.btn-arrow img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+}
+
+.btn-arrow:hover img {
+    opacity: 1;
+}
+
+.vote-score {
+    font-size: 13px;
+    font-weight: bold;
+    color: #aaa;
+    line-height: 1;
+}
+
+.vote-form {
+    display: flex;
+}
+
+/* ── Post body ── */
+
+.post-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.post-meta-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+
+.post-author {
+    font-weight: bold;
+    color: #00ff88;
+}
+
+.post-date {
+    color: #555;
+}
+
+.post-content {
+    color: #d0d0d0;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 0;
+    text-transform: lowercase;
+}
+
+.btn-text:hover {
+    color: #aaa;
+}
+
+.btn-text-danger {
+    background: none;
+    border: none;
+    color: #884444;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 0;
+    text-transform: lowercase;
+}
+
+.btn-text-danger:hover {
+    color: #ff6666;
+}
+
+/* ── Replies ── */
+
+.replies-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 2px solid #2a2a2a;
+    margin-left: 6px;
+    padding-left: 12px;
+}
+
+.reply-row {
+    display: flex;
+    gap: 8px;
+}
+
+.reply-vote-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    min-width: 22px;
+    flex-shrink: 0;
+}
+
+.btn-arrow-sm {
+    background: none;
+    border: none;
+    padding: 1px;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.btn-arrow-sm:hover {
+    background: #2a2a2a;
+}
+
+.btn-arrow-sm img {
+    width: 12px;
+    height: 12px;
+    opacity: 0.4;
+}
+
+.btn-arrow-sm:hover img {
+    opacity: 0.9;
+}
+
+.vote-score-sm {
+    font-size: 11px;
+    font-weight: bold;
+    color: #666;
+    line-height: 1;
+}
+
+.reply-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.reply-content {
+    color: #b0b0b0;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 4px 0 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ── Reply form ── */
+
+.reply-form-inline {
+    margin-top: 6px;
+}
+
+.form-reply {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    width: 100%;
+}
+
+.form-reply textarea {
+    width: 100%;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: white;
+    padding: 8px 10px;
+    font-size: 13px;
+    resize: vertical;
+    margin: 0;
+}
+
+.form-reply textarea:focus {
+    border-color: #00ff8855;
+    outline: none;
+}
+
+.btn-reply {
+    background: #1e3a2a;
+    color: #00ff88;
+    border: 1px solid #00ff8844;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-reply:hover {
+    background: #00ff88;
+    color: black;
+}
+
+/* ── New post box ── */
+
+.new-post-box {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 16px 20px;
+}
+
+.new-post-title {
+    font-size: 14px;
+    color: #aaa;
+    font-weight: bold;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.form-new-post {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-new-post textarea {
+    width: 100%;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: white;
+    padding: 10px 12px;
+    font-size: 14px;
+    resize: vertical;
+    margin: 0;
+}
+
+.form-new-post textarea:focus {
+    border-color: #00ff8855;
+    outline: none;
+}
+
+.btn-publish {
+    background: #00ff88;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 20px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-publish:hover {
+    background: #00cc6a;
+}
+
+.empty-feed {
+    color: #555;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 14px;
+}
+
+.login-prompt {
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+}
+
+.login-prompt a {
+    color: #00ff88;
+    text-decoration: none;
+}
+
+.login-prompt a:hover {
+    text-decoration: underline;
+}
+
+.notification {
+    background: #1e3a2a;
+    color: #00ff88;
+    border: 1px solid #00ff8844;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    margin-top: 10px;
+}

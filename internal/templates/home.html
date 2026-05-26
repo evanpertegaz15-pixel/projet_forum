@@ -39,7 +39,6 @@
         </form>
     </nav>
 
-
 <main>
     <div class="container">
         <section class="left">
@@ -53,32 +52,57 @@
         </section>
 
         <section class="center">
-            <div class="post">
-                <div class="post-content">
-                    </div>
-                </div>
-            </section>
+            <div class="feed-header">
+                <h2>Derniers topics</h2>
+                <a href="/categories">Voir les catégories →</a>
+            </div>
 
-            <section class="right">
-                <!-- <h2 class="section-title"></h2> RETIRER MARGIN TOP SI REMIS-->
-                <div class="category-list">
-                    <a href="/categories/dinosaurs" class="category-item">
-                        <img src="../../static/dino.png" alt="Dinosaures">
-                        <h3>Dinosaures</h3>
+            <div class="feed">
+                {{ if .Topics }}
+                    {{ range .Topics }}
+                    <a href="/topic?id={{ .ID }}" class="feed-item">
+                        <div class="feed-vote">
+                            <span class="feed-vote-icon">▲</span>
+                            <span class="feed-vote-count">{{ .LikesCount }}</span>
+                        </div>
+                        <div class="feed-body">
+                            <div class="feed-meta">
+                                {{ $catID := .CategoryID }}
+                                {{ with index $.CategoryMap $catID }}
+                                    <span class="feed-category-badge">{{ . }}</span>
+                                {{ end }}
+                                <span>par utilisateur #{{ .UserID }}</span>
+                            </div>
+                            <div class="feed-title">{{ .Title }}</div>
+                            <div class="feed-footer">Posté {{ .CreatedAtAgo }}</div>
+                        </div>
                     </a>
-                    <a href="/categories/news" class="category-item">
-                        <img src="../../static/news.png" alt="News">
-                        <h3>News</h3>
-                    </a>
-                    <a href="/categories/theories" class="category-item">
-                        <img src="../../static/theories.png" alt="Theories">
-                        <h3>Théories</h3>
-                    </a>
-                </div>
-            </section>
+                    {{ end }}
+                {{ else }}
+                    <div class="feed-empty">Aucun topic pour l'instant. Sois le premier à en créer un !</div>
+                {{ end }}
+            </div>
+        </section>
 
-        </div>
-    </main>
+        <section class="right">
+            <div class="category-list">
+                <a href="/categories/dinosaurs" class="category-item">
+                    <img src="../../static/dino.png" alt="Dinosaures">
+                    <h3>Dinosaures</h3>
+                </a>
+                <a href="/categories/news" class="category-item">
+                    <img src="../../static/news.png" alt="News">
+                    <h3>News</h3>
+                </a>
+                <a href="/categories/theories" class="category-item">
+                    <img src="../../static/theories.png" alt="Theories">
+                    <h3>Théories</h3>
+                </a>
+            </div>
+        </section>
+
+    </div>
+</main>
     <footer>
         <p>© 2026 Dark Jurassic</p>
     </footer>

@@ -77,6 +77,12 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
             return
         }
         postsWithReplies[i].Post.LikesCount = count
+        dcount, err := handler.Likes.CountPostDislikes(postsWithReplies[i].Post.ID)
+        if err != nil {
+            utils.ErrorInternal(w, "Erreur interne.")
+            return
+        }
+        postsWithReplies[i].Post.DislikesCount = dcount
         for j := range postsWithReplies[i].Replies {
             postsWithReplies[i].Replies[j].CreatedAtAgo = utils.TimeAgo(postsWithReplies[i].Replies[j].CreatedAt)
             replyCount, err := handler.Likes.CountPostLikes(postsWithReplies[i].Replies[j].ID)
@@ -85,6 +91,12 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
                 return
             }
             postsWithReplies[i].Replies[j].LikesCount = replyCount
+            replyDcount, err := handler.Likes.CountPostDislikes(postsWithReplies[i].Replies[j].ID)
+            if err != nil {
+                utils.ErrorInternal(w, "Erreur interne.")
+                return
+            }
+            postsWithReplies[i].Replies[j].DislikesCount = replyDcount
         }
     }
     user, _ := RequireAuth(w, r, handler.Auth)

@@ -14,7 +14,8 @@ type Post struct {
     ParentID    *int
     CreatedAt time.Time
     CreatedAtAgo string
-    LikesCount int
+    LikesCount    int
+    DislikesCount int
 }
 
 type PostWithReplies struct {

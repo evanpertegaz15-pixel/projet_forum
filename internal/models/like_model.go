@@ -105,6 +105,67 @@ func (model *LikeModel) RemoveLike(userID, postID int) error {
 	return model.DeleteLike(userID, postID, 0, 0)
 }
 
+// UpsertVote inserts or replaces a vote (value: 1=like, -1=dislike).
+// If the user already has the same value, it removes the vote (toggle off).
+func (model *LikeModel) UpsertVote(userID, postID, commentID, topicID, value int) error {
+	where, params, err := model.likeWhere(postID, commentID, topicID)
+	if err != nil {
+		return err
+	}
+
+	// Check existing vote value
+	var existing sql.NullInt64
+	selectQuery := fmt.Sprintf(`SELECT value FROM likes WHERE user_id = ? AND %s LIMIT 1`, where)
+	selectParams := append([]interface{}{userID}, params...)
+	_ = model.DB.QueryRow(selectQuery, selectParams...).Scan(&existing)
+
+	// Delete any existing vote first
+	delQuery := fmt.Sprintf(`DELETE FROM likes WHERE user_id = ? AND %s`, where)
+	delParams := append([]interface{}{userID}, params...)
+	if _, err := model.DB.Exec(delQuery, delParams...); err != nil {
+		return err
+	}
+
+	// If same value as before, just remove (toggle off)
+	if existing.Valid && int(existing.Int64) == value {
+		return nil
+	}
+
+	// Insert new vote
+	var postVal, commentVal, topicVal interface{}
+	if postID > 0 { postVal = postID }
+	if commentID > 0 { commentVal = commentID }
+	if topicID > 0 { topicVal = topicID }
+	_, err = model.DB.Exec(
+		`INSERT INTO likes (user_id, post_id, comment_id, topic_id, value, created_at) VALUES (?, ?, ?, ?, ?, ?)`,
+		userID, postVal, commentVal, topicVal, value, time.Now(),
+	)
+	return err
+}
+
+func (model *LikeModel) HasDisliked(userID, postID, commentID, topicID int) (bool, error) {
+	where, params, err := model.likeWhere(postID, commentID, topicID)
+	if err != nil {
+		return false, err
+	}
+	query := fmt.Sprintf(`SELECT COUNT(*) FROM likes WHERE user_id = ? AND %s AND value = -1`, where)
+	params = append([]interface{}{userID}, params...)
+	var count int
+	err = model.DB.QueryRow(query, params...).Scan(&count)
+	return count > 0, err
+}
+
+func (model *LikeModel) CountDislikes(postID, commentID, topicID int) (int, error) {
+	where, params, err := model.likeWhere(postID, commentID, topicID)
+	if err != nil {
+		return 0, err
+	}
+	query := fmt.Sprintf(`SELECT COUNT(*) FROM likes WHERE %s AND value = -1`, where)
+	var count int
+	err = model.DB.QueryRow(query, params...).Scan(&count)
+	return count, err
+}
+
 func (model *LikeModel) likeWhere(postID, commentID, topicID int) (string, []interface{}, error) {
 	count := 0
 	var clause string

@@ -30,15 +30,7 @@ func (service *LikeService) TogglePostLike(user *models.User, postID int) (bool,
 	if err != nil {
 		return false, err
 	}
-	exists, err := service.Likes.HasLiked(user.ID, postID, 0, 0)
-	if err != nil {
-		return false, err
-	}
-	if exists {
-		err = service.Likes.DeleteLike(user.ID, postID, 0, 0)
-		return false, err
-	}
-	err = service.Likes.CreateLike(user.ID, postID, 0, 0)
+	err = service.Likes.UpsertVote(user.ID, postID, 0, 0, 1)
 	return err == nil, err
 }
 
@@ -94,4 +86,29 @@ func (s *LikeService) CountTopicLikes(topicID int) (int, error) {
 
 func (s *LikeService) CountCommentLikes(commentID int) (int, error) {
 	return s.Likes.CountLikes(0, commentID, 0)
+}
+
+func (s *LikeService) TogglePostDislike(user *models.User, postID int) error {
+	if user == nil {
+		return errors.New("utilisateur non connecté")
+	}
+	if postID <= 0 {
+		return errors.New("post invalide")
+	}
+	return s.Likes.UpsertVote(user.ID, postID, 0, 0, -1)
+}
+
+func (s *LikeService) CountPostDislikes(postID int) (int, error) {
+	return s.Likes.CountDislikes(postID, 0, 0)
+}
+func (s *LikeService) GetPostScore(postID int) (int, error) {
+	likes, err := s.Likes.CountLikes(postID, 0, 0)
+	if err != nil {
+		return 0, err
+	}
+	dislikes, err := s.Likes.CountDislikes(postID, 0, 0)
+	if err != nil {
+		return 0, err
+	}
+	return likes - dislikes, nil
 }

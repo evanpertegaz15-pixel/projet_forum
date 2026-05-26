@@ -1,26 +1,33 @@
 package handlers
 
 import (
-    "net/http"
-    "forum-dark-jurassic/internal/services"
-    "forum-dark-jurassic/internal/utils"
+	"net/http"
+	"forum-dark-jurassic/internal/models"
+	"forum-dark-jurassic/internal/utils"
 )
 
 type HomeHandler struct {
-    Users *services.UserService
+	Home *models.HomeModel
 }
 
-func NewHomeHandler(users *services.UserService) *HomeHandler {
-    return &HomeHandler{Users: users}
+func NewHomeHandler(home *models.HomeModel) *HomeHandler {
+	return &HomeHandler{Home: home}
 }
 
 func (handler *HomeHandler) ShowHome(w http.ResponseWriter, r *http.Request) {
-    users, err := handler.Users.GetAllUsers()
-    if err != nil {
-        utils.ErrorInternal(w, "Erreur interne.")
-        return
-    }
-    utils.Render(w, "./internal/templates/home.html", map[string]any{
-        "Users": users,
-    })
+	data, err := handler.Home.GetHomePageData(20)
+	if err != nil {
+		utils.ErrorInternal(w, "Erreur interne.")
+		return
+	}
+
+	for i := range data.Topics {
+		data.Topics[i].CreatedAtAgo = utils.TimeAgo(data.Topics[i].CreatedAt)
+	}
+
+	utils.Render(w, "./internal/templates/home.html", map[string]any{
+		"Users":       data.Users,
+		"Topics":      data.Topics,
+		"CategoryMap": data.CategoryMap,
+	})
 }
