@@ -129,6 +129,15 @@
 
                 </div>
 
+                <div class="post-content">
+                    <p>{{ .Post.Content }}</p>
+                    {{ if .Post.Images }}
+                        <div class="post-images">
+                            {{ range .Post.Images }}
+                                <img src="/static/uploads/{{ .URL }}" alt="Image du post" class="post-image">
+                            {{ end }}
+                        </div>
+                    {{ end }}
                 <!-- POST CONTENT -->
 
                 <div class="post-content topic-post-content">
@@ -248,6 +257,17 @@
                     <div class="replies topic-replies">
 
                         {{ range .Replies }}
+                            <div class="reply-card">
+                                <strong>{{ .Username }}</strong>
+                                <p>{{ .Content }}</p>
+                                {{ if .Images }}
+                                    <div class="reply-images">
+                                        {{ range .Images }}
+                                            <img src="/static/uploads/{{ .URL }}" alt="Image de la réponse" class="post-image">
+                                        {{ end }}
+                                    </div>
+                                {{ end }}
+                                <small>{{ .CreatedAtAgo }}</small>
 
                             <div class="reply-card topic-reply-card">
 

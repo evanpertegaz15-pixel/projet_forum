@@ -17,6 +17,7 @@ type Post struct {
     CreatedAtAgo string
     LikesCount    int
     DislikesCount int
+    Images     []Image
 }
 
 type PostWithReplies struct {
