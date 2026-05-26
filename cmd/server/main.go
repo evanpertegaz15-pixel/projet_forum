@@ -10,6 +10,7 @@ import (
 	"forum-dark-jurassic/internal/utils"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -37,12 +38,14 @@ func main() {
 	likeModel := models.NewLikeModel(db)
 	roleModel := models.NewRoleModel(db)
 	userRoleModel := models.NewUserRoleModel(db)
+	imageModel := models.NewImageModel(db)
 
 	userService := services.NewUserService(userModel)
 	authService := services.NewAuthService(userModel, sessionModel)
 	postService := services.NewPostService(postModel)
 	categoryService := services.NewCategoryService(categoryModel)
 	topicService := services.NewTopicService(topicModel)
+	imageService := services.NewImageService("static/uploads")
 	likeService := services.NewLikeService(likeModel, postModel, topicModel)
 	reportService := services.NewReportService(reportModel, postModel, topicModel, userModel)
 	userManagementService := services.NewUserManagementService(userModel, userRoleModel, roleModel)
@@ -50,11 +53,15 @@ func main() {
 	homeHandler := handlers.NewHomeHandler(userService)
 	authHandler := handlers.NewAuthHandler(authService)
 	categoryHandler := handlers.NewCategoryHandler(categoryService, postService, topicService, authService)
-	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService, likeService)
+	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService, likeService, imageService, imageModel)
 	postHandler := handlers.NewPostHandler(postService, authService)
 	likesHandler := handlers.NewLikesHandler(likeService, authService)
 	reportHandler := handlers.NewReportHandler(reportService, authService)
 	userManagementHandler := handlers.NewUserManagementHandler(userManagementService, authService)
+
+	if err := os.MkdirAll("static/uploads", 0755); err != nil {
+		log.Fatalf("Impossible de créer le dossier d'uploads: %v", err)
+	}
 
 	// ─── Routes ───────────────────────────────────────────────────────────────
 	http.HandleFunc("/", homeHandler.ShowHome)

@@ -1,5 +1,4 @@
 package models
-// enregistrer les images uploadées, les supprimer si un post est supp
 import (
 	"database/sql"
 	"time"
@@ -21,42 +20,34 @@ func NewImageModel(db *sql.DB) *ImageModel {
 	return &ImageModel{DB: db}
 }
 
-// Ajouter une image (post ou profil)
 func (m *ImageModel) CreateImage(url string, userID int, postID *int) (int, error) {
 	query := `
-		INSERT INTO images (url, user_id, post_id, created_at)
+		INSERT INTO images (path, user_id, post_id, created_at)
 		VALUES (?, ?, ?, ?)
 	`
-
 	result, err := m.DB.Exec(query, url, userID, postID, time.Now())
 	if err != nil {
 		return 0, err
 	}
-
 	id, err := result.LastInsertId()
 	if err != nil {
 		return 0, err
 	}
-
 	return int(id), nil
 }
 
-// Récupérer les images d’un post
 func (m *ImageModel) GetImagesByPostID(postID int) ([]Image, error) {
 	query := `
-		SELECT id, url, user_id, post_id, created_at
+		SELECT id, path AS url, user_id, post_id, created_at
 		FROM images
 		WHERE post_id = ?
 	`
-
 	rows, err := m.DB.Query(query, postID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-
 	var images []Image
-
 	for rows.Next() {
 		var img Image
 		err := rows.Scan(&img.ID, &img.URL, &img.UserID, &img.PostID, &img.CreatedAt)
@@ -65,26 +56,21 @@ func (m *ImageModel) GetImagesByPostID(postID int) ([]Image, error) {
 		}
 		images = append(images, img)
 	}
-
 	return images, nil
 }
 
-// Récupérer les images d’un utilisateur (profil / galerie)
 func (m *ImageModel) GetImagesByUserID(userID int) ([]Image, error) {
 	query := `
-		SELECT id, url, user_id, post_id, created_at
+		SELECT id, path AS url, user_id, post_id, created_at
 		FROM images
 		WHERE user_id = ?
 	`
-
 	rows, err := m.DB.Query(query, userID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-
 	var images []Image
-
 	for rows.Next() {
 		var img Image
 		err := rows.Scan(&img.ID, &img.URL, &img.UserID, &img.PostID, &img.CreatedAt)
@@ -93,17 +79,14 @@ func (m *ImageModel) GetImagesByUserID(userID int) ([]Image, error) {
 		}
 		images = append(images, img)
 	}
-
 	return images, nil
 }
 
-// Supprimer une image (sécurité user)
 func (m *ImageModel) DeleteImage(imageID int, userID int) error {
 	query := `
 		DELETE FROM images
 		WHERE id = ? AND user_id = ?
 	`
-
 	_, err := m.DB.Exec(query, imageID, userID)
 	return err
 }

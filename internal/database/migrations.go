@@ -115,9 +115,11 @@ func RunMigrations(db *sql.DB) {
 		`CREATE TABLE IF NOT EXISTS images (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             post_id INTEGER,
+            user_id INTEGER,
             path TEXT NOT NULL,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
+            FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
+            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
         );`,
 
 		// COMMENTS
@@ -258,5 +260,32 @@ func RunMigrations(db *sql.DB) {
 			log.Fatalf("Erreur migration: %v\nQuery: %s", err, q)
 		}
 	}
+	if !columnExists(db, "images", "user_id") {
+		_, err := db.Exec(`ALTER TABLE images ADD COLUMN user_id INTEGER;`)
+		if err != nil {
+			log.Fatalf("Erreur migration images.user_id: %v", err)
+		}
+	}
 	log.Println("Migrations SQLite OK.")
+}
+
+func columnExists(db *sql.DB, table, column string) bool {
+	rows, err := db.Query(`PRAGMA table_info(` + table + `);`)
+	if err != nil {
+		return false
+	}
+	defer rows.Close()
+	var cid int
+	var name, ctype string
+	var notnull, pk int
+	var dflt sql.NullString
+	for rows.Next() {
+		if err := rows.Scan(&cid, &name, &ctype, &notnull, &dflt, &pk); err != nil {
+			return false
+		}
+		if name == column {
+			return true
+		}
+	}
+	return false
 }

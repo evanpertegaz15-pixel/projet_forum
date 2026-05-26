@@ -15,15 +15,19 @@ type TopicHandler struct {
     Categories *services.CategoryService
     Auth *services.AuthService
     Likes *services.LikeService
+    ImageService *services.ImageService
+    ImageModel *models.ImageModel
 }
 
-func NewTopicHandler(topics *services.TopicService, posts *services.PostService, categories *services.CategoryService, auth *services.AuthService, likes *services.LikeService) *TopicHandler {
+func NewTopicHandler(topics *services.TopicService, posts *services.PostService, categories *services.CategoryService, auth *services.AuthService, likes *services.LikeService, imageService *services.ImageService, imageModel *models.ImageModel) *TopicHandler {
     return &TopicHandler{
         Topics: topics,
         Posts:  posts,
         Categories: categories,
         Auth:   auth,
         Likes:  likes,
+        ImageService: imageService,
+        ImageModel: imageModel,
     }
 }
 
@@ -77,6 +81,12 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
             return
         }
         postsWithReplies[i].Post.LikesCount = count
+        postImages, err := handler.ImageModel.GetImagesByPostID(postsWithReplies[i].Post.ID)
+        if err != nil {
+            utils.ErrorInternal(w, "Erreur interne.")
+            return
+        }
+        postsWithReplies[i].Post.Images = postImages
         for j := range postsWithReplies[i].Replies {
             postsWithReplies[i].Replies[j].CreatedAtAgo = utils.TimeAgo(postsWithReplies[i].Replies[j].CreatedAt)
             replyCount, err := handler.Likes.CountPostLikes(postsWithReplies[i].Replies[j].ID)
@@ -85,6 +95,12 @@ func (handler *TopicHandler) ShowTopic(w http.ResponseWriter, r *http.Request) {
                 return
             }
             postsWithReplies[i].Replies[j].LikesCount = replyCount
+            replyImages, err := handler.ImageModel.GetImagesByPostID(postsWithReplies[i].Replies[j].ID)
+            if err != nil {
+                utils.ErrorInternal(w, "Erreur interne.")
+                return
+            }
+            postsWithReplies[i].Replies[j].Images = replyImages
         }
     }
     user, _ := RequireAuth(w, r, handler.Auth)
@@ -137,6 +153,10 @@ func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request)
     }
     user, ok := RequireAuth(w, r, handler.Auth)
     if !ok { return }
+    if err := r.ParseMultipartForm(10 << 20); err != nil {
+        utils.ErrorBadRequest(w, "Impossible de traiter le formulaire.")
+        return
+    }
     categoryID, _ := strconv.Atoi(r.FormValue("category_id"))
     title := r.FormValue("title")
     content := r.FormValue("content")
@@ -157,9 +177,27 @@ func (handler *TopicHandler) CreateTopic(w http.ResponseWriter, r *http.Request)
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
-    _, err = handler.Posts.CreatePost(topicID, user.ID, content)
+    postID, err := handler.Posts.CreatePost(topicID, user.ID, content)
     if err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+    file, header, err := r.FormFile("image")
+    if err == nil {
+        filename, uploadErr := handler.ImageService.UploadImage(file, header)
+        if uploadErr != nil {
+            log.Printf("CreateTopic: upload error for %q: %v", header.Filename, uploadErr)
+            utils.ErrorBadRequest(w, "Impossible d’uploader l’image.")
+            return
+        }
+        _, dbErr := handler.ImageModel.CreateImage(filename, user.ID, &postID)
+        if dbErr != nil {
+            log.Printf("CreateTopic: image db error for %q: %v", filename, dbErr)
+            utils.ErrorInternal(w, "Impossible d’enregistrer l’image.")
+            return
+        }
+    } else if err != http.ErrMissingFile {
+        utils.ErrorBadRequest(w, "Impossible de traiter le fichier image.")
         return
     }
     http.Redirect(w, r, "/topic?id="+strconv.Itoa(topicID), http.StatusSeeOther)
