@@ -11,11 +11,12 @@ import (
 type CategoryHandler struct {
     Categories *services.CategoryService
     Posts      *services.PostService
+    Topics     *services.TopicService
     Auth       *services.AuthService
 }
 
-func NewCategoryHandler(categories *services.CategoryService, posts *services.PostService, auth *services.AuthService) *CategoryHandler {
-    return &CategoryHandler{Categories: categories, Posts: posts, Auth: auth}
+func NewCategoryHandler(categories *services.CategoryService, posts *services.PostService, topics *services.TopicService, auth *services.AuthService) *CategoryHandler {
+    return &CategoryHandler{Categories: categories, Posts: posts, Topics: topics, Auth: auth}
 }
 
 func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Request) {
@@ -70,9 +71,21 @@ func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Re
             posts[i].CreatedAtAgo = utils.TimeAgo(posts[i].CreatedAt)
         }
     }
+    var topics []models.Topic
+    if showPosts && !skipPosts && liked && likedByUserID > 0 {
+        topics, err = handler.Topics.GetLikedTopicsByUser(likedByUserID, selectedCategoryID)
+        if err != nil {
+            utils.ErrorInternal(w, "Impossible de charger les topics aimés.")
+            return
+        }
+        for i := range topics {
+            topics[i].CreatedAtAgo = utils.TimeAgo(topics[i].CreatedAt)
+        }
+    }
     data := struct {
         Categories         []models.Category
         Posts              []models.Post
+        Topics             []models.Topic
         SelectedCategoryID int
         Mine               bool
         Liked              bool
@@ -83,6 +96,7 @@ func (handler *CategoryHandler) ShowCategories(w http.ResponseWriter, r *http.Re
     }{
         Categories:         categories,
         Posts:              posts,
+        Topics:             topics,
         SelectedCategoryID: selectedCategoryID,
         Mine:               mine,
         Liked:              liked,

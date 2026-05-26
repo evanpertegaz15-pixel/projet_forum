@@ -40,3 +40,7 @@ func (service *TopicService) DeleteTopic(user *models.User, topicID int) error {
     }
     return service.Topics.DeleteTopic(topicID)
 }
+
+func (service *TopicService) GetLikedTopicsByUser(userID, categoryID int) ([]models.Topic, error) {
+    return service.Topics.GetLikedTopicsByUser(userID, categoryID)
+}

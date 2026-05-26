@@ -67,21 +67,36 @@
                 <p class="info-message">{{ .FilterMessage }}</p>
             {{ end }}
 
-            {{ if .Posts }}
-                <ul class="post-list">
-                    {{ range .Posts }}
-                        <li class="post-item">
-                            <div class="post-header">
-                                <a href="/topic?id={{ .TopicID }}">{{ .TopicTitle }}</a>
-                                <span>• {{ .Username }}</span>
+            {{ if or .Posts .Topics }}
+                {{ if .Posts }}
+                    <h3>Posts</h3>
+                    <ul class="post-list">
+                        {{ range .Posts }}
+                            <li class="post-item">
+                                <div class="post-header">
+                                    <a href="/topic?id={{ .TopicID }}">{{ .TopicTitle }}</a>
+                                    <span>• {{ .Username }}</span>
+                                    <span>• {{ .CreatedAtAgo }}</span>
+                                </div>
+                                <p>{{ .Content }}</p>
+                            </li>
+                        {{ end }}
+                    </ul>
+                {{ end }}
+
+                {{ if .Topics }}
+                    <h3>Topics</h3>
+                    <ul class="topic-list">
+                        {{ range .Topics }}
+                            <li class="topic-item">
+                                <a href="/topic?id={{ .ID }}">{{ .Title }}</a>
                                 <span>• {{ .CreatedAtAgo }}</span>
-                            </div>
-                            <p>{{ .Content }}</p>
-                        </li>
-                    {{ end }}
-                </ul>
+                            </li>
+                        {{ end }}
+                    </ul>
+                {{ end }}
             {{ else }}
-                <p>Aucun post trouvé avec ces filtres.</p>
+                <p>Aucun post ou topic trouvé avec ces filtres.</p>
             {{ end }}
         {{ else if .ShowForm }}
             <form method="GET" action="/categories" class="filters">
