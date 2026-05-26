@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier le profil - Dark Jurassic</title>
+    <link rel="icon" href="../../static/dark_jurassic_icon_nobg.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/styles.min.css">
+</head>
+<body>
+    <header class="banner">
+        <img src="../../static/banner.png" alt="Website Banner">
+    </header>
+
+    <nav>
+        <div class="nav-left">
+            <a href="/">Accueil</a>
+            <a href="/categories">Catégories</a>
+            <a href="/topic/new">Créer un topic</a>
+            <a href="/login">Connexion</a>
+        </div>
+        <form class="search-bar">
+            <input type="text" placeholder="Rechercher..." name="q">
+            <button type="submit">
+                <img src="../../static/search.png" alt="search">
+            </button>
+        </form>
+        <div class="top-right-icons">
+            <a href="/register" class="icon-btn">
+                <img src="../../static/register.png" alt="Register">
+            </a>
+            <a href="/profile" class="icon-btn">
+                <img src="../../static/profile.png" alt="Profil">
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="profile-card">
+            <h2>Modifier le profil</h2>
+            <form method="POST" action="/profile/update">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ .Email }}" placeholder="Laisser vide pour ne pas changer">
+                </div>
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username" value="{{ .Username }}" placeholder="Laisser vide pour ne pas changer">
+                </div>
+                <div class="form-group">
+                    <label for="password">Nouveau mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Laisser vide pour ne pas changer">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirmer le mot de passe</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmer le nouveau mot de passe">
+                </div>
+                <button type="submit">Mettre à jour</button>
+                <a href="/profile"><button type="button">Annuler</button></a>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Dark Jurassic</p>
+    </footer>
+</body>
+</html>

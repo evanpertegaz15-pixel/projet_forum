@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des utilisateurs - Dark Jurassic</title>
+    <link rel="icon" href="../../static/dark_jurassic_icon_nobg.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../static/styles.min.css">
+</head>
+<body>
+    <header class="banner">
+        <img src="../../static/banner.png" alt="Website Banner">
+    </header>
+
+    <nav>
+        <div class="nav-left">
+            <a href="/">Accueil</a>
+            <a href="/categories">Catégories</a>
+            <a href="/topic/new">Créer un topic</a>
+            <a href="/reports">Reports</a>
+            <a href="/login">Connexion</a>
+        </div>
+        <form class="search-bar">
+            <input type="text" placeholder="Rechercher..." name="q">
+            <button type="submit">
+                <img src="../../static/search.png" alt="search">
+            </button>
+        </form>
+        <div class="top-right-icons">
+            <a href="/register" class="icon-btn">
+                <img src="../../static/register.png" alt="Register">
+            </a>
+            <a href="/profile" class="icon-btn">
+                <img src="../../static/profile.png" alt="Profil">
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <h2>Gestion des utilisateurs</h2>
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Email</th>
+                    <th>Rôles</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .Users }}
+                <tr>
+                    <td>{{ .ID }}</td>
+                    <td>{{ .Username }}</td>
+                    <td>{{ .Email }}</td>
+                    <td>
+                        {{ if .Roles }}
+                            {{ range $idx, $role := .Roles }}
+                                {{ if $idx }}, {{ end }}
+                                {{ $role.Label }}
+                            {{ end }}
+                        {{ else }}
+                            Aucun rôle
+                        {{ end }}
+                    </td>
+                    <td>
+                        <div class="user-actions">
+                            {{ $user := . }}
+                            {{ $blocked := false }}
+                            {{ range .Roles }}
+                                {{ if eq .Name "blocked" }}
+                                    {{ $blocked = true }}
+                                {{ end }}
+                            {{ end }}
+                            
+                            {{ if not $blocked }}
+                                <form method="POST" action="/admin/users/block" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ .ID }}">
+                                    <button type="submit" class="danger" onclick="return confirm('Bloquer cet utilisateur ?')">Bloquer</button>
+                                </form>
+                            {{ else }}
+                                <form method="POST" action="/admin/users/unblock" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ .ID }}">
+                                    <button type="submit">Débloquer</button>
+                                </form>
+                            {{ end }}
+
+                            {{ $moderator := false }}
+                            {{ range .Roles }}
+                                {{ if eq .Name "moderator" }}
+                                    {{ $moderator = true }}
+                                {{ end }}
+                            {{ end }}
+
+                            {{ if not $moderator }}
+                                <form method="POST" action="/admin/users/role" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ .ID }}">
+                                    <input type="hidden" name="role_id" value="2">
+                                    <button type="submit">Modérateur</button>
+                                </form>
+                            {{ else }}
+                                <form method="POST" action="/admin/users/role/remove" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ .ID }}">
+                                    <input type="hidden" name="role_id" value="2">
+                                    <button type="submit" class="danger">Retirer modérateur</button>
+                                </form>
+                            {{ end }}
+
+                            {{ $ranger := false }}
+                            {{ range .Roles }}
+                                {{ if eq .Name "ranger" }}
+                                    {{ $ranger = true }}
+                                {{ end }}
+                            {{ end }}
+
+                            {{ if not $ranger }}
+                                <form method="POST" action="/admin/users/role" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ .ID }}">
+                                    <input type="hidden" name="role_id" value="3">
+                                    <button type="submit">Ranger</button>
+                                </form>
+                            {{ else }}
+                                <form method="POST" action="/admin/users/role/remove" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ .ID }}">
+                                    <input type="hidden" name="role_id" value="3">
+                                    <button type="submit" class="danger">Retirer ranger</button>
+                                </form>
+                            {{ end }}
+                        </div>
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>© 2026 Dark Jurassic</p>
+    </footer>
+</body>
+</html>

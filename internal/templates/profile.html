@@ -55,7 +55,18 @@
 
             <h3>Actions</h3>
 
-            <button>Modifier le profil</button>
+            <a href="/profile/edit"><button>Modifier le profil</button></a>
+            
+            {{ if .Roles }}
+                {{ range .Roles }}
+                    {{ if eq .Name "admin" }}
+                        <a href="/admin/users"><button>Gérer les utilisateurs</button></a>
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+
+            <a href="/logout"><button class="secondary">Déconnexion</button></a>
+            
             <form action="/delete/account" method="POST">
                 <button type="submit" class="danger">Supprimer le compte</button>
             </form>

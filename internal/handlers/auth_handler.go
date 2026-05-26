@@ -132,6 +132,65 @@ func (handler *AuthHandler) Profile(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, "./internal/templates/profile.html", user)
 }
 
+func (handler *AuthHandler) ShowEditProfile(w http.ResponseWriter, r *http.Request) {
+	user, ok := RequireAuth(w, r, handler.Auth)
+	if !ok { return }
+	utils.Render(w, "./internal/templates/edit_profile.html", user)
+}
+
+func (handler *AuthHandler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		utils.ErrorMethodNotAllowed(w, "Méthode non autorisée")
+		return
+	}
+	user, ok := RequireAuth(w, r, handler.Auth)
+	if !ok { return }
+	err := r.ParseForm()
+	if err != nil {
+		utils.ErrorBadRequest(w, "Formulaire incorrect")
+		return
+	}
+	newEmail := r.FormValue("email")
+	newUsername := r.FormValue("username")
+	newPassword := r.FormValue("password")
+	confirmPassword := r.FormValue("confirm_password")
+	if newEmail != "" && newEmail != user.Email {
+		if !utils.ValidateEmail(newEmail) {
+			utils.ErrorBadRequest(w, "Email invalide")
+			return
+		}
+		if err := handler.Auth.UpdateEmail(user.ID, newEmail); err != nil {
+			utils.ErrorInternal(w, "Erreur lors de la mise à jour de l'email")
+			return
+		}
+	}
+	if newUsername != "" && newUsername != user.Username {
+		if !utils.ValidateUsername(newUsername) {
+			utils.ErrorBadRequest(w, "Nom d'utilisateur invalide")
+			return
+		}
+		if err := handler.Auth.UpdateUsername(user.ID, newUsername); err != nil {
+			utils.ErrorInternal(w, "Erreur lors de la mise à jour du nom d'utilisateur")
+			return
+		}
+	}
+	if newPassword != "" {
+		if err := utils.ValidatePassword(newPassword); err != nil {
+			utils.ErrorBadRequest(w, err.Error())
+			return
+		}
+		if newPassword != confirmPassword {
+			utils.ErrorBadRequest(w, "Les mots de passe ne correspondent pas")
+			return
+		}
+		if err := handler.Auth.UpdatePassword(user.ID, newPassword); err != nil {
+			utils.ErrorInternal(w, "Erreur lors de la mise à jour du mot de passe")
+			return
+		}
+	}
+	http.Redirect(w, r, "/profile", http.StatusSeeOther)
+}
+
 // ─── Google OAuth Handlers ────────────────────────────────────────────────────
 
 func (handler *AuthHandler) GoogleLogin(w http.ResponseWriter, r *http.Request) {
