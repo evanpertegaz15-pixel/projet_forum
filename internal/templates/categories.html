@@ -40,11 +40,80 @@
 <main>
     <section>
         <h2>Catégories</h2>
-        <ul>
-            {{ range . }}
-                <li><a href="/topics?id={{ .ID }}">{{ .Name }}</a></li>
+        <a href="/categories?show=1" class="btn-link">Afficher le filtrage</a>
+        {{ if .ShowPosts }}
+            <form method="GET" action="/categories" class="filters">
+                <label>
+                    Catégorie :
+                    <select name="id">
+                        <option value="">Toutes</option>
+                        {{ range .Categories }}
+                            <option value="{{ .ID }}" {{ if eq .ID $.SelectedCategoryID }}selected{{ end }}>{{ .Name }}</option>
+                        {{ end }}
+                    </select>
+                </label>
+                <label>
+                    <input type="checkbox" name="mine" value="1" {{ if .Mine }}checked{{ end }}>
+                    Mes posts
+                </label>
+                <label>
+                    <input type="checkbox" name="liked" value="1" {{ if .Liked }}checked{{ end }}>
+                    Posts / Topics aimés
+                </label>
+                <button type="submit">Filtrer</button>
+            </form>
+
+            {{ if .FilterMessage }}
+                <p class="info-message">{{ .FilterMessage }}</p>
             {{ end }}
-        </ul>
+
+            {{ if .Posts }}
+                <ul class="post-list">
+                    {{ range .Posts }}
+                        <li class="post-item">
+                            <div class="post-header">
+                                <a href="/topic?id={{ .TopicID }}">{{ .TopicTitle }}</a>
+                                <span>• {{ .Username }}</span>
+                                <span>• {{ .CreatedAtAgo }}</span>
+                            </div>
+                            <p>{{ .Content }}</p>
+                        </li>
+                    {{ end }}
+                </ul>
+            {{ else }}
+                <p>Aucun post trouvé avec ces filtres.</p>
+            {{ end }}
+        {{ else if .ShowForm }}
+            <form method="GET" action="/categories" class="filters">
+                <label>
+                    Catégorie :
+                    <select name="id">
+                        <option value="">Toutes</option>
+                        {{ range .Categories }}
+                            <option value="{{ .ID }}" {{ if eq .ID $.SelectedCategoryID }}selected{{ end }}>{{ .Name }}</option>
+                        {{ end }}
+                    </select>
+                </label>
+                <label>
+                    <input type="checkbox" name="mine" value="1" {{ if .Mine }}checked{{ end }}>
+                    Mes posts
+                </label>
+                <label>
+                    <input type="checkbox" name="liked" value="1" {{ if .Liked }}checked{{ end }}>
+                    Posts / Topics aimés
+                </label>
+                <button type="submit">Filtrer</button>
+            </form>
+            {{ if .FilterMessage }}
+                <p class="info-message">{{ .FilterMessage }}</p>
+            {{ end }}
+        {{ else }}
+            <ul>
+                {{ range .Categories }}
+                    <li><a href="/topics?id={{ .ID }}">{{ .Name }}</a></li>
+                {{ end }}
+            </ul>
+        {{ end }}
     </section>
 </main>
 
