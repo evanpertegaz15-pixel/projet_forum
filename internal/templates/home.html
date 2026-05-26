@@ -57,7 +57,7 @@
                 <a href="/categories">Voir les catégories →</a>
             </div>
 
-            <div class="feed">
+           <div class="feed">
                 {{ if .Topics }}
                     {{ range .Topics }}
                     <a href="/topic?id={{ .ID }}" class="feed-item">
@@ -83,6 +83,8 @@
                 {{ end }}
             </div>
         </section>
+
+
 
         <section class="right">
             <div class="category-list">
