@@ -154,6 +154,8 @@ func (handler *AuthHandler) UpdateProfile(w http.ResponseWriter, r *http.Request
 	newUsername := r.FormValue("username")
 	newPassword := r.FormValue("password")
 	confirmPassword := r.FormValue("confirm_password")
+	newDescription := r.FormValue("description")
+	newSocials := r.FormValue("socials")
 	if newEmail != "" && newEmail != user.Email {
 		if !utils.ValidateEmail(newEmail) {
 			utils.ErrorBadRequest(w, "Email invalide")
@@ -185,6 +187,18 @@ func (handler *AuthHandler) UpdateProfile(w http.ResponseWriter, r *http.Request
 		}
 		if err := handler.Auth.UpdatePassword(user.ID, newPassword); err != nil {
 			utils.ErrorInternal(w, "Erreur lors de la mise à jour du mot de passe")
+			return
+		}
+	}
+	if newDescription != user.Description {
+		if err := handler.Auth.UpdateDescription(user.ID, newDescription); err != nil {
+			utils.ErrorInternal(w, "Erreur lors de la mise à jour de la description.")
+			return
+		}
+	}
+	if newSocials != user.Socials {
+		if err := handler.Auth.UpdateSocials(user.ID, newSocials); err != nil {
+			utils.ErrorInternal(w, "Erreur lors de la mise à jour des liens sociaux.")
 			return
 		}
 	}
