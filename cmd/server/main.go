@@ -51,6 +51,7 @@ func main() {
 
 	homeModel := models.NewHomeModel(db)
 	homeHandler := handlers.NewHomeHandler(homeModel)
+	notFoundHandler := handlers.NewNotFoundHandler()
 	authHandler := handlers.NewAuthHandler(authService)
 	categoryHandler := handlers.NewCategoryHandler(categoryService, postService, topicService, authService)
 	topicHandler := handlers.NewTopicHandler(topicService, postService, categoryService, authService, likeService, imageService, imageModel)
@@ -64,7 +65,14 @@ func main() {
 	}
 
 	// ─── Routes ───────────────────────────────────────────────────────────────
-	http.HandleFunc("/", homeHandler.ShowHome)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		notFoundHandler.ShowNotFound(w, r)
+		return
+	}
+
+	homeHandler.ShowHome(w, r)
+})
 	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			authHandler.ShowRegister(w, r)
