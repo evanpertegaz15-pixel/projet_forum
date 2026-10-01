@@ -6,6 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"forum-dark-jurassic/internal/utils"
+
 	"golang.org/x/time/rate"
 )
 
@@ -56,9 +58,10 @@ func RateLimit(next http.Handler) http.Handler {
 		}
 
 		if !getVisitor(ip).Allow() {
-			http.Error(w, "Too Many Requests — réessayez dans un instant.", http.StatusTooManyRequests)
-			return
-		}
+    w.WriteHeader(http.StatusTooManyRequests)
+    utils.Render(w, "./internal/templates/429.html", nil)
+    return
+}
 
 		next.ServeHTTP(w, r)
 	})
