@@ -21,6 +21,7 @@ func RunMigrations(db *sql.DB) {
             username TEXT NOT NULL,
             password_hash TEXT NOT NULL,
             description TEXT,
+            socials TEXT,
             profile_picture TEXT,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME
@@ -265,6 +266,12 @@ func RunMigrations(db *sql.DB) {
 		_, err := db.Exec(`ALTER TABLE users ADD COLUMN description TEXT;`)
 		if err != nil {
 			log.Fatalf("Erreur migration users.description: %v", err)
+		}
+	}
+    if !columnExists(db, "users", "socials") {
+		_, err := db.Exec(`ALTER TABLE users ADD COLUMN socials TEXT;`)
+		if err != nil {
+			log.Fatalf("Erreur migration users.socials: %v", err)
 		}
 	}
 	if !columnExists(db, "images", "user_id") {

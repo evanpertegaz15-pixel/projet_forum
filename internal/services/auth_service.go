@@ -140,3 +140,7 @@ func (auth *AuthService) UpdatePassword(userID int, newPassword string) error {
 func (auth *AuthService) UpdateDescription(userID int, newDescription string) error {
 	return auth.Users.UpdateDescription(userID, newDescription)
 }
+
+func (auth *AuthService) UpdateSocials(userID int, newSocials string) error {
+	return auth.Users.UpdateSocials(userID, newSocials)
+}
