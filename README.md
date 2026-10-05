@@ -5,7 +5,7 @@
 
 ### Présentation
 
-Le Dark Jurassic s'inspire du [site](https://jurassicpark.fandom.com/fr/wiki/Dark_Jurassic) du même nom dans la série télévisée Netflix [Jurassic World : La Théorie du Chaos](https://jurassicpark.fandom.com/fr/wiki/Jurassic_World_:_La_Th%C3%A9orie_du_Chaos).
+Le Dark Jurassic s'inspire du [site](https://jurassicpark.fandom.com/fr/wiki/Dark_Jurassic) du même nom dans la série télévisée Netflix [Jurassic World : La Théorie du Chaos](https://jurassicpark.fandom.com/fr/wiki/Jurassic_World_:_La_Th%C3%A9orie_du_Chaos). Il est destiné aux fans de la saga, et leur permet de se retrouver autour de sujets communs.
 
 Dark Jurassic est un forum web développé en **Go** (backend) avec **HTML/CSS**. Il repose sur une base de données **SQLite** embarquée.
  
@@ -49,3 +49,37 @@ go version
     ```pwsh
     http://localhost:8080
     ```
+
+## Démonstration
+
+- En arrivant sur le site, vous pouvez consulter les derniers posts dans le fil d'actualité. Ainsi qu'accéder aux catégories tendances.
+- Si vous désirez pouvoir interagir avec les autres utilisateurs, il faut créer un compte.
+  - Pour ce faire, cliquer en haut à droite de l'écran sur le logo de connexion / inscription et suivre les indications.
+- Une fois connecté, vous pouvez vous rendre dans la partie catégorie et topics et commencer à créer des posts.
+- Si toutefois vous voulez personnaliser votre profil, vous pouvez vous rendre sur votre page de la même manière que pour se connecter.
+  - De là, appuyer sur "Modifier le profil", et n'oubliez pas d'enregistrer !
+
+## Structure du dépôt
+
+### Racine
+
+La racine contient :
+- Les fichiers de configuration `go.mod` et `go.sum`
+- La base de données `forum.db`, quand le projet est lancé
+
+---
+
+### Backend
+
+Le backend se trouve dans `/internal` :
+- Le fichier de configuration `config.go` est dans `/config` et permet de relier les différents services entre eux
+- Pour la base de données : `/database` et `/models`
+- La gestion des routes, et interactions est principalement dans : `handlers`, `services` et `utils`
+
+---
+
+### Frontend
+
+Le frontend se trouve dans :
+- `/internal/templates` pour les pages **HTML** en elles-mêmes
+- `/static` pour les assets tels que les images, ou le **CSS** pour le style
