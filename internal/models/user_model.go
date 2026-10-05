@@ -10,7 +10,9 @@ type User struct {
 	ID	int
 	Username	string
 	Email	string
+	Description	string
 	Password	string
+	Socials	string
 	ProfilePicture	sql.NullString
 	CreatedAt time.Time
 	CreatedAtAgo string
@@ -118,13 +120,13 @@ func (model *UserModel) FindByUsername(username string) (*User, error) {
 
 func (model *UserModel) FindByID(id int) (*User, error) {
     row := model.DB.QueryRow(`
-        SELECT id, email, username, password_hash, profile_picture, created_at, updated_at
+        SELECT id, email, username, password_hash, COALESCE(description, ''), COALESCE(socials, ''), profile_picture, created_at, updated_at
         FROM users
         WHERE id = ?
     `, id)
     var user User
     var updatedAt sql.NullTime
-    err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password, &user.ProfilePicture, &user.CreatedAt, &updatedAt)
+    err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password, &user.Description, &user.Socials, &user.ProfilePicture, &user.CreatedAt, &updatedAt)
     if err != nil {
         if errors.Is(err, sql.ErrNoRows) {
             return nil, nil
@@ -183,5 +185,15 @@ func (model *UserModel) UpdateUsername(userID int, newUsername string) error {
 
 func (model *UserModel) UpdatePassword(userID int, newPasswordHash string) error {
 	_, err := model.DB.Exec(`UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, newPasswordHash, userID)
+	return err
+}
+
+func (model *UserModel) UpdateDescription(userID int, newDescription string) error {
+	_, err := model.DB.Exec(`UPDATE users SET description = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, newDescription, userID)
+	return err
+}
+
+func (model *UserModel) UpdateSocials(userID int, newSocials string) error {
+	_, err := model.DB.Exec(`UPDATE users SET socials = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, newSocials, userID)
 	return err
 }
