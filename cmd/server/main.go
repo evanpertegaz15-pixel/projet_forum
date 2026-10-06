@@ -74,12 +74,14 @@ func main() {
 	homeHandler.ShowHome(w, r)
 })
 	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			authHandler.ShowRegister(w, r)
-		} else if r.Method == http.MethodPost {
-			authHandler.Register(w, r)
-		}
-	})
+	if r.Method == http.MethodGet {
+		authHandler.ShowRegister(w, r)
+	} else if r.Method == http.MethodPost {
+		authHandler.Register(w, r)
+	} else {
+		utils.ErrorMethodNotAllowed(w, "Cette méthode HTTP n'est pas autorisée pour cette page.")
+	}
+})
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			authHandler.ShowLogin(w, r)
